@@ -1,0 +1,458 @@
+{
+  "version": 1,
+  "id": "meatpacking",
+  "name": "Frigorífico Sloane",
+  "profile": "Indústria de Viktor; umidade, aço e administração protegida do chão de fábrica.",
+  "entranceRoom": "processing",
+  "rooms": [
+    {
+      "id": "processing",
+      "name": "Piso de processamento",
+      "bounds": {
+        "w": 740,
+        "h": 540
+      },
+      "finish": {
+        "floor": "#62736c",
+        "wall": "#70857a",
+        "material": "tile",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 370,
+        "y": 475
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 266.4,
+          "y": 205.2,
+          "z": 110,
+          "radius": 532.8,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 592,
+          "y": 24,
+          "z": 85,
+          "radius": 458.8,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "steel-a",
+          "type": "steel",
+          "name": "Bancada de aço com marcas de ferramentas",
+          "x": 160,
+          "y": 90,
+          "w": 180,
+          "h": 75,
+          "height": 48,
+          "solid": true,
+          "interactive": true,
+          "text": "Bancada de aço com marcas de ferramentas."
+        },
+        {
+          "id": "steel-b",
+          "type": "steel",
+          "name": "Mesa de separação junto à canaleta",
+          "x": 380,
+          "y": 320,
+          "w": 190,
+          "h": 80,
+          "height": 48,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa de separação junto à canaleta."
+        },
+        {
+          "id": "hooks",
+          "type": "hooks",
+          "name": "Ganchos suspensos em trilho",
+          "x": 530,
+          "y": 30,
+          "w": 130,
+          "h": 22,
+          "height": 130,
+          "solid": true,
+          "interactive": true,
+          "text": "Ganchos suspensos em trilho."
+        },
+        {
+          "id": "scale",
+          "type": "calculator",
+          "name": "Balança mecânica de ponteiro",
+          "x": 185,
+          "y": 109,
+          "w": 45,
+          "h": 34,
+          "height": 18,
+          "solid": false,
+          "interactive": true,
+          "text": "Balança mecânica de ponteiro.",
+          "baseZ": 49,
+          "parentId": "steel-a"
+        },
+        {
+          "id": "drain",
+          "type": "drain",
+          "name": "Canaleta oxidada com rastros de botas",
+          "x": 200,
+          "y": 420,
+          "w": 100,
+          "h": 25,
+          "height": 0,
+          "solid": false,
+          "interactive": true,
+          "text": "Canaleta oxidada com rastros de botas."
+        },
+        {
+          "id": "crates",
+          "type": "box",
+          "name": "Caixotes de transporte lavados recentemente",
+          "x": 35,
+          "y": 280,
+          "w": 75,
+          "h": 110,
+          "height": 81,
+          "solid": true,
+          "interactive": true,
+          "text": "Caixotes de transporte lavados recentemente."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 682,
+          "y": 450,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "processing:Piso de processamento",
+        "density": 100,
+        "types": [
+          "mud",
+          "wire",
+          "damp",
+          "bottle"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 100,
+      "fluorescent": true
+    },
+    {
+      "id": "freezer",
+      "name": "Câmara fria",
+      "bounds": {
+        "w": 430,
+        "h": 490
+      },
+      "finish": {
+        "floor": "#738780",
+        "wall": "#849a8c",
+        "material": "tile",
+        "condition": "frost"
+      },
+      "spawn": {
+        "x": 215,
+        "y": 425
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 154.79999999999998,
+          "y": 186.2,
+          "z": 110,
+          "radius": 352.8,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 344,
+          "y": 24,
+          "z": 85,
+          "radius": 266.6,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "cold-racks",
+          "type": "shelf",
+          "name": "Prateleiras de aço cobertas de gelo",
+          "x": 30,
+          "y": 35,
+          "w": 70,
+          "h": 180,
+          "height": 145,
+          "solid": true,
+          "interactive": true,
+          "text": "Prateleiras de aço cobertas de gelo."
+        },
+        {
+          "id": "cold-boxes",
+          "type": "box",
+          "name": "Caixas seladas e numeradas",
+          "x": 280,
+          "y": 280,
+          "w": 85,
+          "h": 125,
+          "height": 95,
+          "solid": true,
+          "interactive": true,
+          "text": "Caixas seladas e numeradas.",
+          "action": "search"
+        },
+        {
+          "id": "temperature",
+          "type": "gauge",
+          "name": "Termômetro de mercúrio e registro de temperatura",
+          "x": 270,
+          "y": 30,
+          "w": 45,
+          "h": 28,
+          "height": 38,
+          "solid": true,
+          "interactive": true,
+          "text": "Termômetro de mercúrio e registro de temperatura."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 372,
+          "y": 400,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "freezer:Câmara fria",
+        "density": 40,
+        "types": [
+          "wire",
+          "mud",
+          "paper"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 40,
+      "fluorescent": true
+    },
+    {
+      "id": "office",
+      "name": "Escritório elevado de Viktor",
+      "bounds": {
+        "w": 520,
+        "h": 350
+      },
+      "finish": {
+        "floor": "#514b3b",
+        "wall": "#6c7e70",
+        "material": "wood",
+        "condition": "clean"
+      },
+      "spawn": {
+        "x": 260,
+        "y": 285
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 187.2,
+          "y": 133,
+          "z": 110,
+          "radius": 374.4,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 416,
+          "y": 24,
+          "z": 85,
+          "radius": 322.4,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "viktor-desk",
+          "type": "table",
+          "name": "Mesa voltada para o vidro do piso de fábrica",
+          "x": 230,
+          "y": 95,
+          "w": 170,
+          "h": 75,
+          "height": 49,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa voltada para o vidro do piso de fábrica.",
+          "color": "#493c2b"
+        },
+        {
+          "id": "safe",
+          "type": "safe",
+          "name": "Cofre particular sob um quadro de produção",
+          "x": 35,
+          "y": 35,
+          "w": 75,
+          "h": 70,
+          "height": 103,
+          "solid": true,
+          "interactive": true,
+          "text": "Cofre particular sob um quadro de produção.",
+          "action": "search"
+        },
+        {
+          "id": "chair",
+          "type": "armchair",
+          "name": "Poltrona de couro escuro",
+          "x": 285,
+          "y": 30,
+          "w": 60,
+          "h": 54,
+          "height": 56,
+          "solid": true,
+          "interactive": true,
+          "text": "Poltrona de couro escuro."
+        },
+        {
+          "id": "payroll",
+          "type": "files",
+          "name": "Folhas de pagamento e horas extras",
+          "x": 40,
+          "y": 225,
+          "w": 65,
+          "h": 65,
+          "height": 100,
+          "solid": true,
+          "interactive": true,
+          "text": "Folhas de pagamento e horas extras.",
+          "action": "drawer"
+        },
+        {
+          "id": "window",
+          "type": "glass",
+          "name": "Vidro de observação com marcas de dedos",
+          "x": 400,
+          "y": 240,
+          "w": 70,
+          "h": 18,
+          "height": 110,
+          "solid": false,
+          "interactive": true,
+          "text": "Vidro de observação com marcas de dedos."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 462,
+          "y": 260,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "office:Escritório elevado de Viktor",
+        "density": 45,
+        "types": [
+          "paper",
+          "calculator",
+          "ash",
+          "directory"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 45
+    }
+  ],
+  "doors": [
+    {
+      "id": "processing-freezer",
+      "name": "Câmara fria",
+      "a": {
+        "room": "processing",
+        "side": "east",
+        "offset": 230,
+        "width": 76
+      },
+      "b": {
+        "room": "freezer",
+        "side": "west",
+        "offset": 260,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    },
+    {
+      "id": "processing-office",
+      "name": "Escritório de Viktor",
+      "a": {
+        "room": "processing",
+        "side": "north",
+        "offset": 420,
+        "width": 76
+      },
+      "b": {
+        "room": "office",
+        "side": "south",
+        "offset": 260,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "processing",
+    "x": 370,
+    "y": 516,
+    "w": 60,
+    "h": 16
+  }
+}

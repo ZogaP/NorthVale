@@ -1,0 +1,479 @@
+{
+  "version": 1,
+  "id": "motel",
+  "name": "NorthVale Motel",
+  "profile": "Hospedagem de estrada; neon, roupas úmidas e permanências que ninguém registra.",
+  "entranceRoom": "reception",
+  "rooms": [
+    {
+      "id": "reception",
+      "name": "Recepção do motel",
+      "bounds": {
+        "w": 560,
+        "h": 360
+      },
+      "finish": {
+        "floor": "#685245",
+        "wall": "#8b7564",
+        "material": "cloth",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 280,
+        "y": 295
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 201.6,
+          "y": 136.8,
+          "z": 110,
+          "radius": 403.2,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 448,
+          "y": 24,
+          "z": 85,
+          "radius": 347.2,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "desk",
+          "type": "counter",
+          "name": "Balcão com livro de hóspedes aberto no dia 15",
+          "x": 70,
+          "y": 70,
+          "w": 200,
+          "h": 58,
+          "height": 48,
+          "solid": true,
+          "interactive": true,
+          "text": "Balcão com livro de hóspedes aberto no dia 15."
+        },
+        {
+          "id": "keys",
+          "type": "keys",
+          "name": "Chave do quarto 17 esquecida no quadro",
+          "x": 330,
+          "y": 24,
+          "w": 80,
+          "h": 12,
+          "height": 42,
+          "solid": false,
+          "interactive": true,
+          "text": "Chave do quarto 17 esquecida no quadro.",
+          "givesKey": "Chave do quarto 17",
+          "action": "search"
+        },
+        {
+          "id": "bell",
+          "type": "calculator",
+          "name": "Campainha metálica sem brilho",
+          "x": 120,
+          "y": 90,
+          "w": 19,
+          "h": 18,
+          "height": 8,
+          "solid": false,
+          "interactive": true,
+          "text": "Campainha metálica sem brilho.",
+          "baseZ": 49,
+          "parentId": "desk"
+        },
+        {
+          "id": "guest-couch",
+          "type": "sofa",
+          "name": "Sofá de espera com espuma aparente",
+          "x": 370,
+          "y": 210,
+          "w": 135,
+          "h": 60,
+          "height": 40,
+          "solid": true,
+          "interactive": true,
+          "text": "Sofá de espera com espuma aparente."
+        },
+        {
+          "id": "tv",
+          "type": "tv",
+          "name": "TV pequena transmitindo notícias locais",
+          "x": 410,
+          "y": 55,
+          "w": 75,
+          "h": 45,
+          "height": 62,
+          "solid": true,
+          "interactive": true,
+          "text": "TV pequena transmitindo notícias locais."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 502,
+          "y": 270,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "reception:Recepção do motel",
+        "density": 65,
+        "types": [
+          "directory",
+          "ash",
+          "mug",
+          "paper",
+          "calendar"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 65
+    },
+    {
+      "id": "room17",
+      "name": "Quarto 17",
+      "bounds": {
+        "w": 450,
+        "h": 420
+      },
+      "finish": {
+        "floor": "#67534c",
+        "wall": "#81715e",
+        "material": "cloth",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 225,
+        "y": 355
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 162,
+          "y": 159.6,
+          "z": 110,
+          "radius": 324,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 360,
+          "y": 24,
+          "z": 85,
+          "radius": 279,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "bed",
+          "type": "bed",
+          "name": "Lençóis remexidos e marcas de uma mala",
+          "x": 210,
+          "y": 45,
+          "w": 175,
+          "h": 90,
+          "height": 37,
+          "solid": true,
+          "interactive": true,
+          "text": "Lençóis remexidos e marcas de uma mala."
+        },
+        {
+          "id": "nightstand",
+          "type": "table",
+          "name": "Mesa de cabeceira com copo de água",
+          "x": 130,
+          "y": 70,
+          "w": 55,
+          "h": 45,
+          "height": 37,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa de cabeceira com copo de água."
+        },
+        {
+          "id": "phone",
+          "type": "phone",
+          "name": "Telefone com o fio arrancado",
+          "x": 143,
+          "y": 83,
+          "w": 28,
+          "h": 22,
+          "height": 13,
+          "solid": false,
+          "interactive": true,
+          "text": "Telefone com o fio arrancado.",
+          "baseZ": 38,
+          "parentId": "nightstand"
+        },
+        {
+          "id": "wardrobe",
+          "type": "cabinet",
+          "name": "Armário vazio, exceto por um cabide",
+          "x": 30,
+          "y": 25,
+          "w": 68,
+          "h": 60,
+          "height": 112,
+          "solid": true,
+          "interactive": true,
+          "text": "Armário vazio, exceto por um cabide."
+        },
+        {
+          "id": "television",
+          "type": "tv",
+          "name": "TV de tubo com antena improvisada",
+          "x": 300,
+          "y": 270,
+          "w": 75,
+          "h": 48,
+          "height": 65,
+          "solid": true,
+          "interactive": true,
+          "text": "TV de tubo com antena improvisada."
+        },
+        {
+          "id": "drawer",
+          "type": "drawer",
+          "name": "Gaveta com uma etiqueta de lavanderia",
+          "x": 134,
+          "y": 93,
+          "w": 36,
+          "h": 20,
+          "height": 4,
+          "solid": false,
+          "interactive": true,
+          "text": "Gaveta com uma etiqueta de lavanderia.",
+          "baseZ": 38,
+          "parentId": "nightstand",
+          "action": "drawer"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 392,
+          "y": 330,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "room17:Quarto 17",
+        "density": 80,
+        "types": [
+          "ash",
+          "paper",
+          "mud",
+          "damp",
+          "wire"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 80
+    },
+    {
+      "id": "laundry",
+      "name": "Lavanderia e manutenção",
+      "bounds": {
+        "w": 360,
+        "h": 530
+      },
+      "finish": {
+        "floor": "#636b61",
+        "wall": "#748375",
+        "material": "tile",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 180,
+        "y": 465
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 129.6,
+          "y": 201.4,
+          "z": 110,
+          "radius": 381.59999999999997,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 288,
+          "y": 24,
+          "z": 85,
+          "radius": 223.2,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "washer",
+          "type": "laundry",
+          "name": "Máquina industrial com roupa parada no tambor",
+          "x": 30,
+          "y": 35,
+          "w": 80,
+          "h": 70,
+          "height": 55,
+          "solid": true,
+          "interactive": true,
+          "text": "Máquina industrial com roupa parada no tambor."
+        },
+        {
+          "id": "linen-rack",
+          "type": "shelf",
+          "name": "Lençóis separados por estado",
+          "x": 250,
+          "y": 65,
+          "w": 65,
+          "h": 150,
+          "height": 125,
+          "solid": true,
+          "interactive": true,
+          "text": "Lençóis separados por estado."
+        },
+        {
+          "id": "fold-table",
+          "type": "table",
+          "name": "Bancada de dobrar roupas",
+          "x": 115,
+          "y": 290,
+          "w": 120,
+          "h": 70,
+          "height": 44,
+          "solid": true,
+          "interactive": true,
+          "text": "Bancada de dobrar roupas."
+        },
+        {
+          "id": "detergent",
+          "type": "bottle",
+          "name": "Frasco de detergente marcado a caneta",
+          "x": 130,
+          "y": 306,
+          "w": 20,
+          "h": 20,
+          "height": 27,
+          "solid": false,
+          "interactive": true,
+          "text": "Frasco de detergente marcado a caneta.",
+          "baseZ": 45,
+          "parentId": "fold-table"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 302,
+          "y": 440,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "laundry:Lavanderia e manutenção",
+        "density": 60,
+        "types": [
+          "bottle",
+          "box",
+          "damp",
+          "wire"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 60,
+      "fluorescent": true
+    }
+  ],
+  "doors": [
+    {
+      "id": "reception-room17",
+      "name": "Quarto 17",
+      "a": {
+        "room": "reception",
+        "side": "east",
+        "offset": 130,
+        "width": 76
+      },
+      "b": {
+        "room": "room17",
+        "side": "west",
+        "offset": 260,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": true,
+      "requiresKey": "Chave do quarto 17",
+      "latchFrom": "room17"
+    },
+    {
+      "id": "reception-laundry",
+      "name": "Lavanderia",
+      "a": {
+        "room": "reception",
+        "side": "north",
+        "offset": 420,
+        "width": 76
+      },
+      "b": {
+        "room": "laundry",
+        "side": "south",
+        "offset": 180,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "reception",
+    "x": 280,
+    "y": 336,
+    "w": 60,
+    "h": 16
+  }
+}

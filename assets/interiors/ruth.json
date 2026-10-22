@@ -1,0 +1,482 @@
+{
+  "version": 1,
+  "id": "ruth",
+  "name": "Residência de Ruth Mercer",
+  "profile": "Servidora de carreira, classe média estável; ordem, austeridade e madeira nobre.",
+  "entranceRoom": "sitting",
+  "rooms": [
+    {
+      "id": "sitting",
+      "name": "Sala austera de Ruth",
+      "bounds": {
+        "w": 590,
+        "h": 390
+      },
+      "finish": {
+        "floor": "#574632",
+        "wall": "#7a8270",
+        "material": "wood",
+        "condition": "clean"
+      },
+      "spawn": {
+        "x": 295,
+        "y": 325
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 212.4,
+          "y": 148.2,
+          "z": 110,
+          "radius": 424.8,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 472,
+          "y": 24,
+          "z": 85,
+          "radius": 365.8,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "oak-sofa",
+          "type": "sofa",
+          "name": "Sofá de couro limpo, sem almofadas",
+          "x": 365,
+          "y": 205,
+          "w": 150,
+          "h": 68,
+          "height": 45,
+          "solid": true,
+          "interactive": true,
+          "text": "Sofá de couro limpo, sem almofadas.",
+          "color": "#424a3e"
+        },
+        {
+          "id": "oak-table",
+          "type": "table",
+          "name": "Mesa de madeira nobre sem marcas de copos",
+          "x": 210,
+          "y": 155,
+          "w": 105,
+          "h": 54,
+          "height": 38,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa de madeira nobre sem marcas de copos."
+        },
+        {
+          "id": "law-case",
+          "type": "shelf",
+          "name": "Legislação, processos e manuais encadernados",
+          "x": 35,
+          "y": 30,
+          "w": 115,
+          "h": 45,
+          "height": 130,
+          "solid": true,
+          "interactive": true,
+          "text": "Legislação, processos e manuais encadernados."
+        },
+        {
+          "id": "upright-clock",
+          "type": "clock",
+          "name": "Relógio de pêndulo ajustado ao minuto",
+          "x": 475,
+          "y": 24,
+          "w": 48,
+          "h": 30,
+          "height": 110,
+          "solid": true,
+          "interactive": true,
+          "text": "Relógio de pêndulo ajustado ao minuto."
+        },
+        {
+          "id": "coat",
+          "type": "coat",
+          "name": "Um único casaco no cabide",
+          "x": 30,
+          "y": 260,
+          "w": 30,
+          "h": 45,
+          "height": 80,
+          "solid": true,
+          "interactive": true,
+          "text": "Um único casaco no cabide."
+        },
+        {
+          "id": "framed-service",
+          "type": "frame",
+          "name": "Fotografia oficial de uma cerimônia",
+          "x": 270,
+          "y": 22,
+          "w": 65,
+          "h": 12,
+          "height": 25,
+          "solid": false,
+          "interactive": true,
+          "text": "Fotografia oficial de uma cerimônia."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 532,
+          "y": 300,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "sitting:Sala austera de Ruth",
+        "density": 25,
+        "types": [
+          "pen",
+          "directory",
+          "calendar"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 25
+    },
+    {
+      "id": "study",
+      "name": "Escritório privado de Ruth",
+      "bounds": {
+        "w": 420,
+        "h": 510
+      },
+      "finish": {
+        "floor": "#574632",
+        "wall": "#7a8270",
+        "material": "wood",
+        "condition": "clean"
+      },
+      "spawn": {
+        "x": 210,
+        "y": 445
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 151.2,
+          "y": 193.8,
+          "z": 110,
+          "radius": 367.2,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 336,
+          "y": 24,
+          "z": 85,
+          "radius": 260.4,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "walnut-desk",
+          "type": "table",
+          "name": "Mesa de nogueira, polida todas as semanas",
+          "x": 170,
+          "y": 190,
+          "w": 160,
+          "h": 75,
+          "height": 49,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa de nogueira, polida todas as semanas.",
+          "color": "#443323"
+        },
+        {
+          "id": "reports",
+          "type": "files",
+          "name": "Relatórios organizados por endereço e família",
+          "x": 28,
+          "y": 40,
+          "w": 65,
+          "h": 145,
+          "height": 115,
+          "solid": true,
+          "interactive": true,
+          "text": "Relatórios organizados por endereço e família."
+        },
+        {
+          "id": "drawer",
+          "type": "drawer",
+          "name": "Fundo falso contendo anotações sobre os turnos da delegacia",
+          "x": 200,
+          "y": 207,
+          "w": 39,
+          "h": 23,
+          "height": 5,
+          "solid": false,
+          "interactive": true,
+          "text": "Fundo falso contendo anotações sobre os turnos da delegacia.",
+          "baseZ": 50,
+          "parentId": "walnut-desk",
+          "action": "drawer"
+        },
+        {
+          "id": "reading-chair",
+          "type": "armchair",
+          "name": "Poltrona de leitura alinhada com a escrivaninha",
+          "x": 210,
+          "y": 80,
+          "w": 55,
+          "h": 60,
+          "height": 54,
+          "solid": true,
+          "interactive": true,
+          "text": "Poltrona de leitura alinhada com a escrivaninha."
+        },
+        {
+          "id": "typewriter",
+          "type": "typewriter",
+          "name": "Máquina sem poeira e fita trocada recentemente",
+          "x": 270,
+          "y": 210,
+          "w": 43,
+          "h": 30,
+          "height": 16,
+          "solid": false,
+          "interactive": true,
+          "text": "Máquina sem poeira e fita trocada recentemente.",
+          "baseZ": 50,
+          "parentId": "walnut-desk"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 362,
+          "y": 420,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "study:Escritório privado de Ruth",
+        "density": 38,
+        "types": [
+          "pen",
+          "paper",
+          "wire"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 38
+    },
+    {
+      "id": "bedroom",
+      "name": "Quarto de Ruth",
+      "bounds": {
+        "w": 480,
+        "h": 360
+      },
+      "finish": {
+        "floor": "#574632",
+        "wall": "#7a8270",
+        "material": "wood",
+        "condition": "clean"
+      },
+      "spawn": {
+        "x": 240,
+        "y": 295
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 172.79999999999998,
+          "y": 136.8,
+          "z": 110,
+          "radius": 345.59999999999997,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 384,
+          "y": 24,
+          "z": 85,
+          "radius": 297.6,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "made-bed",
+          "type": "bed",
+          "name": "Cama feita com cantos dobrados",
+          "x": 190,
+          "y": 40,
+          "w": 160,
+          "h": 80,
+          "height": 41,
+          "solid": true,
+          "interactive": true,
+          "text": "Cama feita com cantos dobrados."
+        },
+        {
+          "id": "wardrobe",
+          "type": "cabinet",
+          "name": "Uniformes passados, separados por estação",
+          "x": 35,
+          "y": 35,
+          "w": 82,
+          "h": 60,
+          "height": 125,
+          "solid": true,
+          "interactive": true,
+          "text": "Uniformes passados, separados por estação."
+        },
+        {
+          "id": "nightstand",
+          "type": "table",
+          "name": "Mesa de cabeceira com luminária",
+          "x": 365,
+          "y": 55,
+          "w": 55,
+          "h": 45,
+          "height": 39,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa de cabeceira com luminária."
+        },
+        {
+          "id": "lamp",
+          "type": "lamp",
+          "name": "Abajur de luz fraca",
+          "x": 377,
+          "y": 66,
+          "w": 18,
+          "h": 18,
+          "height": 34,
+          "solid": false,
+          "interactive": true,
+          "text": "Abajur de luz fraca.",
+          "baseZ": 40,
+          "parentId": "nightstand"
+        },
+        {
+          "id": "laundry",
+          "type": "laundry",
+          "name": "Cesto vazio",
+          "x": 45,
+          "y": 220,
+          "w": 50,
+          "h": 40,
+          "height": 35,
+          "solid": true,
+          "interactive": true,
+          "text": "Cesto vazio."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 422,
+          "y": 270,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "bedroom:Quarto de Ruth",
+        "density": 18,
+        "types": [
+          "calendar",
+          "wire"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 18
+    }
+  ],
+  "doors": [
+    {
+      "id": "sitting-study",
+      "name": "Escritório privado",
+      "a": {
+        "room": "sitting",
+        "side": "north",
+        "offset": 260,
+        "width": 76
+      },
+      "b": {
+        "room": "study",
+        "side": "south",
+        "offset": 210,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    },
+    {
+      "id": "study-bedroom",
+      "name": "Quarto",
+      "a": {
+        "room": "study",
+        "side": "east",
+        "offset": 350,
+        "width": 76
+      },
+      "b": {
+        "room": "bedroom",
+        "side": "west",
+        "offset": 220,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "sitting",
+    "x": 295,
+    "y": 366,
+    "w": 60,
+    "h": 16
+  }
+}

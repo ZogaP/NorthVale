@@ -1,0 +1,315 @@
+{
+  "version": 1,
+  "id": "home",
+  "name": "Casa de Elias",
+  "profile": "Farmacêutico endividado; pequena residência com livros de medicina e recibos guardados.",
+  "entranceRoom": "parlor",
+  "rooms": [
+    {
+      "id": "parlor",
+      "name": "Sala e cozinha de Elias",
+      "bounds": {
+        "w": 550,
+        "h": 480
+      },
+      "finish": {
+        "floor": "#79674d",
+        "wall": "#89846a",
+        "material": "wood",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 275,
+        "y": 415
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 198,
+          "y": 182.4,
+          "z": 110,
+          "radius": 396,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 440,
+          "y": 24,
+          "z": 85,
+          "radius": 341,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "reading-chair",
+          "type": "armchair",
+          "name": "Poltrona perto dos livros de farmacologia",
+          "x": 65,
+          "y": 95,
+          "w": 75,
+          "h": 72,
+          "height": 50,
+          "solid": true,
+          "interactive": true,
+          "text": "Poltrona perto dos livros de farmacologia."
+        },
+        {
+          "id": "medical-books",
+          "type": "shelf",
+          "name": "Tratados antigos anotados por Elias",
+          "x": 30,
+          "y": 260,
+          "w": 75,
+          "h": 150,
+          "height": 128,
+          "solid": true,
+          "interactive": true,
+          "text": "Tratados antigos anotados por Elias."
+        },
+        {
+          "id": "dining",
+          "type": "table",
+          "name": "Mesa onde refeições e contas se misturam",
+          "x": 310,
+          "y": 275,
+          "w": 135,
+          "h": 66,
+          "height": 42,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa onde refeições e contas se misturam."
+        },
+        {
+          "id": "stove",
+          "type": "stove",
+          "name": "Fogão com uma panela pequena",
+          "x": 410,
+          "y": 35,
+          "w": 70,
+          "h": 65,
+          "height": 43,
+          "solid": true,
+          "interactive": true,
+          "text": "Fogão com uma panela pequena."
+        },
+        {
+          "id": "sink",
+          "type": "sink",
+          "name": "Uma única xícara na pia",
+          "x": 290,
+          "y": 30,
+          "w": 95,
+          "h": 54,
+          "height": 44,
+          "solid": true,
+          "interactive": true,
+          "text": "Uma única xícara na pia."
+        },
+        {
+          "id": "bills",
+          "type": "paper",
+          "name": "Cobranças da distribuidora e uma carta pessoal",
+          "x": 328,
+          "y": 287,
+          "w": 50,
+          "h": 32,
+          "height": 1,
+          "solid": false,
+          "interactive": true,
+          "text": "Cobranças da distribuidora e uma carta pessoal.",
+          "baseZ": 43,
+          "parentId": "dining",
+          "action": "search"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 492,
+          "y": 390,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "parlor:Sala e cozinha de Elias",
+        "density": 75,
+        "types": [
+          "books",
+          "mug",
+          "paper",
+          "calendar",
+          "wire"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 75
+    },
+    {
+      "id": "bedroom",
+      "name": "Quarto de Elias",
+      "bounds": {
+        "w": 390,
+        "h": 410
+      },
+      "finish": {
+        "floor": "#6c5f4a",
+        "wall": "#7c8068",
+        "material": "wood",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 195,
+        "y": 345
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 140.4,
+          "y": 155.8,
+          "z": 110,
+          "radius": 295.2,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 312,
+          "y": 24,
+          "z": 85,
+          "radius": 241.8,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "single-bed",
+          "type": "bed",
+          "name": "Cama estreita feita às pressas",
+          "x": 170,
+          "y": 40,
+          "w": 145,
+          "h": 75,
+          "height": 35,
+          "solid": true,
+          "interactive": true,
+          "text": "Cama estreita feita às pressas."
+        },
+        {
+          "id": "wardrobe",
+          "type": "cabinet",
+          "name": "Roupas comuns e um jaleco",
+          "x": 30,
+          "y": 30,
+          "w": 60,
+          "h": 70,
+          "height": 111,
+          "solid": true,
+          "interactive": true,
+          "text": "Roupas comuns e um jaleco."
+        },
+        {
+          "id": "writing",
+          "type": "table",
+          "name": "Pequena escrivaninha com cartas sem envelope",
+          "x": 210,
+          "y": 240,
+          "w": 100,
+          "h": 55,
+          "height": 41,
+          "solid": true,
+          "interactive": true,
+          "text": "Pequena escrivaninha com cartas sem envelope."
+        },
+        {
+          "id": "private-drawer",
+          "type": "drawer",
+          "name": "Gaveta com uma receita antiga e fotografia",
+          "x": 225,
+          "y": 255,
+          "w": 45,
+          "h": 23,
+          "height": 5,
+          "solid": false,
+          "interactive": true,
+          "text": "Gaveta com uma receita antiga e fotografia.",
+          "baseZ": 42,
+          "parentId": "writing",
+          "action": "drawer"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 332,
+          "y": 320,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "bedroom:Quarto de Elias",
+        "density": 50,
+        "types": [
+          "paper",
+          "books",
+          "damp"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 50
+    }
+  ],
+  "doors": [
+    {
+      "id": "parlor-bedroom",
+      "name": "Quarto de Elias",
+      "a": {
+        "room": "parlor",
+        "side": "east",
+        "offset": 170,
+        "width": 76
+      },
+      "b": {
+        "room": "bedroom",
+        "side": "west",
+        "offset": 230,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "parlor",
+    "x": 275,
+    "y": 456,
+    "w": 60,
+    "h": 16
+  }
+}

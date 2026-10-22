@@ -1,0 +1,498 @@
+{
+  "version": 1,
+  "id": "library",
+  "name": "Biblioteca pública",
+  "profile": "Acervo municipal em madeira escura; silêncio, pesquisa em microfilme e catalogação manual.",
+  "entranceRoom": "loan",
+  "rooms": [
+    {
+      "id": "loan",
+      "name": "Empréstimos e catálogo",
+      "bounds": {
+        "w": 580,
+        "h": 420
+      },
+      "finish": {
+        "floor": "#685a43",
+        "wall": "#80765e",
+        "material": "wood",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 290,
+        "y": 355
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 208.79999999999998,
+          "y": 159.6,
+          "z": 110,
+          "radius": 417.59999999999997,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 464,
+          "y": 24,
+          "z": 85,
+          "radius": 359.6,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "loan-counter",
+          "type": "counter",
+          "name": "Balcão de empréstimos coberto por cartões",
+          "x": 330,
+          "y": 120,
+          "w": 175,
+          "h": 62,
+          "height": 48,
+          "solid": true,
+          "interactive": true,
+          "text": "Balcão de empréstimos coberto por cartões."
+        },
+        {
+          "id": "card-catalog",
+          "type": "catalog",
+          "name": "Fichário de autores A a Z",
+          "x": 35,
+          "y": 35,
+          "w": 110,
+          "h": 65,
+          "height": 105,
+          "solid": true,
+          "interactive": true,
+          "text": "Fichário de autores A a Z.",
+          "action": "drawer"
+        },
+        {
+          "id": "returns",
+          "type": "books",
+          "name": "Livros devolvidos ainda sem registrar",
+          "x": 220,
+          "y": 250,
+          "w": 65,
+          "h": 38,
+          "height": 16,
+          "solid": false,
+          "interactive": true,
+          "text": "Livros devolvidos ainda sem registrar."
+        },
+        {
+          "id": "notice",
+          "type": "corkboard",
+          "name": "Mural com os horários e recortes de jornais",
+          "x": 210,
+          "y": 22,
+          "w": 80,
+          "h": 14,
+          "height": 38,
+          "solid": false,
+          "interactive": true,
+          "text": "Mural com os horários e recortes de jornais."
+        },
+        {
+          "id": "desk-chair",
+          "type": "chair",
+          "name": "Cadeira da bibliotecária",
+          "x": 410,
+          "y": 40,
+          "w": 40,
+          "h": 38,
+          "height": 42,
+          "solid": true,
+          "interactive": true,
+          "text": "Cadeira da bibliotecária."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 522,
+          "y": 330,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "loan:Empréstimos e catálogo",
+        "density": 60,
+        "types": [
+          "paper",
+          "pen",
+          "flyer",
+          "calendar"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 60
+    },
+    {
+      "id": "reading",
+      "name": "Sala de leitura",
+      "bounds": {
+        "w": 710,
+        "h": 510
+      },
+      "finish": {
+        "floor": "#6d5a40",
+        "wall": "#716c56",
+        "material": "wood",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 355,
+        "y": 445
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 255.6,
+          "y": 193.8,
+          "z": 110,
+          "radius": 511.2,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 568,
+          "y": 24,
+          "z": 85,
+          "radius": 440.2,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "west-shelves",
+          "type": "shelf",
+          "name": "História local e geografia",
+          "x": 30,
+          "y": 35,
+          "w": 65,
+          "h": 180,
+          "height": 145,
+          "solid": true,
+          "interactive": true,
+          "text": "História local e geografia."
+        },
+        {
+          "id": "east-shelves",
+          "type": "shelf",
+          "name": "Anais do município",
+          "x": 600,
+          "y": 220,
+          "w": 65,
+          "h": 180,
+          "height": 145,
+          "solid": true,
+          "interactive": true,
+          "text": "Anais do município."
+        },
+        {
+          "id": "reading-a",
+          "type": "table",
+          "name": "Mesa sob uma luminária de banqueiro",
+          "x": 200,
+          "y": 135,
+          "w": 150,
+          "h": 72,
+          "height": 45,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa sob uma luminária de banqueiro."
+        },
+        {
+          "id": "reading-b",
+          "type": "table",
+          "name": "Mesa com jornais separados por semana",
+          "x": 365,
+          "y": 320,
+          "w": 160,
+          "h": 66,
+          "height": 45,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa com jornais separados por semana."
+        },
+        {
+          "id": "banker-a",
+          "type": "lamp",
+          "name": "Abajur verde",
+          "x": 235,
+          "y": 157,
+          "w": 23,
+          "h": 21,
+          "height": 28,
+          "solid": false,
+          "interactive": true,
+          "text": "Abajur verde.",
+          "baseZ": 46,
+          "parentId": "reading-a"
+        },
+        {
+          "id": "banker-b",
+          "type": "lamp",
+          "name": "Abajur de vidro lascado",
+          "x": 420,
+          "y": 335,
+          "w": 23,
+          "h": 21,
+          "height": 28,
+          "solid": false,
+          "interactive": true,
+          "text": "Abajur de vidro lascado.",
+          "baseZ": 46,
+          "parentId": "reading-b"
+        },
+        {
+          "id": "reader-a",
+          "type": "chair",
+          "name": "Assento marcado por leitores habituais",
+          "x": 250,
+          "y": 238,
+          "w": 38,
+          "h": 38,
+          "height": 43,
+          "solid": true,
+          "interactive": true,
+          "text": "Assento marcado por leitores habituais."
+        },
+        {
+          "id": "reader-b",
+          "type": "chair",
+          "name": "Cadeira com uma perna calçada",
+          "x": 400,
+          "y": 410,
+          "w": 38,
+          "h": 38,
+          "height": 43,
+          "solid": true,
+          "interactive": true,
+          "text": "Cadeira com uma perna calçada."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 652,
+          "y": 420,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "reading:Sala de leitura",
+        "density": 110,
+        "types": [
+          "books",
+          "paper",
+          "mug",
+          "pen",
+          "damp"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 110
+    },
+    {
+      "id": "microfilm",
+      "name": "Arquivo de microfilmes",
+      "bounds": {
+        "w": 390,
+        "h": 460
+      },
+      "finish": {
+        "floor": "#59665b",
+        "wall": "#6d7c70",
+        "material": "tile",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 195,
+        "y": 395
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 140.4,
+          "y": 174.8,
+          "z": 110,
+          "radius": 331.2,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 312,
+          "y": 24,
+          "z": 85,
+          "radius": 241.8,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "microfilm",
+          "type": "microfilm",
+          "name": "Leitor de microfilme com notícias da construção da represa",
+          "x": 165,
+          "y": 100,
+          "w": 110,
+          "h": 65,
+          "height": 68,
+          "solid": true,
+          "interactive": true,
+          "text": "Leitor de microfilme com notícias da construção da represa."
+        },
+        {
+          "id": "reels",
+          "type": "catalog",
+          "name": "Rolos de jornais municipais",
+          "x": 28,
+          "y": 30,
+          "w": 65,
+          "h": 160,
+          "height": 110,
+          "solid": true,
+          "interactive": true,
+          "text": "Rolos de jornais municipais.",
+          "action": "drawer"
+        },
+        {
+          "id": "stool",
+          "type": "chair",
+          "name": "Banqueta diante do leitor",
+          "x": 200,
+          "y": 215,
+          "w": 40,
+          "h": 35,
+          "height": 37,
+          "solid": true,
+          "interactive": true,
+          "text": "Banqueta diante do leitor."
+        },
+        {
+          "id": "cabinet",
+          "type": "files",
+          "name": "Atas e registros administrativos",
+          "x": 280,
+          "y": 300,
+          "w": 65,
+          "h": 80,
+          "height": 95,
+          "solid": true,
+          "interactive": true,
+          "text": "Atas e registros administrativos."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 332,
+          "y": 370,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "microfilm:Arquivo de microfilmes",
+        "density": 65,
+        "types": [
+          "paper",
+          "wire",
+          "box",
+          "calendar"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 65,
+      "fluorescent": true
+    }
+  ],
+  "doors": [
+    {
+      "id": "loan-reading",
+      "name": "Sala de leitura",
+      "a": {
+        "room": "loan",
+        "side": "east",
+        "offset": 280,
+        "width": 76
+      },
+      "b": {
+        "room": "reading",
+        "side": "west",
+        "offset": 300,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    },
+    {
+      "id": "reading-microfilm",
+      "name": "Microfilmes",
+      "a": {
+        "room": "reading",
+        "side": "north",
+        "offset": 450,
+        "width": 76
+      },
+      "b": {
+        "room": "microfilm",
+        "side": "south",
+        "offset": 190,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "loan",
+    "x": 290,
+    "y": 396,
+    "w": 60,
+    "h": 16
+  }
+}

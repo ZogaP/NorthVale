@@ -1,0 +1,948 @@
+{
+  "version": 1,
+  "id": "sarah",
+  "name": "Casa de Helen e Sarah",
+  "profile": "Família trabalhadora; economia doméstica, adolescência interrompida e desgaste da chuva.",
+  "entranceRoom": "living",
+  "rooms": [
+    {
+      "id": "living",
+      "name": "Sala de estar dos Miller",
+      "bounds": {
+        "w": 540,
+        "h": 460
+      },
+      "finish": {
+        "floor": "#756046",
+        "wall": "#807760",
+        "material": "wood",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 270,
+        "y": 395
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 194.4,
+          "y": 174.8,
+          "z": 110,
+          "radius": 388.8,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 432,
+          "y": 24,
+          "z": 85,
+          "radius": 334.8,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "sofa",
+          "type": "sofa",
+          "name": "Sofá remendado",
+          "x": 355,
+          "y": 300,
+          "w": 115,
+          "h": 60,
+          "height": 34,
+          "solid": true,
+          "interactive": true,
+          "text": "Sofá remendado. Helen dormiu aqui esperando uma ligação.",
+          "color": "#74654d"
+        },
+        {
+          "id": "crt",
+          "type": "tv",
+          "name": "Televisão CRT",
+          "x": 385,
+          "y": 65,
+          "w": 76,
+          "h": 42,
+          "height": 58,
+          "solid": true,
+          "interactive": true,
+          "text": "Televisão CRT. A programação foi anotada à mão num jornal."
+        },
+        {
+          "id": "coffee-table",
+          "type": "table",
+          "name": "Mesa baixa",
+          "x": 185,
+          "y": 230,
+          "w": 100,
+          "h": 60,
+          "height": 29,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa baixa. Há marcas circulares de café.",
+          "color": "#68513c"
+        },
+        {
+          "id": "telephone",
+          "type": "phone",
+          "name": "Telefone de disco",
+          "x": 72,
+          "y": 278,
+          "w": 31,
+          "h": 26,
+          "height": 16,
+          "solid": true,
+          "interactive": true,
+          "text": "Telefone de disco. O fio alcança a poltrona."
+        },
+        {
+          "id": "coat-hooks",
+          "type": "coat",
+          "name": "Dois casacos molhados; o menor continua no cabide",
+          "x": 28,
+          "y": 100,
+          "w": 26,
+          "h": 72,
+          "height": 73,
+          "solid": true,
+          "interactive": true,
+          "text": "Dois casacos molhados; o menor continua no cabide."
+        },
+        {
+          "id": "armchair",
+          "type": "armchair",
+          "name": "Poltrona da mãe",
+          "x": 58,
+          "y": 340,
+          "w": 66,
+          "h": 58,
+          "height": 42,
+          "solid": true,
+          "interactive": true,
+          "text": "Poltrona da mãe. O braço direito está gasto."
+        },
+        {
+          "id": "family-photos",
+          "type": "frame",
+          "name": "Fotografia de aniversário",
+          "x": 160,
+          "y": 24,
+          "w": 48,
+          "h": 13,
+          "height": 20,
+          "solid": false,
+          "interactive": true,
+          "text": "Fotografia de aniversário. Sarah olha para fora do enquadramento."
+        },
+        {
+          "id": "telephone-directory",
+          "type": "directory",
+          "name": "Lista telefônica de 1988, aberta na letra S",
+          "x": 199,
+          "y": 240,
+          "w": 29,
+          "h": 20,
+          "height": 4,
+          "solid": false,
+          "interactive": true,
+          "text": "Lista telefônica de 1988, aberta na letra S.",
+          "baseZ": 30,
+          "parentId": "coffee-table"
+        },
+        {
+          "id": "rug",
+          "type": "rug",
+          "name": "Tapete manchado junto à passagem",
+          "x": 130,
+          "y": 170,
+          "w": 190,
+          "h": 160,
+          "height": 0,
+          "solid": false,
+          "interactive": false,
+          "text": "Tapete manchado junto à passagem.",
+          "color": "#715b49"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 482,
+          "y": 370,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "living:Sala de estar dos Miller",
+        "density": 55,
+        "types": [
+          "paper",
+          "mud",
+          "ash",
+          "damp",
+          "wire",
+          "calendar"
+        ],
+        "story": "Contas vencidas, um copo frio e marcas das botas de Helen."
+      },
+      "story": "Contas vencidas, um copo frio e marcas das botas de Helen."
+    },
+    {
+      "id": "kitchen",
+      "name": "Cozinha da família",
+      "bounds": {
+        "w": 620,
+        "h": 400
+      },
+      "finish": {
+        "floor": "#8a8064",
+        "wall": "#8c8870",
+        "material": "tile",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 310,
+        "y": 335
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 223.2,
+          "y": 152,
+          "z": 110,
+          "radius": 446.4,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 496,
+          "y": 24,
+          "z": 85,
+          "radius": 384.4,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "pantry",
+          "type": "cabinet",
+          "name": "Armário de mantimentos",
+          "x": 35,
+          "y": 40,
+          "w": 80,
+          "h": 62,
+          "height": 94,
+          "solid": true,
+          "interactive": true,
+          "text": "Armário de mantimentos. Uma chave está presa ao fundo da gaveta.",
+          "action": "drawer",
+          "givesKey": "Chave do quarto de Sarah",
+          "color": "#7e725a"
+        },
+        {
+          "id": "sink",
+          "type": "sink",
+          "name": "Pia esmaltada",
+          "x": 145,
+          "y": 35,
+          "w": 110,
+          "h": 55,
+          "height": 42,
+          "solid": true,
+          "interactive": true,
+          "text": "Pia esmaltada. Pratos do jantar ainda na água."
+        },
+        {
+          "id": "stove",
+          "type": "stove",
+          "name": "Fogão a gás",
+          "x": 281,
+          "y": 38,
+          "w": 64,
+          "h": 62,
+          "height": 43,
+          "solid": true,
+          "interactive": true,
+          "text": "Fogão a gás. A chaleira foi esquecida sobre a boca apagada."
+        },
+        {
+          "id": "fridge",
+          "type": "fridge",
+          "name": "Geladeira com um desenho preso por ímãs",
+          "x": 495,
+          "y": 30,
+          "w": 65,
+          "h": 65,
+          "height": 102,
+          "solid": true,
+          "interactive": true,
+          "text": "Geladeira com um desenho preso por ímãs."
+        },
+        {
+          "id": "kitchen-table",
+          "type": "table",
+          "name": "Mesa de fórmica",
+          "x": 300,
+          "y": 220,
+          "w": 120,
+          "h": 65,
+          "height": 42,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa de fórmica. Três lugares, duas cadeiras.",
+          "color": "#a39979"
+        },
+        {
+          "id": "chair-a",
+          "type": "chair",
+          "name": "Cadeira com travessa reparada",
+          "x": 285,
+          "y": 300,
+          "w": 35,
+          "h": 35,
+          "height": 38,
+          "solid": true,
+          "interactive": true,
+          "text": "Cadeira com travessa reparada."
+        },
+        {
+          "id": "chair-b",
+          "type": "chair",
+          "name": "Cadeira de Sarah afastada da mesa",
+          "x": 431,
+          "y": 227,
+          "w": 35,
+          "h": 35,
+          "height": 38,
+          "solid": true,
+          "interactive": true,
+          "text": "Cadeira de Sarah afastada da mesa."
+        },
+        {
+          "id": "broom",
+          "type": "broom",
+          "name": "Vassoura apoiada junto a pegadas recentes",
+          "x": 30,
+          "y": 270,
+          "w": 16,
+          "h": 35,
+          "height": 85,
+          "solid": true,
+          "interactive": true,
+          "text": "Vassoura apoiada junto a pegadas recentes."
+        },
+        {
+          "id": "grocery-list",
+          "type": "paper",
+          "name": "Leite, pão, filme Polaroid",
+          "x": 315,
+          "y": 236,
+          "w": 28,
+          "h": 18,
+          "height": 1,
+          "solid": false,
+          "interactive": true,
+          "text": "Leite, pão, filme Polaroid. Filme foi riscado.",
+          "baseZ": 43,
+          "parentId": "kitchen-table"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 562,
+          "y": 310,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "kitchen:Cozinha da família",
+        "density": 55,
+        "types": [
+          "flyer",
+          "mug",
+          "pen",
+          "paper",
+          "mud",
+          "damp"
+        ],
+        "story": "Panfletos de mercado, receitas recortadas e louça do dia anterior."
+      },
+      "story": "Panfletos de mercado, receitas recortadas e louça do dia anterior."
+    },
+    {
+      "id": "hall",
+      "name": "Corredor dos quartos",
+      "bounds": {
+        "w": 320,
+        "h": 540
+      },
+      "finish": {
+        "floor": "#695b45",
+        "wall": "#797865",
+        "material": "wood",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 160,
+        "y": 475
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 115.19999999999999,
+          "y": 205.2,
+          "z": 110,
+          "radius": 388.8,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 256,
+          "y": 24,
+          "z": 85,
+          "radius": 198.4,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "linen",
+          "type": "cabinet",
+          "name": "Roupeiro",
+          "x": 24,
+          "y": 235,
+          "w": 53,
+          "h": 65,
+          "height": 91,
+          "solid": true,
+          "interactive": true,
+          "text": "Roupeiro. Toalhas dobradas e uma caixa de costura."
+        },
+        {
+          "id": "umbrella",
+          "type": "broom",
+          "name": "Guarda-chuva partido encostado na parede",
+          "x": 244,
+          "y": 380,
+          "w": 16,
+          "h": 35,
+          "height": 76,
+          "solid": true,
+          "interactive": true,
+          "text": "Guarda-chuva partido encostado na parede."
+        },
+        {
+          "id": "portrait",
+          "type": "frame",
+          "name": "Quadro torto cobrindo uma mancha de infiltração",
+          "x": 118,
+          "y": 22,
+          "w": 50,
+          "h": 12,
+          "height": 24,
+          "solid": false,
+          "interactive": true,
+          "text": "Quadro torto cobrindo uma mancha de infiltração."
+        },
+        {
+          "id": "runner",
+          "type": "rug",
+          "name": "Passadeira gasta entre a cozinha e os quartos",
+          "x": 104,
+          "y": 85,
+          "w": 105,
+          "h": 355,
+          "height": 0,
+          "solid": false,
+          "interactive": false,
+          "text": "Passadeira gasta entre a cozinha e os quartos.",
+          "color": "#655443"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 262,
+          "y": 450,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "hall:Corredor dos quartos",
+        "density": 40,
+        "types": [
+          "mud",
+          "wire",
+          "damp",
+          "paper"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 40
+    },
+    {
+      "id": "bedroom",
+      "name": "Quarto de Sarah",
+      "bounds": {
+        "w": 560,
+        "h": 440
+      },
+      "finish": {
+        "floor": "#807056",
+        "wall": "#8a7d6f",
+        "material": "wood",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 280,
+        "y": 375
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 201.6,
+          "y": 167.2,
+          "z": 110,
+          "radius": 403.2,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 448,
+          "y": 24,
+          "z": 85,
+          "radius": 347.2,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "desk",
+          "type": "table",
+          "name": "Escrivaninha de Sarah",
+          "x": 170,
+          "y": 130,
+          "w": 110,
+          "h": 56,
+          "height": 43,
+          "solid": true,
+          "interactive": true,
+          "text": "Escrivaninha de Sarah. Letras de música sob o mata-borrão.",
+          "color": "#84654d"
+        },
+        {
+          "id": "recorder",
+          "type": "cassette",
+          "name": "Gravador K7",
+          "x": 183,
+          "y": 144,
+          "w": 35,
+          "h": 24,
+          "height": 8,
+          "solid": false,
+          "interactive": true,
+          "text": "Gravador K7. Uma fita permanece no mecanismo.",
+          "baseZ": 44,
+          "parentId": "desk",
+          "evidence": "tape"
+        },
+        {
+          "id": "false-floor",
+          "type": "floorboard",
+          "name": "Assoalho solto",
+          "x": 65,
+          "y": 70,
+          "w": 54,
+          "h": 40,
+          "height": 1,
+          "solid": false,
+          "interactive": true,
+          "text": "Tábua solta. Há dinheiro guardado em um envelope.",
+          "action": "stash",
+          "evidence": "money"
+        },
+        {
+          "id": "polaroids",
+          "type": "photos",
+          "name": "Três Polaroids",
+          "x": 320,
+          "y": 90,
+          "w": 46,
+          "h": 32,
+          "height": 1,
+          "solid": false,
+          "interactive": true,
+          "text": "Três Polaroids espalhadas no chão.",
+          "evidence": "photos"
+        },
+        {
+          "id": "letter",
+          "type": "paper",
+          "name": "Carta de Sarah",
+          "x": 185,
+          "y": 315,
+          "w": 65,
+          "h": 40,
+          "height": 1,
+          "solid": false,
+          "interactive": true,
+          "text": "Carta inacabada dobrada no fundo falso de uma gaveta.",
+          "action": "drawer",
+          "evidence": "letter"
+        },
+        {
+          "id": "bed",
+          "type": "bed",
+          "name": "Cama desfeita",
+          "x": 360,
+          "y": 285,
+          "w": 130,
+          "h": 66,
+          "height": 35,
+          "solid": true,
+          "interactive": true,
+          "text": "Cama desfeita. A mala não foi levada.",
+          "color": "#6e6e60"
+        },
+        {
+          "id": "wardrobe",
+          "type": "cabinet",
+          "name": "Guarda-roupa com roupas de inverno",
+          "x": 390,
+          "y": 34,
+          "w": 95,
+          "h": 62,
+          "height": 115,
+          "solid": true,
+          "interactive": true,
+          "text": "Guarda-roupa com roupas de inverno."
+        },
+        {
+          "id": "poster-band",
+          "type": "poster",
+          "name": "Pôster de uma banda de 1987 preso com fita",
+          "x": 95,
+          "y": 24,
+          "w": 65,
+          "h": 12,
+          "height": 28,
+          "solid": false,
+          "interactive": true,
+          "text": "Pôster de uma banda de 1987 preso com fita."
+        },
+        {
+          "id": "books",
+          "type": "books",
+          "name": "Livros de escola com bilhetes entre as páginas",
+          "x": 30,
+          "y": 290,
+          "w": 38,
+          "h": 28,
+          "height": 9,
+          "solid": false,
+          "interactive": true,
+          "text": "Livros de escola com bilhetes entre as páginas."
+        },
+        {
+          "id": "desk-chair",
+          "type": "chair",
+          "name": "Cadeira girada para a porta",
+          "x": 300,
+          "y": 170,
+          "w": 35,
+          "h": 35,
+          "height": 40,
+          "solid": true,
+          "interactive": true,
+          "text": "Cadeira girada para a porta."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 502,
+          "y": 350,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "bedroom:Quarto de Sarah",
+        "density": 80,
+        "types": [
+          "paper",
+          "photos",
+          "pen",
+          "ash",
+          "damp",
+          "calendar"
+        ],
+        "story": "Papéis de parede descolados, pôsteres, livros escolares e uma ausência recente."
+      },
+      "density": 80,
+      "story": "Papéis de parede descolados, pôsteres, livros escolares e uma ausência recente."
+    },
+    {
+      "id": "bathroom",
+      "name": "Banheiro dos Miller",
+      "bounds": {
+        "w": 300,
+        "h": 330
+      },
+      "finish": {
+        "floor": "#70847e",
+        "wall": "#819486",
+        "material": "tile",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 150,
+        "y": 265
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 108,
+          "y": 125.4,
+          "z": 110,
+          "radius": 237.6,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 240,
+          "y": 24,
+          "z": 85,
+          "radius": 186,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "bath",
+          "type": "bath",
+          "name": "Banheira com marcas de ferrugem no esmalte",
+          "x": 34,
+          "y": 35,
+          "w": 165,
+          "h": 65,
+          "height": 37,
+          "solid": true,
+          "interactive": true,
+          "text": "Banheira com marcas de ferrugem no esmalte."
+        },
+        {
+          "id": "basin",
+          "type": "sink",
+          "name": "Pia pequena e espelho rachado",
+          "x": 205,
+          "y": 145,
+          "w": 55,
+          "h": 42,
+          "height": 43,
+          "solid": true,
+          "interactive": true,
+          "text": "Pia pequena e espelho rachado."
+        },
+        {
+          "id": "medicine",
+          "type": "cabinet",
+          "name": "Armário de remédios",
+          "x": 32,
+          "y": 175,
+          "w": 50,
+          "h": 42,
+          "height": 58,
+          "solid": true,
+          "interactive": true,
+          "text": "Armário de remédios. Analgésicos, gaze e um recibo.",
+          "action": "drawer"
+        },
+        {
+          "id": "laundry",
+          "type": "laundry",
+          "name": "Cesto com roupas do último dia de aula",
+          "x": 180,
+          "y": 232,
+          "w": 58,
+          "h": 45,
+          "height": 40,
+          "solid": true,
+          "interactive": true,
+          "text": "Cesto com roupas do último dia de aula."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 242,
+          "y": 240,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "bathroom:Banheiro dos Miller",
+        "density": 32,
+        "types": [
+          "bottle",
+          "damp",
+          "wire",
+          "paper"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 32
+    }
+  ],
+  "doors": [
+    {
+      "id": "living-kitchen",
+      "name": "Cozinha",
+      "a": {
+        "room": "living",
+        "side": "east",
+        "offset": 160,
+        "width": 76
+      },
+      "b": {
+        "room": "kitchen",
+        "side": "west",
+        "offset": 170,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    },
+    {
+      "id": "kitchen-hall",
+      "name": "Corredor",
+      "a": {
+        "room": "kitchen",
+        "side": "south",
+        "offset": 170,
+        "width": 76
+      },
+      "b": {
+        "room": "hall",
+        "side": "north",
+        "offset": 160,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    },
+    {
+      "id": "hall-bedroom",
+      "name": "Quarto de Sarah",
+      "a": {
+        "room": "hall",
+        "side": "east",
+        "offset": 165,
+        "width": 76
+      },
+      "b": {
+        "room": "bedroom",
+        "side": "west",
+        "offset": 215,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": true,
+      "requiresKey": "Chave do quarto de Sarah",
+      "latchFrom": "bedroom"
+    },
+    {
+      "id": "hall-bath",
+      "name": "Banheiro",
+      "a": {
+        "room": "hall",
+        "side": "west",
+        "offset": 400,
+        "width": 76
+      },
+      "b": {
+        "room": "bathroom",
+        "side": "east",
+        "offset": 190,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "living",
+    "x": 270,
+    "y": 436,
+    "w": 60,
+    "h": 16
+  }
+}

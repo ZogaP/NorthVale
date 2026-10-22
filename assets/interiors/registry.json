@@ -1,0 +1,445 @@
+{
+  "version": 1,
+  "id": "registry",
+  "name": "Cartório municipal",
+  "profile": "Clara protege décadas de propriedade e dívida; latão gasto, mapas e arquivo abarrotado.",
+  "entranceRoom": "public",
+  "rooms": [
+    {
+      "id": "public",
+      "name": "Atendimento do cartório",
+      "bounds": {
+        "w": 620,
+        "h": 370
+      },
+      "finish": {
+        "floor": "#777661",
+        "wall": "#898675",
+        "material": "tile",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 310,
+        "y": 305
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 223.2,
+          "y": 140.6,
+          "z": 110,
+          "radius": 446.4,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 496,
+          "y": 24,
+          "z": 85,
+          "radius": 384.4,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "brass-counter",
+          "type": "counter",
+          "name": "Balcão de madeira com grade de latão",
+          "x": 100,
+          "y": 115,
+          "w": 240,
+          "h": 65,
+          "height": 50,
+          "solid": true,
+          "interactive": true,
+          "text": "Balcão de madeira com grade de latão."
+        },
+        {
+          "id": "brass-bars",
+          "type": "bars",
+          "name": "Grade separando o arquivo do público",
+          "x": 100,
+          "y": 115,
+          "w": 240,
+          "h": 10,
+          "height": 70,
+          "solid": false,
+          "interactive": true,
+          "text": "Grade separando o arquivo do público.",
+          "baseZ": 51
+        },
+        {
+          "id": "bench",
+          "type": "bench",
+          "name": "Banco de espera polido pelo uso",
+          "x": 430,
+          "y": 220,
+          "w": 110,
+          "h": 40,
+          "height": 35,
+          "solid": true,
+          "interactive": true,
+          "text": "Banco de espera polido pelo uso."
+        },
+        {
+          "id": "notice",
+          "type": "poster",
+          "name": "Tabela de emolumentos corrigida em 1989",
+          "x": 420,
+          "y": 24,
+          "w": 90,
+          "h": 12,
+          "height": 35,
+          "solid": false,
+          "interactive": true,
+          "text": "Tabela de emolumentos corrigida em 1989."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 562,
+          "y": 280,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "public:Atendimento do cartório",
+        "density": 55,
+        "types": [
+          "flyer",
+          "directory",
+          "paper",
+          "calendar"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 55
+    },
+    {
+      "id": "deeds",
+      "name": "Arquivo de escrituras",
+      "bounds": {
+        "w": 470,
+        "h": 590
+      },
+      "finish": {
+        "floor": "#615846",
+        "wall": "#77755f",
+        "material": "wood",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 235,
+        "y": 525
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 169.2,
+          "y": 224.2,
+          "z": 110,
+          "radius": 424.8,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 376,
+          "y": 24,
+          "z": 85,
+          "radius": 291.4,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "deeds-west",
+          "type": "shelf",
+          "name": "Escrituras anteriores à construção da represa",
+          "x": 25,
+          "y": 30,
+          "w": 75,
+          "h": 190,
+          "height": 145,
+          "solid": true,
+          "interactive": true,
+          "text": "Escrituras anteriores à construção da represa."
+        },
+        {
+          "id": "deeds-east",
+          "type": "shelf",
+          "name": "Transferências recentes de terrenos",
+          "x": 345,
+          "y": 305,
+          "w": 80,
+          "h": 200,
+          "height": 145,
+          "solid": true,
+          "interactive": true,
+          "text": "Transferências recentes de terrenos."
+        },
+        {
+          "id": "map-table",
+          "type": "table",
+          "name": "Mapas desdobrados mostrando lotes vizinhos",
+          "x": 160,
+          "y": 240,
+          "w": 155,
+          "h": 75,
+          "height": 44,
+          "solid": true,
+          "interactive": true,
+          "text": "Mapas desdobrados mostrando lotes vizinhos."
+        },
+        {
+          "id": "town-map",
+          "type": "map",
+          "name": "Um limite foi redesenhado sobre o traço antigo",
+          "x": 175,
+          "y": 253,
+          "w": 100,
+          "h": 45,
+          "height": 1,
+          "solid": false,
+          "interactive": true,
+          "text": "Um limite foi redesenhado sobre o traço antigo.",
+          "baseZ": 45,
+          "parentId": "map-table"
+        },
+        {
+          "id": "safe",
+          "type": "safe",
+          "name": "Cofre de ferro com pasta de procurações",
+          "x": 345,
+          "y": 35,
+          "w": 70,
+          "h": 65,
+          "height": 93,
+          "solid": true,
+          "interactive": true,
+          "text": "Cofre de ferro com pasta de procurações.",
+          "action": "search"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 412,
+          "y": 500,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "deeds:Arquivo de escrituras",
+        "density": 115,
+        "types": [
+          "paper",
+          "box",
+          "damp",
+          "wire"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 115
+    },
+    {
+      "id": "notary",
+      "name": "Gabinete de Clara",
+      "bounds": {
+        "w": 380,
+        "h": 340
+      },
+      "finish": {
+        "floor": "#756047",
+        "wall": "#827c66",
+        "material": "wood",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 190,
+        "y": 275
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 136.79999999999998,
+          "y": 129.2,
+          "z": 110,
+          "radius": 273.59999999999997,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 304,
+          "y": 24,
+          "z": 85,
+          "radius": 235.6,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "notary-desk",
+          "type": "table",
+          "name": "Mesa com carimbos e máquina de escrever",
+          "x": 130,
+          "y": 100,
+          "w": 160,
+          "h": 72,
+          "height": 46,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa com carimbos e máquina de escrever."
+        },
+        {
+          "id": "typewriter",
+          "type": "typewriter",
+          "name": "Papel timbrado deixado na máquina",
+          "x": 150,
+          "y": 120,
+          "w": 42,
+          "h": 30,
+          "height": 17,
+          "solid": false,
+          "interactive": true,
+          "text": "Papel timbrado deixado na máquina.",
+          "baseZ": 47,
+          "parentId": "notary-desk"
+        },
+        {
+          "id": "clara-chair",
+          "type": "armchair",
+          "name": "Cadeira com manta de lã",
+          "x": 180,
+          "y": 30,
+          "w": 60,
+          "h": 55,
+          "height": 52,
+          "solid": true,
+          "interactive": true,
+          "text": "Cadeira com manta de lã."
+        },
+        {
+          "id": "private-files",
+          "type": "files",
+          "name": "Procurações e registros pessoais",
+          "x": 30,
+          "y": 220,
+          "w": 60,
+          "h": 65,
+          "height": 94,
+          "solid": true,
+          "interactive": true,
+          "text": "Procurações e registros pessoais.",
+          "action": "drawer"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 322,
+          "y": 250,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "notary:Gabinete de Clara",
+        "density": 50,
+        "types": [
+          "pen",
+          "paper",
+          "mug",
+          "calendar"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 50
+    }
+  ],
+  "doors": [
+    {
+      "id": "public-deeds",
+      "name": "Arquivo de escrituras",
+      "a": {
+        "room": "public",
+        "side": "east",
+        "offset": 270,
+        "width": 76
+      },
+      "b": {
+        "room": "deeds",
+        "side": "west",
+        "offset": 300,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    },
+    {
+      "id": "deeds-notary",
+      "name": "Gabinete de Clara",
+      "a": {
+        "room": "deeds",
+        "side": "north",
+        "offset": 240,
+        "width": 76
+      },
+      "b": {
+        "room": "notary",
+        "side": "south",
+        "offset": 190,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "public",
+    "x": 310,
+    "y": 346,
+    "w": 60,
+    "h": 16
+  }
+}

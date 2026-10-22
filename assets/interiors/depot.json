@@ -1,0 +1,272 @@
+{
+  "version": 1,
+  "id": "depot",
+  "name": "Depósito Norte",
+  "profile": "Armazém municipal: caixas, inventário em papel e almoxarifado com umidade.",
+  "entranceRoom": "warehouse",
+  "rooms": [
+    {
+      "id": "warehouse",
+      "name": "Armazém municipal",
+      "bounds": {
+        "w": 700,
+        "h": 570
+      },
+      "finish": {
+        "floor": "#676854",
+        "wall": "#7a806d",
+        "material": "stone",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 350,
+        "y": 505
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 252,
+          "y": 216.6,
+          "z": 110,
+          "radius": 504,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 560,
+          "y": 24,
+          "z": 85,
+          "radius": 434,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "pallet-one",
+          "type": "box",
+          "name": "Equipamentos guardados desde a última reforma",
+          "x": 35,
+          "y": 35,
+          "w": 140,
+          "h": 110,
+          "height": 100,
+          "solid": true,
+          "interactive": true,
+          "text": "Equipamentos guardados desde a última reforma."
+        },
+        {
+          "id": "pallet-two",
+          "type": "box",
+          "name": "Caixas sem data de entrada",
+          "x": 495,
+          "y": 300,
+          "w": 130,
+          "h": 135,
+          "height": 110,
+          "solid": true,
+          "interactive": true,
+          "text": "Caixas sem data de entrada."
+        },
+        {
+          "id": "stock-rack",
+          "type": "shelf",
+          "name": "Peças catalogadas à mão",
+          "x": 510,
+          "y": 35,
+          "w": 105,
+          "h": 145,
+          "height": 145,
+          "solid": true,
+          "interactive": true,
+          "text": "Peças catalogadas à mão."
+        },
+        {
+          "id": "work-table",
+          "type": "table",
+          "name": "Mesa com etiquetas e barbante",
+          "x": 240,
+          "y": 270,
+          "w": 160,
+          "h": 75,
+          "height": 48,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa com etiquetas e barbante."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 642,
+          "y": 480,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "warehouse:Armazém municipal",
+        "density": 110,
+        "types": [
+          "box",
+          "paper",
+          "mud",
+          "wire"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 110,
+      "fluorescent": true
+    },
+    {
+      "id": "office",
+      "name": "Almoxarifado",
+      "bounds": {
+        "w": 410,
+        "h": 350
+      },
+      "finish": {
+        "floor": "#736246",
+        "wall": "#84806a",
+        "material": "wood",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 205,
+        "y": 285
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 147.6,
+          "y": 133,
+          "z": 110,
+          "radius": 295.2,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 328,
+          "y": 24,
+          "z": 85,
+          "radius": 254.2,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "inventory",
+          "type": "table",
+          "name": "Mesa de conferência de entregas",
+          "x": 140,
+          "y": 110,
+          "w": 170,
+          "h": 75,
+          "height": 45,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa de conferência de entregas."
+        },
+        {
+          "id": "ledger",
+          "type": "files",
+          "name": "Livros de entrada com páginas arrancadas",
+          "x": 30,
+          "y": 35,
+          "w": 60,
+          "h": 100,
+          "height": 105,
+          "solid": true,
+          "interactive": true,
+          "text": "Livros de entrada com páginas arrancadas.",
+          "action": "drawer"
+        },
+        {
+          "id": "office-chair",
+          "type": "chair",
+          "name": "Cadeira com casaco pendurado",
+          "x": 210,
+          "y": 35,
+          "w": 42,
+          "h": 40,
+          "height": 43,
+          "solid": true,
+          "interactive": true,
+          "text": "Cadeira com casaco pendurado."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 352,
+          "y": 260,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "office:Almoxarifado",
+        "density": 60,
+        "types": [
+          "paper",
+          "pen",
+          "calculator",
+          "calendar"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 60
+    }
+  ],
+  "doors": [
+    {
+      "id": "warehouse-office",
+      "name": "Almoxarifado",
+      "a": {
+        "room": "warehouse",
+        "side": "north",
+        "offset": 350,
+        "width": 76
+      },
+      "b": {
+        "room": "office",
+        "side": "south",
+        "offset": 205,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "warehouse",
+    "x": 350,
+    "y": 546,
+    "w": 60,
+    "h": 16
+  }
+}

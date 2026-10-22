@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NorthVale — Editor de Cenários</title>
+<style>
+:root{color-scheme:dark;--paper:#eee5cf;--dim:#a7ada6;--violet:#976bd3;--border:#373a36}*{box-sizing:border-box}body{margin:0;background:#0d1112;color:var(--paper);font:14px/1.55 Georgia,serif}button,select,input,textarea{font:12px/1.4 system-ui;color:var(--paper);background:#202829;border:1px solid #4c5350;border-radius:3px}button{padding:9px 12px;cursor:pointer}button:hover{background:#35403d}button:disabled{opacity:.45;cursor:wait}button.primary{background:#5a2ca6;border-color:#9c70d1}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #b79bdc;outline-offset:3px}header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 28px;border-bottom:1px solid var(--border)}h1{font-size:22px;letter-spacing:5px;margin:0;font-weight:normal}header small{display:block;letter-spacing:3px;font:10px system-ui;color:#bdac84;margin-top:4px}.badge{font:11px system-ui;color:#b9c7bc;border:1px solid #4e6257;padding:6px 10px;border-radius:20px}main{display:grid;grid-template-columns:290px minmax(0,1fr);gap:1px;background:var(--border);min-height:calc(100vh - 88px)}aside{background:#141a1b;padding:22px}h2{font:11px system-ui;letter-spacing:2px;text-transform:uppercase;color:#b9ac8e;margin:0 0 14px}label{display:block;margin:14px 0 6px;font:12px system-ui;color:#c4c9bf}select,input[type=number],textarea{width:100%;padding:9px}input[type=range]{width:100%;accent-color:#9368c7}input[type=checkbox]{accent-color:#9368c7}fieldset{border:0;padding:0;margin:20px 0}fieldset label{margin:9px 0}aside .row{display:flex;gap:7px;margin-top:10px}.row>*{flex:1}hr{border:0;border-top:1px solid var(--border);margin:22px 0}.note{font:12px/1.6 system-ui;color:var(--dim)}#stage{background:radial-gradient(ellipse at 50% 30%,#26302c,#090f12 80%);padding:22px;min-width:0}.stage-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:0 0 15px}#scene-title{font-size:24px;margin:0;font-weight:normal}#dimensions{font:11px monospace;color:#aabbb2;white-space:nowrap}.canvas-wrap{position:relative;background:#080e11;border:1px solid #3b413b;box-shadow:0 10px 50px #0008}#art{width:100%;height:auto;display:block;touch-action:manipulation}.canvas-wrap.checker{background-color:#161b20;background-image:linear-gradient(45deg,#252c30 25%,transparent 25%),linear-gradient(-45deg,#252c30 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#252c30 75%),linear-gradient(-45deg,transparent 75%,#252c30 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0}#status{min-height:24px;font:12px system-ui;color:#c5b498;margin:15px 0}.detail-grid{display:grid;grid-template-columns:minmax(250px,1fr) minmax(250px,1fr);gap:20px;margin-top:20px}.card{padding:20px;background:#141b1d;border:1px solid var(--border);min-width:0}.card p{margin:8px 0}.card select{margin-bottom:8px}#object-info{font:12px/1.7 monospace;white-space:pre-wrap;color:#d1d1bf;min-height:100px}#prompt{resize:vertical;min-height:130px;font-size:11px;color:#bfc5bb}progress{width:100%;accent-color:#9368c7;display:none;margin-top:12px}#download-links a{display:block;color:#c3a2f0;font:12px system-ui;margin-top:8px}footer{font:11px system-ui;color:#7f918b;padding:20px 0}#export-canvas{display:none}@media(max-width:950px){main{grid-template-columns:235px minmax(0,1fr)}aside{padding:15px}#stage{padding:14px}.detail-grid{grid-template-columns:1fr}}@media(max-width:650px){header{padding:15px}h1{font-size:18px}.badge{display:none}main{display:block}aside{display:grid;grid-template-columns:1fr 1fr;gap:0 15px}aside h2,aside hr,aside .exports,aside .note{grid-column:1/-1}fieldset{margin:8px 0}.stage-heading{display:block}#scene-title{font-size:21px}}
+</style>
+<style>
+.editor-panel{grid-column:1/-1}.editor-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.editor-grid label{margin:0}.editor-grid input{min-width:0}input[type=color]{width:100%;height:35px;padding:3px}.tool-row{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.tool-row button{flex:1}.palette{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;max-height:255px;overflow:auto;margin-top:10px}.prop-choice{padding:5px 2px;min-width:0;font-size:10px;letter-spacing:0}.prop-choice canvas{width:100%;height:47px;display:block;pointer-events:none}.prop-choice[aria-pressed=true]{background:#5a2ca6;border-color:#bc96ee}.editor-tools{margin:18px 0;border-block:1px solid #373a36;padding:14px 0}.editor-tools input[type=search]{width:100%;padding:8px}.editor-tools label{margin:8px 0}.editor-tools details{margin-top:12px}summary{font:12px system-ui;color:#c4c9bf;cursor:pointer}.inspector{margin-top:16px}.inspector[hidden]{display:none}.inspector .editor-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.editor-tools input[type=file]{max-width:100%}#art{touch-action:none;cursor:grab}#art.placing{cursor:crosshair}#art.dragging{cursor:grabbing}.project-status{font:11px system-ui;color:#b3c4b6;min-height:18px}#prop-category{margin:7px 0}#import-file{display:none}#object-info{overflow-wrap:anywhere}#download-links a{overflow-wrap:anywhere}.toolbar-hint{font:11px system-ui;color:#9daaa2}@media(max-width:650px){.palette{grid-template-columns:repeat(5,minmax(0,1fr));max-height:190px}.editor-tools{grid-column:1/-1}.editor-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+<style>
+@media(min-width:1101px){main{grid-template-columns:270px minmax(0,1fr) 275px;height:calc(100vh - 88px);min-height:0}main>aside,#stage{overflow:auto;overscroll-behavior:contain}#object-sidebar{padding:16px}#object-sidebar .card{padding:0;border:0;background:transparent}.detail-grid{grid-template-columns:1fr}}
+@media(max-width:1100px){#object-sidebar{grid-column:1/-1}#object-sidebar .card{max-width:100%}.detail-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div><h1>NORTHVALE</h1><small>EDITOR DE CENÁRIOS · 1989</small></div><span class="badge">Offline · Canvas 2D · sem dependências</span></header>
+<main>
+<aside aria-label="Configuração da arte">
+ <h2>Catálogo visual</h2>
+ <div><label for="scene">Cenário ou folha de sprites</label><select id="scene"></select></div>
+ <div><label for="seed">Semente da composição</label><input id="seed" type="number" min="1" max="2147483647" value="1989"><div class="row"><button id="regenerate">Restaurar layout</button><button id="new-seed">Nova semente</button></div></div>
+ <div><label for="layer">Camada para exportar</label><select id="layer"><option value="composite">Composição completa</option><option value="base">Fundo sem elementos altos</option><option value="foreground">Máscara frontal transparente</option></select></div>
+ <div><label for="resolution">Resolução dos cenários</label><select id="resolution"><option value="1600">1600 × 900</option><option value="1920">1920 × 1080</option><option value="2560">2560 × 1440</option></select></div>
+ <fieldset><legend class="note">Atmosfera</legend><label><input id="rain" type="checkbox" checked> Chuva animada</label><label><input id="lights" type="checkbox" checked> Luzes e sombras</label><label><input id="debug" type="checkbox"> Mostrar colisões e área útil</label><label for="rain-power">Intensidade da chuva</label><input id="rain-power" type="range" min="0" max="100" value="65"></fieldset>
+ <section class="editor-tools"><h2>Colocar objetos</h2><input id="prop-search" type="search" placeholder="Buscar mesa, cama, livros…" aria-label="Buscar objeto"><select id="prop-category" aria-label="Categoria de objetos"><option value="theme">Sugeridos para este ambiente</option><option value="all">Todos os objetos</option><option value="furniture">Móveis</option><option value="clues">Pistas e documentos</option><option value="equipment">Equipamentos</option><option value="decoration">Decoração e exterior</option></select><div id="palette" class="palette" aria-label="Catálogo de objetos"></div><p id="placement-hint" class="toolbar-hint">Escolha um item e clique no piso para colocá-lo.</p><div class="tool-row"><button id="select-tool">Selecionar / mover</button><button id="undo" title="Ctrl+Z">Desfazer</button><button id="redo" title="Ctrl+Shift+Z">Refazer</button></div><label><input id="snap" type="checkbox" checked> Ajustar à grade de 0,25</label><button id="clear-objects">Limpar objetos do ambiente</button><details><summary>Editar ambiente e arquitetura</summary><div class="editor-grid"><label>Paredes<input id="wall-color" type="color"></label><label>Piso<input id="floor-color" type="color"></label><label>Telhado<input id="roof-color" type="color"></label></div><label for="sign-text">Nome na fachada</label><input id="sign-text" type="text" maxlength="60" style="width:100%;padding:8px"><label><input id="show-architecture" type="checkbox" checked> Mostrar arquitetura</label><label><input id="show-overhead" type="checkbox" checked> Mostrar elementos altos</label><label><input id="show-props" type="checkbox" checked> Mostrar objetos</label></details><details><summary>Salvar / abrir projeto editável</summary><p class="note">O projeto guarda todos os ambientes editados. Salve um arquivo para continuar em outro navegador.</p><div class="tool-row"><button id="save-project">Salvar projeto</button><button id="open-project">Abrir JSON</button></div><input id="import-file" type="file" accept="application/json,.json"><p id="project-status" class="project-status" role="status"></p></details></section>
+ <hr>
+ <div class="exports"><h2>Exportar assets</h2><div class="row"><button id="export-png" class="primary">Salvar PNG</button><button id="export-data">Salvar JSON</button></div><div class="row"><button id="export-all">Baixar catálogo ZIP</button></div><progress id="progress" max="31" value="0" aria-label="Progresso da exportação"></progress><div id="download-links"></div></div>
+ <p class="note">Arraste objetos pelo cenário. R gira, Delete remove, Ctrl+D duplica e Ctrl+Z desfaz. PNGs não incluem seleção nem linhas de diagnóstico.</p>
+</aside>
+<section id="stage" aria-label="Prévia do asset">
+ <div class="stage-heading"><h2 id="scene-title"></h2><span id="dimensions"></span></div>
+ <div class="canvas-wrap"><canvas id="art" width="1600" height="900" aria-label="Prévia isométrica de NorthVale"></canvas></div>
+ <p id="status" role="status" aria-live="polite"></p>
+ <div class="detail-grid">
+  <section class="card"><h2>Prompt para arte pintada</h2><textarea id="prompt" readonly aria-label="Prompt com Sufixo Base"></textarea><button id="copy-prompt">Copiar prompt</button><p class="note">A prévia é uma ilustração procedural. Use este prompt para produzir uma pintura final com a mesma composição e direção visual.</p></section>
+ </div>
+ <footer>Coordenadas de mundo em unidades isométricas. Navegação e objetos exportados como dados abertos para integrar ao jogo.</footer>
+</section>
+<aside id="object-sidebar" aria-label="Propriedades do objeto">
+<section class="card"><h2>Objeto selecionado</h2><select id="object" aria-label="Selecionar objeto"></select><div id="inspector" class="inspector" hidden><label>Nome<input id="edit-name" type="text" maxlength="80" style="width:100%;padding:8px"></label><div class="editor-grid"><label>X<input id="edit-x" type="number" step=".25" min="0" max="15"></label><label>Y<input id="edit-y" type="number" step=".25" min="0" max="13"></label><label>Elevação<input id="edit-z" type="number" step=".1" min="0" max="8"></label><label>Largura<input id="edit-w" type="number" step=".1" min=".1" max="8"></label><label>Profundidade<input id="edit-d" type="number" step=".1" min=".1" max="8"></label><label>Altura<input id="edit-h" type="number" step=".1" min=".05" max="8"></label><label>Rotação<select id="edit-rotation"><option value="0">0°</option><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select></label><label>Cor<input id="edit-color" type="color"></label><label>Material<select id="edit-material"><option value="original">Original</option><option value="wood">Madeira</option><option value="brick">Tijolo</option><option value="tile">Ladrilho</option><option value="metal">Metal liso</option></select></label></div><label><input id="edit-solid" type="checkbox"> Bloquear passagem</label><div class="tool-row"><button id="rotate-object">Girar 90°</button><button id="duplicate-object">Duplicar</button><button id="delete-object">Remover</button></div></div><div id="object-info">Selecione um objeto na imagem.</div><p id="catalog-stats" class="note"></p></section>
+</aside>
+</main>
+<script>
+'use strict';
+(() => {
+const BASE_SUFFIX = 'Isometric 2.5D video game environment, 1989 neo-noir realism, hand-painted oil texture style like Disco Elysium, gritty dark muted palette, moody lighting, sharp focus --ar 16:9 --v 6.0';
+const $ = selector => document.querySelector(selector);
+const SCENES = [
+ ['police-exterior','Delegacia · Fachada','police','exterior','Exterior facade of a decrepit small-town police station at night in heavy rain. Red brick walls, vintage sign reading "NORTHVALE POLICE", concrete steps, missing person poster near door, 1989 police cruiser parked on wet asphalt reflecting amber streetlights.'],
+ ['police-interior','Delegacia · Interior','police','interior','Cutaway interior of a 1989 police station. Reception desk, cluttered detective desks with typewriters and rotary phones, corkboard with red strings, Sheriff Ruth\'s glass office, interrogation room, holding cells in back. Flickering fluorescent lights.'],
+ ['pharmacy-exterior','Farmácia · Fachada','pharmacy','exterior','Exterior facade of a 1989 small-town pharmacy on a rainy night. Dirty glass storefront, vintage neon green cross sign, cracked sidewalk with puddles, brick architecture.'],
+ ['pharmacy-interior','Farmácia · Interior','pharmacy','interior','Cutaway interior of a 1989 pharmacy. Aisles packed with medicine boxes, wooden counter with old cash register, back storage with cardboard boxes, locked private office with filing cabinets.'],
+ ['library-exterior','Biblioteca · Fachada','library','exterior','Exterior facade of an old stone and brick public library at night in the rain. Tall arched windows glowing with warm interior light, heavy wooden double doors, wet stone steps.'],
+ ['library-interior','Biblioteca · Interior','library','interior','Cutaway interior of a dark 1989 public library. Tall wooden bookshelves, reading tables with green banker lamps, microfilm reader machine, loan desk with card catalogs, administrative back room.'],
+ ['registry-exterior','Cartório · Fachada','registry','exterior','Exterior facade of an austere 1989 municipal registry building at night. Gray stone and brick, brass plaque by the entrance, barred ground-floor windows, wet street.'],
+ ['registry-interior','Cartório · Interior','registry','interior','Cutaway interior of a 1989 registry office. Wooden counter with brass bars, floor-to-ceiling shelves overflowing with property deeds and town maps, heavy iron safe in corner, notary desk with typewriter.'],
+ ['diner-exterior','Restaurante / Diner · Fachada','diner','exterior','Exterior facade of a 1989 small-town diner at night in the rain. Chrome and brick siding, flickering neon sign, large foggy windows showing booths inside, wet parking lot.'],
+ ['diner-interior','Restaurante / Diner · Interior','diner','interior','Cutaway interior of a 1989 retro diner. Red vinyl booths, long counter with barstools, coffee machines, pie display, jukebox in corner, kitchen pass-through, checkered floor.'],
+ ['motel-exterior','Motel · Fachada','motel','exterior','Exterior of a rundown 1989 roadside motel at night near dark pine trees. Flickering purple and amber neon sign reading "NORTHVALE MOTEL", L-shaped two-story building with numbered doors, wet parking lot.'],
+ ['motel-interior','Motel · Interior','motel','interior','Cutaway interior of a seedy 1989 motel reception and guest room. Reception desk with key rack, unmade bed, stained carpet, 1980s CRT TV, rotary phone, nightstand, back laundry room.'],
+ ['meatpacking-exterior','Frigorífico · Fachada','meatpacking','exterior','Exterior of a sinister 1989 industrial meatpacking plant at night. Rusted corrugated metal walls, concrete loading docks, chain-link fences, thick fog, single floodlight.'],
+ ['meatpacking-interior','Frigorífico · Interior','meatpacking','interior','Cutaway interior of a 1989 meatpacking plant. Processing floor with hanging metal hooks, heavy stainless steel freezer doors, rusted floor drains, elevated glass-walled manager\'s office with safe.'],
+ ['scrapyard-exterior','Ferro-Velho · Fachada','scrapyard','exterior','Exterior of a 1989 scrapyard at night in the rain. Stacks of crushed 1970s cars, magnetic crane, muddy paths with oil puddles, corrugated metal fence, guard dog house.'],
+ ['scrapyard-interior','Ferro-Velho · Oficina','scrapyard','interior','Cutaway interior of a cluttered 1989 mechanic garage inside a scrapyard. Workbenches with tools and crowbars, car parts, hoisted vehicle, cassette radio, small office with key hooks.'],
+ ['gasstation-cutaway','Posto Florestal · Fachada e corte','gasstation','cutaway','Exterior and cutaway interior of an isolated 1989 forest gas station at night in heavy fog. Two vintage fuel pumps under a rusty canopy, small convenience store inside with counter, shelves, and back room.'],
+ ['sarah-exterior','Casa de Helen e Sarah · Fachada','sarah','exterior','Exterior of a modest 1989 American suburban wooden house at night in the rain. Weathered siding, front porch with swing, wet lawn, driveway, warm light in upstairs window.'],
+ ['sarah-interior','Casa de Helen e Sarah · Interior','sarah','interior','Cutaway interior of a 1989 suburban house featuring a missing teenage girl\'s bedroom. 1980s wall posters, loose wooden floorboard hiding cash, cassette recorder on desk, Polaroid photos on rug, kitchen and living room adjacent.'],
+ ['suspect-interior','Residência dos Suspeitos · Interior modular','suspect','interior','Cutaway interior of a 1989 small-town house. Living room with CRT TV and armchair, kitchen with vintage appliances, bedroom with wardrobe and locked desk drawer, hallway bathroom.'],
+ ['dam-cutaway','Represa · Exterior e sala técnica','dam','cutaway','Isometric view of a massive 1989 concrete hydroelectric dam at night in the rain, combined with a cutaway of its underground turbine control room filled with analog dials, levers, and steel walkways.'],
+ ['ruins-exterior','Ruína na Floresta · Local secreto','ruins','exterior','Abandoned stone ruin hidden deep in a dark pine forest at night in heavy fog. Overgrown moss, crumbling walls, muddy ground with footprints, remnants of a secret meeting, flashlight beam aesthetic.'],
+ ...[
+  ['alex','Alex Hale','tired detective in a worn olive trench coat, brown hair, weathered face'],
+  ['ruth','Xerife Ruth','older female sheriff in 1989 tan uniform'],
+  ['helen','Helen','distressed mother in 1989 winter coat and scarf'],
+  ['deputy','Subxerife','young deputy with mustache in 1989 police uniform'],
+  ['coroner','Médico Legista','nervous coroner in lab coat and glasses'],
+  ['sam','Sam','bearded scrapyard owner in trucker cap and denim jacket'],
+  ['clara','Clara','elderly female notary in glasses and heavy wool coat'],
+  ['viktor','Viktor','stern eastern european butcher boss in dark trench coat'],
+ ].map(([id,name,description]) => [`${id}-sprites`,`${name} · Sprites 8 direções`,id,'character',`2D isometric game character sprite sheet, 8 directional views, walking and idle poses, ${description}, 1989 clothing, hand-painted Disco Elysium style, isolated on solid dark gray background --ar 16:9`]),
+ ['cruiser-sprites','Viatura · Sprites 8 direções','cruiser','vehicle','2D isometric vehicle sprite sheet, 8 directional angles of a 1989 American black and white police cruiser sedan, hand-painted gritty neo-noir texture, isolated on solid dark gray background --ar 16:9'],
+].map(([id,name,theme,kind,prompt])=>({id,name,theme,kind,prompt:`${prompt} ${BASE_SUFFIX}`}));
+const THEMES = {
+ police:{wall:'#555e50',floor:'#716c50',wood:'#63513b',sign:'NORTHVALE POLICE',props:['desk','desk','files','cabinet','corkboard','cell','counter','chair','typewriter','phone','lamp','safe','bench','paper','radio','locker','glass','clock','evidence','trash','coat','box']},
+ pharmacy:{wall:'#68715c',floor:'#777965',wood:'#625740',sign:'NORTHVALE PHARMACY',props:['medicine','medicine','medicine','shelf','shelf','counter','register','files','safe','cabinet','box','box','desk','chair','lamp','phone','clock','bottles','sink','trash','paper','radio']},
+ library:{wall:'#61594a',floor:'#63523d',wood:'#493c2e',sign:'NORTHVALE PUBLIC LIBRARY',props:['shelf','shelf','shelf','shelf','desk','desk','microfilm','catalog','catalog','counter','books','books','lamp','lamp','chair','chair','paper','clock','files','radio','coat','plant']},
+ registry:{wall:'#696757',floor:'#68645a',wood:'#5c4938',sign:'MUNICIPAL REGISTRY',props:['counter','bars','shelf','shelf','files','files','map','safe','desk','typewriter','chair','lamp','phone','catalog','paper','books','clock','cabinet','box','coat','plant','trash']},
+ diner:{wall:'#746653',floor:'#777363',wood:'#65523e',sign:'NORTHVALE DINER',props:['booth','booth','booth','booth','counter','stool','stool','stool','coffee','pie','jukebox','stove','sink','fridge','register','phone','clock','bottles','trash','radio','paper','coat']},
+ motel:{wall:'#726254',floor:'#594c42',wood:'#59432f',sign:'NORTHVALE MOTEL',props:['counter','keys','bed','bed','tv','cabinet','desk','phone','lamp','laundry','chair','radio','box','books','sink','clock','paper','coat','trash','safe','curtain','suitcase']},
+ meatpacking:{wall:'#66716a',floor:'#606865',wood:'#505951',sign:'SLOANE MEATPACKING',props:['freezer','freezer','hooks','hooks','steel','steel','drain','drain','glass','safe','desk','files','chair','lamp','phone','scale','box','box','cabinet','clock','radio','trash']},
+ scrapyard:{wall:'#5d6158',floor:'#5d5846',wood:'#68573e',sign:'SAM’S AUTO SALVAGE',props:['workbench','tools','tools','car','tires','tires','engine','barrel','barrel','radio','keys','desk','chair','cabinet','box','lamp','phone','clock','paper','crate','safe','trash']},
+ gasstation:{wall:'#65715f',floor:'#6b6b57',wood:'#61523c',sign:'PINE RIDGE GAS',props:['pump','pump','counter','register','shelf','shelf','fridge','bottles','box','desk','keys','radio','phone','chair','lamp','cabinet','tires','barrel','clock','paper','trash','coat']},
+ sarah:{wall:'#766c5d',floor:'#776044',wood:'#70553c',sign:'THE MILLER HOUSE',props:['bed','desk','cassette','photos','floorboard','cash','poster','wardrobe','sofa','tv','stove','sink','fridge','lamp','books','phone','chair','paper','plant','clock','coat','suitcase']},
+ suspect:{wall:'#6c6a59',floor:'#6e5941',wood:'#63503a',sign:'NORTHVALE RESIDENCE',props:['sofa','tv','desk','drawer','wardrobe','bed','stove','sink','fridge','bath','lamp','phone','radio','books','paper','chair','cabinet','coat','clock','curtain','plant','suitcase']},
+ dam:{wall:'#5b6967',floor:'#5b6660',wood:'#555d55',sign:'NORTHVALE DAM — CONTROL',props:['turbine','turbine','console','console','gauge','gauge','lever','lever','steel','rail','glass','files','desk','phone','radio','lamp','clock','cabinet','box','drain','tools','safe']},
+ ruins:{wall:'#566051',floor:'#4d5d48',wood:'#554a36',sign:'THE OLD CHAPEL',props:['ruin','ruin','column','column','bench','crate','cassette','photos','footprints','footprints','candle','candle','box','paper','radio','coat','books','barrel','stone','stone','plant','suitcase']},
+};
+const LABELS={desk:'Mesa',files:'Arquivo',cabinet:'Armário',corkboard:'Quadro de pistas',cell:'Cela',counter:'Balcão',chair:'Cadeira',typewriter:'Máquina de escrever',phone:'Telefone',lamp:'Luminária',safe:'Cofre',bench:'Banco',paper:'Documentos',radio:'Rádio',locker:'Vestiário',glass:'Divisória de vidro',clock:'Relógio',evidence:'Provas',trash:'Lixeira',coat:'Casaco',box:'Caixa',medicine:'Medicamentos',shelf:'Estante',register:'Caixa registradora',bottles:'Frascos',sink:'Pia',microfilm:'Leitor de microfilme',catalog:'Fichário',books:'Livros',plant:'Planta',bars:'Grade',map:'Mapa municipal',booth:'Cabine de vinil',stool:'Banqueta',coffee:'Cafeteira',pie:'Vitrine de tortas',jukebox:'Jukebox',stove:'Fogão',fridge:'Geladeira',keys:'Quadro de chaves',bed:'Cama',tv:'TV de tubo',laundry:'Lavanderia',curtain:'Cortina',suitcase:'Mala',freezer:'Porta frigorífica',hooks:'Ganchos',steel:'Mesa inox',drain:'Ralo',scale:'Balança',workbench:'Bancada de oficina',tools:'Ferramentas',car:'Carro suspenso',tires:'Pneus',engine:'Motor',barrel:'Barril',crate:'Caixote',pump:'Bomba de combustível',cassette:'Gravador K7',photos:'Polaroids',floorboard:'Tábua solta',cash:'Dinheiro escondido',poster:'Pôster de 1989',wardrobe:'Guarda-roupa',sofa:'Sofá',drawer:'Gaveta trancada',bath:'Banheira',turbine:'Turbina',console:'Painel de controle',gauge:'Medidores analógicos',lever:'Alavanca',rail:'Passarela',ruin:'Muro em ruínas',column:'Coluna',footprints:'Pegadas',candle:'Velas',stone:'Pedras'};
+const SMALL=new Set(['cassette','cash','photos','floorboard','paper','books','tools','footprints','candle','drain','stone','poster','keys','clock','map','corkboard']);
+const PALETTES={alex:['#575c40','#493d31','#ba9677'],ruth:['#8c7b4e','#555747','#b79b7a'],helen:['#6b5c57','#3b3834','#bb9983'],deputy:['#7b7050','#41473d','#c1a17a'],coroner:['#9c9f8a','#404d45','#b8a188'],sam:['#445c62','#564c3c','#ab8e6e'],clara:['#665853','#423e38','#b1a087'],viktor:['#393f3b','#393534','#ae967a']};
+const FACADE_PROFILES={police:{name:'Bloco de tijolos com torre e ala de celas',wall:'#795341',roof:'#455047'},pharmacy:{name:'Loja estreita com toldo e vitrine',wall:'#687d65',roof:'#4a6254'},library:{name:'Biblioteca de pedra com arcos e frontão',wall:'#7c8071',roof:'#3f514c'},registry:{name:'Edifício municipal com pórtico de colunas',wall:'#858576',roof:'#64685d'},diner:{name:'Pavilhão baixo de vidro e metal',wall:'#8e998c',roof:'#7b897d'},motel:{name:'Dois pavimentos em L com varanda',wall:'#7c6857',roof:'#604e49'},meatpacking:{name:'Galpão industrial com telhado serrilhado',wall:'#667770',roof:'#546761'},scrapyard:{name:'Oficina aberta, cerca e guindaste',wall:'#7b6a4b',roof:'#5c5544'},sarah:{name:'Casa de madeira com telhado de duas águas e varanda',wall:'#7d846d',roof:'#5c5547'},ruins:{name:'Ruínas de capela entre pinheiros',wall:'#596451',roof:'#3c4a3d'}};
+// Each theme uses its own room plan, following the order of its prop list.
+const ROOM_PLANS={
+ police:[[3,3],[7,5],[11.6,.6],[12.6,3],[1,.6],[8.4,.3],[1,8],[3.5,4.7],[3.2,3.2,1.12],[7.2,5.2,1.12],[8.7,5.2,1.12],[12,8],[7.8,1],[7.7,5.3,1.13],[1.3,8.2,1.25],[11,.5],[10.8,2],[5,.2,2],[11.5,8.8],[1,11],[.4,5],[12,10]],
+ pharmacy:[[.4,1],[3,1],[6,1],[.4,5],[3,5],[7,8],[7.2,8.2,1.25],[12,1],[12,5],[11,8],[12,10],[9.7,10],[8,4],[8.4,5.5],[9.6,4.2,1.12],[8.2,4.2,1.12],[8,.2,2],[7.2,8.3,1.25],[12,3],[10,11],[8.3,4.4,1.14],[9.9,8.2,1.25]],
+ library:[[.4,1],[.4,4],[.4,7],[11.6,1],[3.5,4],[7,7],[3,9],[8.6,.5],[10,.5],[7,2],[3.7,4.2,1.13],[7.2,7.2,1.13],[5,4.2,1.13],[8.5,7.2,1.13],[3.8,5.7],[7.2,8.7],[7.3,7.3,1.14],[6,.2,2],[12,5],[7.3,2.2,1.25],[.3,10],[11.7,9]],
+ registry:[[2,8],[2,8],[.4,1],[3.3,.5],[6.2,.5],[8.3,.5],[4,.2],[12,1],[7,5],[7.3,5.2,1.12],[7.4,6.7],[8.6,5.2,1.12],[7.5,5.3,1.13],[10.8,5],[2.4,8.3,1.25],[3.2,8.4,1.25],[10,.2,2],[.4,5],[12,8],[.4,10],[11,10],[9.3,10]],
+ diner:[[.4,1],[.4,4],[.4,7],[.4,10],[7,3],[7.6,5],[9.1,5],[10.6,5],[7.2,3.2,1.25],[8.5,3.2,1.25],[11.8,9],[8,.7],[10,.7],[12,.5],[10.5,3.2,1.25],[12,6],[5,.2,2],[9.5,3.3,1.25],[12,11],[7.8,3.3,1.25],[2.5,9],[.2,11.5]],
+ motel:[[1,6],[1,.2],[7.2,1],[10,1],[8,4],[12,6],[7.5,8],[7.7,8.1,1.12],[9,8.1,1.12],[.5,1],[7.9,9.6],[1.3,6.2,1.25],[.6,3],[8.2,8.2,1.13],[12,8],[4,.2,2],[1.2,6.3,1.25],[11,10],[3,11],[4,1],[.2,9],[9.7,10]],
+ meatpacking:[[.5,.5],[3.2,.5],[6,1],[9,1],[2,5],[7,5],[3,8],[8,8],[10.8,2],[12,.6],[11.2,5],[12,8],[11.5,6.7],[12.8,5.2,1.12],[11.5,5.2,1.12],[2.4,5.2,1.12],[1,10],[4,10],[12,10],[7,.2,2],[7.2,5.2,1.12],[9,11]],
+ scrapyard:[[1,1],[1.2,1.3,1.12],[2.3,1.3,1.12],[4,4],[.5,6],[.5,8],[7.5,4],[11,1],[12.4,1],[1.4,1.2,1.12],[4,.2],[9,8],[9.4,9.7],[12,5],[1,11],[10.6,8.2,1.12],[9.3,8.3,1.12],[7,.2,2],[9.5,8.4,1.13],[12,10],[12,8],[7.5,10]],
+ gasstation:[[5.5,8],[9,8],[2,3],[2.2,3.2,1.25],[.5,1],[.5,5],[10.4,.5],[2.3,3.3,1.25],[12,4],[11,1],[8,.2],[11.2,1.2,1.12],[11.5,1.3,1.12],[11.4,2.7],[12.6,1.2,1.12],[12,6],[1,10],[12,10],[5,.2,2],[2.4,3.3,1.25],[3,10],[.2,8]],
+ sarah:[[1,1],[4,2],[4.3,2.3,1.12],[2,4],[2.5,3.6],[2.6,3.6,.08],[4,.2],[7,.5],[1,8],[3,6],[11,.5],[11,3],[13,1],[5.6,2.2,1.12],[4.6,2.5,1.13],[4.3,2.2,1.12],[4.3,3.7],[4.5,2.3,1.14],[8,10],[9,.2,2],[.2,10],[2,3.5]],
+ suspect:[[1,8],[4,6],[6.5,6],[7.8,6.2,1.12],[7,.5],[10,1],[.5,1],[2,1],[4,1],[11,8],[8.1,6.2,1.12],[6.7,6.2,1.12],[1.3,8.2,.7],[6.9,6.4,1.13],[7,6.3,1.14],[7,7.7],[12,5],[.2,10],[5,.2,2],[.2,5],[8,10],[10,4]],
+ dam:[[2,4],[6,4],[2,.5],[6,.5],[2.4,.7,1.05],[6.4,.7,1.05],[3.5,.7,1.05],[7.5,.7,1.05],[9,7],[11,1],[10.8,3],[.5,9],[6,9],[6.2,9.2,1.12],[6.8,9.2,1.12],[7.6,9.2,1.12],[9,.2,2],[9,10],[.7,11],[8,8],[9.2,7.3,1.12],[10,.5]],
+ ruins:[[2,1],[8,1],[1,5],[11,3],[4,8],[8,8],[8.2,8.2,.6],[4.2,8.2,.4],[5,6],[6,7],[5,4],[6,4],[10,10],[7,5],[8.4,8.2,.6],[1,9],[4.4,8.2,.4],[12,6],[3,10],[9,5],[11,9],[8,10]],
+};
+function rng(seed){let s=seed>>>0;return()=>{s+=0x6d2b79f5;let t=Math.imul(s^s>>>15,1|s);t^=t+Math.imul(t^t>>>7,61|t);return((t^t>>>14)>>>0)/4294967296;};}
+function hash(text){let h=2166136261;for(const c of text){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return h>>>0;}
+function shade(hex,amount){const n=parseInt(hex.slice(1),16);return '#'+[n>>16,(n>>8)&255,n&255].map(c=>Math.max(0,Math.min(255,c+amount)).toString(16).padStart(2,'0')).join('');}
+let objectTransform=null,propStyle=null;
+function point(x,y,z=0){if(objectTransform){const t=objectTransform,dx=(x-t.x)*t.sx,dy=(y-t.y)*t.sy;x=t.x+dx*t.cos-dy*t.sin;y=t.y+dx*t.sin+dy*t.cos;z=t.z+z*t.sz;}return{x:800+(x-y)*43,y:205+(x+y)*22-z*42};}
+function footprint(o){const a=(o.rotation||0)*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return[[0,0],[o.w,0],[o.w,o.d],[0,o.d]].map(([x,y])=>({x:o.x+x*c-y*s,y:o.y+x*s+y*c}));}
+function updateDepths(){for(const o of objects){const p=footprint(o);o.sortY=Math.max(...p.map(v=>point(v.x,v.y).y));delete o.supportId;}for(const o of objects.filter(o=>o.z>0)){const support=objects.find(p=>p!==o&&p.solid&&Math.abs(p.h-o.z)<.35&&inPoly({x:o.x,y:o.y},footprint(p)));if(support){o.supportId=support.id;o.sortY=support.sortY+.2;}}}
+function dimensions(type){
+ if(['phone','radio','cassette','register'].includes(type))return[.85,.7,.28];
+ if(type==='typewriter')return[.56,.38,.36];
+ if(type==='tv'||type==='microfilm')return[.85,.7,.8];
+ if(['corkboard','poster','map','keys'].includes(type))return[1.2,.1,1.8];
+ if(type==='clock')return[.6,.1,1.6];
+ if(['shelf','files','medicine','catalog','cabinet','locker','wardrobe','freezer'].includes(type))return[1.35,.7,2.5];
+ if(['desk','counter','workbench','steel','console'].includes(type))return[1.9,1,1.1];
+ if(['bed','booth','sofa','bath','car','turbine'].includes(type))return[2,1.25,.8];
+ if(['cell','glass','bars','ruin'].includes(type))return[2,.25,2.7];
+ if(type==='chair'||type==='stool')return[.65,.65,.8];
+ if(SMALL.has(type))return[.85,.6,.15];
+ return[.85,.7,1.2];
+}
+function makeObjects(scene,seed){
+ if(scene.kind==='character'||scene.kind==='vehicle')return[];
+ const theme=THEMES[scene.theme],random=rng(seed^hash(scene.id));
+ const objects=[];
+ // A 2-unit central aisle stays open. Small clues occupy their own low cells.
+ const slots=[];
+ for(const y of [1.1,3.8,6.6,9.3])for(const x of [1.1,3.65,7.4,10.0])slots.push([x,y]);
+ for(const y of [1.2,3.9,6.6,9.2])slots.push([12.4,y]);
+ slots.push([1.2,11.5],[4,11.5]);
+ let types=theme.props;
+ let plan=ROOM_PLANS[scene.theme];
+ if(scene.kind==='exterior'&&scene.theme!=='ruins'){
+  types=scene.theme==='scrapyard'?['car','car','car','tires','tires','engine','barrel','tools','crate','box','rail','workbench','keys','radio','coat','trash','paper','footprints','lamp','safe','phone','bench']:['car','bench','trash','plant','crate','barrel','paper','poster','lamp','phone','footprints','box','tires','coat','bottles','keys','drain','stone','radio','suitcase','cash','cassette'];
+  plan=[[7.5,8.5],[10.5,5.3],[.6,7],[12.6,5.5],[1,9],[13,8],[4,7],[6,4.8,1],[1,6.5],[9.6,4.8,1],[7,6.4],[12,10],[1,10.7],[10.5,5.5,.8],[3,9],[9.7,4.8,1.1],[7,11],[11,11.5],[10.7,5.6,.8],[11,8.7],[3.6,7],[5,10]];
+ }
+ types.forEach((type,i)=>{
+  const [sx,sy,z=0]=plan?.[i]||slots[i], [w,d,h]=dimensions(type);
+  const x=sx+(random()-.5)*.13,y=sy+(random()-.5)*.13;
+  objects.push({id:`${scene.id}:${type}-${i+1}`,type,name:LABELS[type],x:+x.toFixed(3),y:+y.toFixed(3),z,w,d,h,rotation:0,interactive:true,solid:z===0&&!SMALL.has(type),sortY:point(x+w/2,y+d/2).y+z*.1,seed:Math.floor(random()*1e8)});
+ });
+ for(const o of objects.filter(o=>o.z>0)){
+  const support=objects.find(p=>p!==o&&p.solid&&Math.abs(p.h-o.z)<.3&&o.x>=p.x-.15&&o.x<=p.x+p.w&&o.y>=p.y-.15&&o.y<=p.y+p.d);
+  if(support){o.supportId=support.id;o.sortY=support.sortY+.2;}
+ }
+ return objects;
+}
+let current=SCENES[1],seed=1989,objects=[],selected=null,busy=false,frameTime=0;
+const state={rain:true,lights:true,debug:false,rainPower:.65,layer:'composite',resolution:1600};
+const documents=new Map(),histories=new Map();let settings={},placing=null,drag=null;
+const PROJECT_KEY='northvale-studio-project-v2';
+const FURNITURE=new Set(['desk','counter','chair','stool','bench','shelf','cabinet','locker','wardrobe','bed','sofa','booth','bath','workbench','steel','files','catalog','drawer']);
+const CLUES=new Set(['cassette','photos','cash','paper','corkboard','evidence','map','floorboard','keys']);
+const EQUIPMENT=new Set(['typewriter','phone','radio','register','microfilm','tv','safe','fridge','freezer','stove','sink','laundry','coffee','scale','engine','pump','turbine','console','gauge','lever','jukebox','car']);
+const PROP_TYPES=Object.keys(LABELS);
+const keyFor=(scene=current,sceneSeed=seed)=>`${scene.id}@${sceneSeed}`;
+function defaultSettings(scene){const t=THEMES[scene.theme]||THEMES.police,f=scene.kind==='exterior'?FACADE_PROFILES[scene.theme]:null;return{wall:f?.wall||t.wall,floor:scene.kind==='exterior'?'#394844':t.floor,roof:f?.roof||'#435649',sign:t.sign,showArchitecture:true,showOverhead:true,showProps:true};}
+function docFor(scene,sceneSeed){const key=keyFor(scene,sceneSeed);if(!documents.has(key))documents.set(key,{id:scene.id,seed:sceneSeed,settings:defaultSettings(scene),objects:makeObjects(scene,sceneSeed)});return documents.get(key);}
+function serializeEdit(){return JSON.stringify({objects,settings});}
+function stash(){documents.set(keyFor(),{id:current.id,seed,objects,settings});}
+function history(){const key=keyFor();if(!histories.has(key))histories.set(key,{past:[],future:[]});return histories.get(key);}
+function project(){stash();return{format:'northvale-studio-project-v2',current:current.id,seed,view:{rain:state.rain,lights:state.lights,rainPower:state.rainPower,resolution:state.resolution,layer:state.layer},documents:[...documents.values()]};}
+function autosave(){stash();try{localStorage.setItem(PROJECT_KEY,JSON.stringify(project()));$('#project-status').textContent='Rascunho salvo neste navegador.';}catch{$('#project-status').textContent='Use Salvar projeto para guardar suas alterações em arquivo.';}}
+function commit(before){updateDepths();const after=serializeEdit();if(before!==after){history().past.push(before);if(history().past.length>60)history().past.shift();history().future=[];autosave();}refreshEditor();}
+function undoEdit(redo=false){if(busy||drag)return;const h=history(),from=redo?h.future:h.past,to=redo?h.past:h.future;if(!from.length)return;to.push(serializeEdit());const data=JSON.parse(from.pop());objects=data.objects;settings=data.settings;autosave();refreshEditor();}
+function editable(){return !busy&&current.kind!=='character'&&current.kind!=='vehicle';}
+function renderTheme(scene){return{...THEMES[scene.theme],wall:settings.wall,floor:settings.floor,sign:settings.sign};}
+const art=$('#art'),ctx=art.getContext('2d');
+const baseCanvas=document.createElement('canvas'),frontCanvas=document.createElement('canvas');
+let base=baseCanvas.getContext('2d'),front=frontCanvas.getContext('2d');
+const patterns=new Map();
+function texture(kind,color,textureSeed){
+ const key=`${kind}:${color}:${textureSeed}`;if(patterns.has(key))return patterns.get(key);
+ const c=document.createElement('canvas');c.width=c.height=160;const g=c.getContext('2d'),r=rng(textureSeed);
+ g.fillStyle=color;g.fillRect(0,0,160,160);
+ for(let i=0;i<2400;i++){g.fillStyle=r()>.5?'#e1d9b30b':'#050c0a18';g.fillRect(r()*160,r()*160,1+r()*3,1+r()*2);}
+ if(kind==='brick'){for(let row=0;row<10;row++){const y=row*16;g.strokeStyle='#1a241e8a';g.lineWidth=2;g.beginPath();g.moveTo(0,y);g.lineTo(160,y);g.stroke();for(let x=-40+(row%2)*40;x<160;x+=80){g.beginPath();g.moveTo(x,y);g.lineTo(x,y+16);g.stroke();g.fillStyle='#c1a98115';g.fillRect(x+3,y+3,72,2);}}}
+ if(kind==='wood'){for(let x=0;x<160;x+=20){g.fillStyle='#0b161e55';g.fillRect(x,0,2,160);for(let i=0;i<8;i++){g.strokeStyle='#d0ac7019';g.beginPath();g.moveTo(x+3+i*2,r()*30);g.bezierCurveTo(x+r()*10,70,x+3+i*2,100,x+4+i*2,160);g.stroke();}}}
+ if(kind==='tile'){g.strokeStyle='#17251f66';g.lineWidth=2;for(let x=0;x<160;x+=40)for(let y=0;y<160;y+=40){g.strokeRect(x,y,40,40);if(((x+y)/40)%2===0){g.fillStyle='#0c161c24';g.fillRect(x,y,40,40);}}}
+ const p=ctx.createPattern(c,'repeat');patterns.set(key,p);if(patterns.size>36)patterns.delete(patterns.keys().next().value);return p;
+}
+function propColor(fill){if(!propStyle?.color||typeof fill!=='string'||!/^#[0-9a-f]{6}$/i.test(fill))return fill;const a=parseInt(fill.slice(1),16),b=parseInt(propStyle.color.slice(1),16);return '#'+[16,8,0].map(s=>Math.round(((a>>s)&255)*.25+((b>>s)&255)*.75).toString(16).padStart(2,'0')).join('');}
+function polygon(g,pts,fill,stroke='#111a17',width=1.5){g.beginPath();pts.forEach((p,i)=>i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y));g.closePath();if(fill){g.fillStyle=propColor(fill);g.fill();}if(stroke){g.strokeStyle=stroke;g.lineWidth=width;g.stroke();}}
+function line(g,a,b,color='#b4a57d',width=1){g.strokeStyle=color;g.lineWidth=width;g.beginPath();g.moveTo(a.x,a.y);g.lineTo(b.x,b.y);g.stroke();}
+function box(g,x,y,w,d,h,color,z=0,kind=null){
+ if(propStyle?.color)color=propStyle.color;if(propStyle?.material&&propStyle.material!=='original')kind=propStyle.material==='metal'?null:propStyle.material;
+ const a=point(x,y,z),b=point(x+w,y,z),c=point(x+w,y+d,z),e=point(x,y+d,z),at=point(x,y,z+h),bt=point(x+w,y,z+h),ct=point(x+w,y+d,z+h),et=point(x,y+d,z+h);
+ const sides=[{pts:[a,b,bt,at],tint:-15},{pts:[b,c,ct,bt],tint:-27},{pts:[c,e,et,ct],tint:-10},{pts:[e,a,at,et],tint:-22}];sides.sort((u,v)=>u.pts.reduce((s,p)=>s+p.y,0)-v.pts.reduce((s,p)=>s+p.y,0));for(const side of sides)polygon(g,side.pts,shade(color,side.tint));polygon(g,[at,bt,ct,et],kind?texture(kind,shade(color,12),seed):shade(color,12));
+ line(g,et,ct,shade(color,35),1);line(g,ct,bt,shade(color,19),1);return{a,b,c,e,at,bt,ct,et};
+}
+function ellipse(g,p,rx,ry,color){g.fillStyle=propColor(color);g.beginPath();g.ellipse(p.x,p.y,rx,ry,0,0,Math.PI*2);g.fill();}
+function shadow(g,x,y,w,d,opacity=.38){const p=point(x+w*.5,y+d*.5);g.save();g.filter='blur(7px)';ellipse(g,{x:p.x+12,y:p.y+9},(w+d)*22,(w+d)*10,`rgba(0,8,11,${opacity})`);g.restore();}
+function paper(g,x,y,z=.02,random=rng(1),color='#b9b28f'){
+ const a=point(x,y,z),b=point(x+.37,y,z),c=point(x+.37,y+.49,z),d=point(x,y+.49,z);polygon(g,[a,b,c,d],color,'#4b5141',.7);
+ for(let i=1;i<5;i++)line(g,point(x+.06,y+.06+i*.07,z+.005),point(x+.12+random()*.16,y+.06+i*.07,z+.005),'#575b4f',.7);
+}
+function wallText(g,text,x,y,width=280){g.save();g.translate(x,y);g.transform(1,.51,0,1,0,0);g.fillStyle='#162524';g.strokeStyle='#a39567';g.lineWidth=2;g.fillRect(0,0,width,30);g.strokeRect(0,0,width,30);g.fillStyle='#cbc096';g.font='bold 14px Georgia';g.textAlign='center';g.fillText(text,width/2,21,width-12);g.restore();}
+function shelfDetails(g,o,color){const {x,y,w,d,h}=o,r=rng(o.seed);for(let level=0;level<4;level++){const z=.2+level*.55;box(g,x,y+d*.82,w,.1,.06,shade(color,10),z);for(let i=0;i<8;i++){const bw=w/10;box(g,x+.09+i*(w/8),y+d*.87,bw,.09,.27+r()*.17,['#7d7553','#5d6c60','#9b9068','#6d5145'][Math.floor(r()*4)],z+.07);}}}
+function desktop(g,o,color){const{x,y,w,d,h}=o;for(const [a,b] of [[.08,.08],[w-.2,.08],[.08,d-.2],[w-.2,d-.2]])box(g,x+a,y+b,.12,.12,h-.12,shade(color,-22));box(g,x,y,w,d,.17,color,h-.17,'wood');box(g,x+w*.67,y+.1,w*.27,d*.8,.62,shade(color,-6),.27);const r=rng(o.seed);paper(g,x+.15,y+.2,h+.025,r);paper(g,x+.4,y+.15,h+.035,r);smallTypewriter(g,x+.76,y+.3,h+.03);lamp(g,x+w-.25,y+.2,h+.02,.7);}
+function smallTypewriter(g,x,y,z){box(g,x,y,.56,.38,.15,'#36423b',z);box(g,x+.02,y,.51,.1,.24,'#303d39',z+.12);paper(g,x+.11,y-.03,z+.3,rng(2));for(let i=0;i<5;i++)for(let j=0;j<3;j++){const p=point(x+.06+i*.09,y+.14+j*.06,z+.17);ellipse(g,p,1.8,1,'#b9b18f');}}
+function lamp(g,x,y,z=0,height=1){const p=point(x,y,z),top=point(x,y,z+height);ellipse(g,p,10,5,'#302e23');line(g,p,top,'#756951',4);ellipse(g,{x:top.x,y:top.y-2},19,8,'#9a8c50');ellipse(g,{x:top.x,y:top.y+3},17,5,'#d9b773');if(state.lights){const gradient=g.createRadialGradient(top.x,top.y+12,2,top.x,top.y+12,60);gradient.addColorStop(0,'#e3bf5e40');gradient.addColorStop(1,'#d4b86800');g.fillStyle=gradient;g.fillRect(top.x-60,top.y-50,120,120);}}
+function drawProp(g,o,theme){
+ if(objectTransform){g.save();g.translate(0,-(o.z||0)*42*objectTransform.sz);drawPropBody(g,{...o,z:0},theme);g.restore();return;}
+ const [w,d,h]=dimensions(o.type),angle=(o.rotation||0)*Math.PI/180;
+ objectTransform={x:o.x,y:o.y,z:o.z,sx:o.w/w,sy:o.d/d,sz:o.h/h,cos:Math.cos(angle),sin:Math.sin(angle)};propStyle=o;
+ try{drawPropBody(g,{...o,w,d,h,z:0},theme);}finally{objectTransform=null;propStyle=null;}
+}
+function drawPropBody(g,o,theme){
+ const{x,y,w,d,h,type}=o,r=rng(o.seed),wood=theme.wood,metal='#61706a';
+ shadow(g,x,y,w,d);
+ if(['desk','workbench','steel'].includes(type)){desktop(g,o,type==='steel'?metal:wood);if(type==='workbench')drawProp(g,{...o,type:'tools',x:x+.5,y:y+.2,z:h},theme);return;}
+ if(['shelf','medicine','files','catalog','cabinet','locker','wardrobe'].includes(type)){
+  box(g,x,y,w,d,h,type==='files'||type==='locker'?metal:wood,0,'wood');
+  if(['shelf','medicine'].includes(type))shelfDetails(g,o,wood);
+  else for(let i=0;i<5;i++){const p=point(x+w*.6,y+d,h*(i+.5)/5);line(g,{x:p.x-16,y:p.y-8},{x:p.x+13,y:p.y+7},'#18221d',1.5);g.fillStyle='#b8b194';g.fillRect(p.x-2,p.y-2,9,3);}
+  return;
+ }
+ if(type==='counter'){box(g,x,y,w,d,h,wood);box(g,x-.05,y-.03,w+.1,d+.06,.14,'#8c876b',h);smallTypewriter(g,x+.3,y+.3,h+.15);return;}
+ if(type==='chair'||type==='stool'||type==='bench'){
+  for(const [a,b]of[[0,0],[w-.1,0],[0,d-.1],[w-.1,d-.1]])box(g,x+a,y+b,.08,.08,.6,wood);
+  box(g,x,y,w,d,.13,type==='stool'?'#664b3f':'#4d5042',.55);if(type!=='stool')box(g,x,y,w,.13,.65,'#4a5043',.65);return;
+ }
+ if(['cell','bars','glass','rail'].includes(type)){
+  box(g,x,y,w,d,.12,metal);if(type==='glass'){polygon(g,[point(x,y,.2),point(x+w,y,.2),point(x+w,y,2.7),point(x,y,2.7)],'#8bafa133','#70897d');line(g,point(x+.3,y,2.4),point(x+1,y,1),'#c6d5b155',2);}
+  const height=type==='rail'?1.1:h;for(let i=0;i<9;i++)line(g,point(x+i*w/8,y,.1),point(x+i*w/8,y,height),type==='glass'?'#596c65':'#212f2b',type==='glass'?2:4);
+  line(g,point(x,y,height),point(x+w,y,height),'#819083',4);if(type==='cell')box(g,x+.8,y-.5,.9,.6,.3,'#555745');return;
+ }
+ if(type==='corkboard'||type==='poster'||type==='map'||type==='keys'){
+  const p=point(x,y,.2);g.save();g.translate(p.x,p.y);g.transform(1,.51,0,1,0,0);g.fillStyle=type==='corkboard'?'#806e46':type==='keys'?'#443d2e':'#a49d7f';g.fillRect(0,-76,74,76);g.strokeStyle='#282b23';g.lineWidth=4;g.strokeRect(0,-76,74,76);
+  for(let i=0;i<7;i++){const px=7+r()*48,py=-68+r()*54;if(type==='keys'){g.strokeStyle='#c0a979';g.beginPath();g.arc(px,py,3,0,7);g.moveTo(px,py+3);g.lineTo(px,py+13);g.stroke();}else{g.fillStyle=['#c9c2a2','#a0aa99','#8e8c74'][i%3];g.fillRect(px,py,12,16);if(type==='corkboard')line(g,{x:12,y:-53},{x:px+5,y:py+6},'#7f3b32',1);}}
+  if(type==='poster'){g.fillStyle='#302d25';g.font='bold 8px monospace';g.fillText('MISSING',7,-62);g.fillText('OCT 1989',5,-8);}g.restore();return;
+ }
+ if(type==='bed'||type==='sofa'||type==='booth'||type==='bath'){
+  const color=type==='booth'?'#774c40':type==='bath'?'#a4aa99':'#737059';box(g,x,y,w,d,.45,wood);box(g,x+.05,y+.05,w-.1,d-.1,.22,color,.45);
+  if(type==='bed'){box(g,x+.15,y+.1,.65,d-.2,.15,'#b7b49c',.68);polygon(g,[point(x+.95,y,.75),point(x+w,y,.75),point(x+w,y+d,.75),point(x+1.1,y+d,.75)],texture('wood','#756b57',o.seed),'#4c5448');}
+  else box(g,x,y,w,.2,.9,color,.45);return;
+ }
+ if(['phone','radio','cassette','typewriter','register','microfilm','tv'].includes(type)){
+  const z=o.z||.08;if(type==='typewriter'){smallTypewriter(g,x,y,z);return;}
+  const large=['tv','microfilm'].includes(type);const hh=large?.8:.28;const b=box(g,x,y,w,d,hh,type==='tv'?wood:'#46564e',z);
+  if(large){polygon(g,[{x:b.ct.x-32,y:b.ct.y+8},{x:b.bt.x-6,y:b.bt.y+8},{x:b.b.x-6,y:b.b.y-8},{x:b.c.x-32,y:b.c.y-8}],'#7e9f9022','#a2b2a0',2);g.fillStyle='#8ea18c';g.fillRect(b.ct.x-13,b.ct.y+17,4,4);}
+  else{for(let i=0;i<6;i++)line(g,point(x+.15+i*.06,y+.15,z+hh+.02),point(x+.15+i*.06,y+.4,z+hh+.02),'#142420',2);if(type==='cassette'){ellipse(g,point(x+.24,y+.22,z+hh+.03),5,3,'#c4c4a0');ellipse(g,point(x+.57,y+.22,z+hh+.03),5,3,'#c4c4a0');}if(type==='phone')box(g,x-.04,y+.02,w+.08,.16,.13,'#263932',z+hh);}
+  return;
+ }
+ if(type==='lamp'){lamp(g,x+.3,y+.3,0,1.7);return;}
+ if(type==='safe'||type==='freezer'||type==='fridge'){
+  box(g,x,y,w,d,h,type==='fridge'?'#969f89':'#4f625c');const p=point(x+w,y+d*.55,h*.55);ellipse(g,p,13,18,'#273c37');ellipse(g,p,8,12,'#8d9886');line(g,{x:p.x-4,y:p.y-4},{x:p.x+4,y:p.y+4},'#1e3530',2);return;
+ }
+ if(['box','crate','suitcase','evidence','cash'].includes(type)){
+  const color=type==='suitcase'?'#594f3b':type==='cash'?'#7c8967':'#8b7752';box(g,x,y,w,d,type==='cash'?.12:.55,color,0,'wood');for(let i=0;i<3;i++)line(g,point(x+w*i/3,y,.57),point(x+w*i/3,y+d,.57),'#393e2c',1);return;
+ }
+ if(type==='paper'||type==='photos'||type==='books'||type==='floorboard'){
+  if(type==='floorboard'){box(g,x,y,w,d,.05,'#302f23');box(g,x+.08,y-.12,w-.1,.17,.12,wood,.07,'wood');}
+  else for(let i=0;i<4;i++){paper(g,x+r()*.4,y+r()*.3,(o.z||0)+.03+i*.035,r,type==='photos'?'#c4c6af':type==='books'?'#9b8665':'#c5bea0');if(type==='photos')box(g,x+.2,y+.15,.21,.18,.01,'#526b60',.07);}
+  return;
+ }
+ if(['stove','sink','laundry','coffee','pie','scale'].includes(type)){
+  box(g,x,y,w,d,.9,type==='coffee'?'#4d625a':'#869185');
+  if(type==='stove')for(let i=0;i<4;i++)ellipse(g,point(x+.2+(i%2)*.4,y+.15+Math.floor(i/2)*.3,.92),10,5,'#253a35');
+  if(type==='sink'){ellipse(g,point(x+w/2,y+d/2,.93),21,11,'#354d47');line(g,point(x+.2,y+.1,.9),point(x+.2,y+.1,1.3),'#bbc4ac',4);}
+  if(type==='laundry')ellipse(g,point(x+w,y+d*.5,.4),14,19,'#324f49');
+  if(type==='pie'||type==='scale')box(g,x+.15,y+.1,w-.3,d-.2,.25,'#b79c65',.9);return;
+ }
+ if(['barrel','tires','engine','turbine','bottles','plant','trash'].includes(type)){
+  const p=point(x+w/2,y+d/2),height=type==='turbine'?1.3:type==='tires'?.65:type==='bottles'?.6:h;
+  const color=type==='barrel'?'#6e5541':type==='plant'?'#6b5b40':type==='tires'?'#25332e':metal;
+  g.fillStyle=shade(color,-14);g.fillRect(p.x-21,p.y-height*42,42,height*42);ellipse(g,p,21,11,shade(color,-14));ellipse(g,{x:p.x,y:p.y-height*42},21,11,shade(color,20));
+  if(type==='turbine'){for(let i=0;i<9;i++)line(g,{x:p.x-18+i*4,y:p.y-5},{x:p.x-18+i*4,y:p.y-40},'#233c39',2);box(g,x+.1,y-.1,.3,.4,1.4,'#5f7e72');}
+  if(type==='tires'||type==='trash')ellipse(g,{x:p.x,y:p.y-height*42},13,6,'#13241e');
+  if(type==='plant')for(let i=0;i<10;i++){const a=r()*6.28;line(g,{x:p.x,y:p.y-35},{x:p.x+Math.cos(a)*30,y:p.y-45-r()*55},'#657253',5);}
+  return;
+ }
+ if(['hooks','tools','gauge','lever','console','pump'].includes(type)){
+  if(type==='hooks'){for(let i=0;i<4;i++){const p=point(x+i*.4,y,2.6);line(g,p,{x:p.x,y:p.y+45},'#a4b0a1',3);g.strokeStyle='#c0bc9f';g.beginPath();g.arc(p.x+5,p.y+47,6,0,Math.PI);g.stroke();}return;}
+  if(type==='tools'){for(let i=0;i<7;i++){const p=point(x+r()*.8,y+r()*.5,(o.z||0)+.05);line(g,p,{x:p.x+12,y:p.y+8},'#9eac9e',3);ellipse(g,{x:p.x,y:p.y},3,2,'#c1b38a');}return;}
+  box(g,x,y,w,d,type==='pump'?1.7:1,metal);for(let i=0;i<4;i++){const p=point(x+w,y+d*(i+.5)/4,.75);ellipse(g,p,7,9,'#b9bea0');line(g,p,{x:p.x+3,y:p.y-4},'#273f39');}
+  if(type==='pump'){const p=point(x+w,y,.7);g.strokeStyle='#172a25';g.lineWidth=5;g.beginPath();g.moveTo(p.x,p.y-40);g.bezierCurveTo(p.x+36,p.y+45,p.x+35,p.y+60,p.x+5,p.y+28);g.stroke();}return;
+ }
+ if(type==='car'){const p=point(x+.9,y+.7);g.save();g.translate(p.x,p.y-18);g.scale(.72*(objectTransform?.sx||1),.72*(objectTransform?.sz||1));drawCar(g,(1+Math.round((o.rotation||0)/45))%8,0);g.restore();return;}
+ if(type==='ruin'||type==='column'||type==='stone'){
+  if(type==='stone'){box(g,x,y,w,d,.2,'#6b7564');return;}
+  for(let row=0;row<(type==='column'?5:3);row++)for(let col=0;col<(type==='column'?1:4);col++){const hh=.35+r()*.15;box(g,x+col*.48+(row%2)*.12,y,.45,.4,hh,shade('#68715f',Math.floor(r()*22)-11),row*.4,'brick');}return;
+ }
+ if(type==='footprints'){for(let i=0;i<8;i++)ellipse(g,point(x+i*.13,y+(i%2)*.2),3,5,'#243a2c99');return;}
+ if(type==='candle'){box(g,x,y,.15,.13,.45,'#b6ac83');const p=point(x,y,.5);ellipse(g,p,3,7,'#e3be63');return;}
+ if(type==='clock'){const p=point(x,y,1);ellipse(g,p,20,24,'#282f24');ellipse(g,p,17,21,'#b9b18c');line(g,p,{x:p.x,y:p.y-14},'#263e36',2);line(g,p,{x:p.x+11,y:p.y+2},'#263e36',2);return;}
+ if(type==='coat'||type==='curtain'){const p=point(x,y,1.8);polygon(g,[{x:p.x-14,y:p.y},{x:p.x+17,y:p.y+4},{x:p.x+24,y:p.y+62},{x:p.x-20,y:p.y+58}],type==='coat'?'#4b5b48':'#6b6150');return;}
+ if(type==='jukebox'){box(g,x,y,w,d,1.65,'#72583e');const p=point(x+w,y+d/2,1.1);g.save();g.shadowColor='#c1916b';g.shadowBlur=12;line(g,{x:p.x,y:p.y-13},{x:p.x,y:p.y+20},'#cca85b',8);g.restore();return;}
+ if(type==='drawer'){box(g,x,y,w,d,.5,wood);const p=point(x+w,y+d/2,.3);g.fillStyle='#c4a66b';g.fillRect(p.x-2,p.y,5,4);return;}
+ box(g,x,y,w,d,h,wood,0,'wood');
+}
+function floor(g,theme,scene){
+ const exterior=scene.kind==='exterior';
+ const pts=[point(0,0,-.14),point(15,0,-.14),point(15,13,-.14),point(0,13,-.14)];
+ polygon(g,pts,texture(exterior?'asphalt':scene.theme==='sarah'||scene.theme==='library'?'wood':'tile',theme.floor,seed));
+ g.save();g.beginPath();pts.forEach((p,i)=>i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y));g.closePath();g.clip();
+ for(let x=0;x<=15;x++)line(g,point(x,0),point(x,13),'#1a2c2638');
+ for(let y=0;y<=13;y++)line(g,point(0,y),point(15,y),'#14251e42');
+ const r=rng(seed^hash(scene.id));for(let i=0;i<140;i++){const x=r()*15,y=r()*13,p=point(x,y);if(exterior){ellipse(g,p,12+r()*36,1+r()*4,'#a8b2a31b');line(g,{x:p.x,y:p.y-2},{x:p.x+20,y:p.y-2},'#d0c28c1a');}else{g.fillStyle='#232c2070';g.fillRect(p.x,p.y,2+r()*7,1+r()*2);if(i%15===0)paper(g,x,y,.01,r,'#a9a68b');}}
+ g.restore();
+}
+function wall(g,a,b,height,color,kind='brick'){
+ const pts=[point(...a),point(...b),point(b[0],b[1],height),point(a[0],a[1],height)];polygon(g,pts,texture(kind,color,seed));line(g,point(a[0],a[1],height),point(b[0],b[1],height),shade(color,40),4);line(g,point(...a),point(...b),'#1c2b24',9);
+}
+function windowOnWall(g,x,y,z,w=1.4,h=1.6,axis='x',bars=false){
+ const a=point(x,y,z),b=point(x+(axis==='x'?w:0),y+(axis==='y'?w:0),z),c=point(x+(axis==='x'?w:0),y+(axis==='y'?w:0),z+h),d=point(x,y,z+h);
+ polygon(g,[a,b,c,d],'#243d43','#151e1d',5);polygon(g,[{x:a.x+4,y:a.y-4},{x:b.x-4,y:b.y-4},{x:c.x-4,y:c.y+4},{x:d.x+4,y:d.y+4}],state.lights?'#ad9c5d66':'#4c625b44','#abb29a44',1);
+ line(g,{x:(a.x+b.x)/2,y:(a.y+b.y)/2},{x:(c.x+d.x)/2,y:(c.y+d.y)/2},'#172b27',4);
+ if(bars)for(let i=1;i<5;i++)line(g,{x:a.x+(b.x-a.x)*i/5,y:a.y+(b.y-a.y)*i/5},{x:d.x+(c.x-d.x)*i/5,y:d.y+(c.y-d.y)*i/5},'#1c2b25',3);
+}
+function pine(g,x,y,height,random){const p=point(x,y);line(g,p,{x:p.x,y:p.y-height},'#24352b',8);for(let i=0;i<5;i++){const yy=p.y-height+i*height*.15,ww=(i+1)*height*.09;polygon(g,[{x:p.x,y:yy-30},{x:p.x+ww,y:yy+33},{x:p.x-ww,y:yy+33}],['#1e352f','#243c31','#2b4133'][Math.floor(random()*3)],'#172c26',1);}}
+function building(g,x,y,w,d,h,color,kind='brick'){
+ wall(g,[x+w,y],[x+w,y+d],h,shade(color,-17),kind);wall(g,[x,y+d],[x+w,y+d],h,color,kind);
+ polygon(g,[point(x,y,h),point(x+w,y,h),point(x+w,y+d,h),point(x,y+d,h)],texture('wood',settings.roof,seed),'#172c25',3);
+ line(g,point(x,y+d,h+.04),point(x+w,y+d,h+.04),shade(color,33),4);
+}
+function gable(g,x,y,w,d,z,rise){
+ polygon(g,[point(x,y,z),point(x+w,y,z),point(x+w,y+d/2,z+rise),point(x,y+d/2,z+rise)],texture('wood',shade(settings.roof,-13),seed),'#1a2c25',3);
+ polygon(g,[point(x,y+d/2,z+rise),point(x+w,y+d/2,z+rise),point(x+w,y+d,z),point(x,y+d,z)],texture('wood',settings.roof,seed),'#1a2c25',3);
+}
+function doorway(g,x,y,w=1.2,h=2.5,z=0,double=false){
+ polygon(g,[point(x,y,z),point(x+w,y,z),point(x+w,y,z+h),point(x,y,z+h)],'#2c4038','#15281f',4);
+ line(g,point(x+.12,y,z+h-.15),point(x+w-.12,y,z+h-.15),'#81947c',2);
+ if(double)line(g,point(x+w/2,y,z),point(x+w/2,y,z+h),'#a09d7c',2);
+ const p=point(x+w*.82,y,z+1.1);ellipse(g,p,3,2,'#c6b079');
+}
+function stairs(g,x,y,w,n=4){for(let i=n-1;i>=0;i--)box(g,x,y+(n-1-i)*.25,w,.3,.12,'#7e8576',i*.12);}
+function archWindow(g,x,y,z,w=1.6,h=2.5){
+ const a=point(x,y,z),b=point(x+w,y,z);g.save();g.translate(a.x,a.y);g.transform(1,22/43,0,1,0,0);g.beginPath();g.moveTo(0,0);g.lineTo(w*43,0);g.lineTo(w*43,-h*42+w*13);g.quadraticCurveTo(w*43/2,-h*42-w*6,0,-h*42+w*13);g.closePath();g.fillStyle=state.lights?'#9da27766':'#304e4a';g.fill();g.strokeStyle='#263b32';g.lineWidth=6;g.stroke();line(g,{x:w*21.5,y:0},{x:w*21.5,y:-h*42+5},'#405c4c',3);line(g,{x:0,y:-h*20},{x:w*43,y:-h*20},'#405c4c',3);g.restore();
+}
+function neon(g,text,p,color='#bd936f',size=23){g.save();g.shadowBlur=state.lights?17:0;g.shadowColor=color;g.fillStyle=color;g.font=`italic bold ${size}px Georgia`;g.fillText(text,p.x,p.y);g.restore();}
+function drawFacade(g,fg,scene,theme){
+ const color=theme.wall,roof=settings.roof;
+ if(scene.theme==='police'){
+  building(g,2,1.3,8,3.9,3.9,color);building(g,10,1.8,3,3.4,2.7,shade(color,-9));
+  building(g,2,.8,2.1,2.3,5.1,shade(color,-5));
+  for(const x of [2.5,5,8])windowOnWall(g,x,5.22,1.2,1.2,1.6,'x',true);
+  for(const x of [10.4,11.7])windowOnWall(g,x,5.22,1.1,.8,1.1,'x',true);
+  doorway(g,6.4,5.25,1.3,2.6);stairs(g,6.1,5.4,1.9);
+  const p=point(3.2,5.25,3.2);wallText(g,theme.sign,p.x,p.y,250);
+  line(fg,point(1.4,5),point(1.4,5,4.5),'#8e9c85',3);polygon(fg,[point(1.4,5,4.5),point(2.6,5,4.5),point(2.5,5,3.7),point(1.4,5,3.8)],'#777b65');
+ }else if(scene.theme==='pharmacy'){
+  building(g,4,.9,6.3,4.1,3.5,color);
+  for(const x of [4.2,6.3])windowOnWall(g,x,5.03,.6,1.8,2.1);
+  doorway(g,8.4,5.05,1.3,2.5,0,true);
+  polygon(fg,[point(3.8,5,2.9),point(10.5,5,2.9),point(10.5,6.1,2.55),point(3.8,6.1,2.55)],'#62785b','#344d36',2);
+  for(let x=4;x<10.4;x+=.55)line(fg,point(x,5,2.93),point(x,6.1,2.57),'#b3b69a77',4);
+  const p=point(9.6,5.08,3.6);fg.save();fg.shadowColor='#7eaf70';fg.shadowBlur=22;fg.fillStyle='#9bb77e';fg.fillRect(p.x-8,p.y-29,16,58);fg.fillRect(p.x-27,p.y-8,54,16);fg.restore();
+  const s=point(4.2,5.07,3.25);wallText(g,theme.sign,s.x,s.y,160);
+ }else if(scene.theme==='library'){
+  building(g,2.2,1.4,10.5,4.5,5.2,color);
+  for(const x of [2.8,5.2,9.8])archWindow(g,x,5.93,.8,1.8,3.5);
+  doorway(g,7.3,6,1.8,3.1,0,true);stairs(g,6.8,6.1,2.8,5);
+  const a=point(6.6,6,5.2),b=point(10.1,6,5.2),c=point(8.35,6,6.4);polygon(g,[a,b,c],'#969a83','#354c3d',4);
+  for(const x of [6.7,10])box(g,x,6,.22,.32,4.1,'#9a9e85');
+  const p=point(2.6,5.97,4.55);wallText(g,theme.sign,p.x,p.y,235);
+ }else if(scene.theme==='registry'){
+  building(g,3,1.5,8.2,4.1,5.6,color);
+  for(const x of [3.6,6.5,9.3]){windowOnWall(g,x,5.64,3.2,1.2,1.6);windowOnWall(g,x,5.64,.7,1.2,1.9,'x',true);}
+  for(const x of [4.5,5.7,8.2,9.4])box(g,x,6.1,.25,.45,3.1,'#9e9f88');
+  box(g,4.2,5.7,5.8,1,.28,'#8b917a',3.1);doorway(g,6.6,5.68,1.5,2.6,0,true);stairs(g,4.2,6.35,5.8,3);
+  const p=point(3.4,5.68,5);wallText(g,theme.sign,p.x,p.y,250);
+  const q=point(8.5,5.7,1.5);polygon(g,[q,{x:q.x+19,y:q.y+10},{x:q.x+19,y:q.y-15},{x:q.x,y:q.y-25}],'#ada276');
+ }else if(scene.theme==='diner'){
+  building(g,1.4,2.4,12,2.5,2.6,color,'metal');
+  for(const x of [1.8,4,6.2,10.5])windowOnWall(g,x,4.94,.5,1.8,1.7);
+  doorway(g,8.4,4.96,1.1,2.3,0,true);
+  for(const z of [.25,.43,2.33])line(g,point(1.4,4.98,z),point(13.4,4.98,z),z===2.33?'#a86655':'#b8c0a9',5);
+  polygon(fg,[point(1.1,2.2,2.65),point(13.6,2.2,2.65),point(13.6,5.1,2.65),point(1.1,5.1,2.65)],texture('metal',roof,seed),'#afb7a2',3);
+  const p=point(4.5,5.12,3);neon(fg,theme.sign,p,'#c59780',20);
+  for(const x of [2,5,8,11])box(g,x,6,.35,.25,.6,'#8e9c85');
+ }else if(scene.theme==='motel'){
+  building(g,2,.8,10,2.9,5.4,color);building(g,2,3.7,2.4,6.4,5.4,shade(color,-12));
+  for(const level of [0,2.7]){
+   for(let i=0;i<4;i++){const x=4.8+i*1.75;doorway(g,x,3.74,.85,2.05,level);const p=point(x+.2,3.76,level+2.2);g.fillStyle='#d2be8d';g.font='9px monospace';g.fillText(String((level?201:101)+i),p.x,p.y);}
+   for(let i=0;i<3;i++)doorway(g,2.35,5+i*1.55,1.2,2.05,level);
+  }
+  box(g,4.5,3.7,7.8,.8,.12,'#7b806b',2.7);box(g,4.3,4.5,.6,5.5,.12,'#747b64',2.7);
+  for(let x=4.6;x<12;x+=.7)line(fg,point(x,4.4,2.8),point(x,4.4,3.6),'#515f4e',2);
+  line(fg,point(4.6,4.4,3.6),point(12,4.4,3.6),'#96a082',3);
+  line(fg,point(12.8,8.5),point(12.8,8.5,5.4),'#867955',8);
+  const p=point(12.8,8.5,5.4);fg.fillStyle='#2c3130';fg.fillRect(p.x-86,p.y-44,166,78);neon(fg,'NORTHVALE',{x:p.x-78,y:p.y-19},'#aa81b2',18);neon(fg,'MOTEL',{x:p.x-65,y:p.y+15},'#d1ab72',27);
+ }else if(scene.theme==='meatpacking'){
+  building(g,1.5,1,12,4.6,4,color,'metal');
+  for(let x=1.6;x<13.4;x+=.4)line(g,point(x,5.63,.2),point(x,5.63,3.7),'#273f3566',2);
+  for(const x of [1.5,5.5,9.5]){polygon(g,[point(x,1,4),point(x+4,1,5.1),point(x+4,5.6,5.1),point(x,5.6,4)],texture('metal',roof,seed),'#273f35',3);}
+  for(const x of [3,8.8]){doorway(g,x,5.66,2.8,3.1);for(let z=.4;z<3;z+=.3)line(g,point(x,5.7,z),point(x+2.8,5.7,z),'#6f8276',2);box(g,x-.3,5.8,3.5,1.1,.5,'#738174');}
+  for(const x of [11.3,12.4])box(g,x,1,.45,.6,6.1,'#65776c');
+  const p=point(3.4,5.7,3.55);wallText(g,theme.sign,p.x,p.y,280);
+ }else if(scene.theme==='scrapyard'){
+  building(g,1.6,1.3,5.4,4.5,3.2,color,'metal');
+  polygon(g,[point(2,5.83),point(6.6,5.83),point(6.6,5.83,2.6),point(2,5.83,2.6)],'#0d221b','#54614a',4);
+  for(let x=1.9;x<6.8;x+=.4)line(g,point(x,5.84,2.65),point(x,5.84,3.05),'#b1a67c',3);
+  building(g,8,1.8,2.7,2.6,2.4,'#746f54','wood');windowOnWall(g,8.3,4.42,.8,1.5,1.1);
+  for(let x=7.2;x<14.2;x+=.6)box(g,x,6,.17,.14,1.8,'#64634e');
+  const a=point(11,9),b=point(11,9,5),c=point(7,7,4.6);line(fg,a,b,'#a28a54',12);line(fg,b,c,'#918052',12);line(fg,c,point(7,7,1.6),'#a7ae96',2);ellipse(fg,point(7,7,1.5),30,13,'#4b6252');
+  const p=point(2,5.9,2.85);wallText(g,theme.sign,p.x,p.y,190);
+ }else if(scene.theme==='sarah'){
+  building(g,3,1,6.6,4.2,4.1,color,'wood');gable(g,2.8,.8,7,4.6,4.15,1.6);
+  for(const x of [3.5,7.7])windowOnWall(g,x,5.23,1.2,1.3,1.6);
+  doorway(g,5.8,5.25,1.2,2.6);stairs(g,5.5,6.45,1.8,3);
+  box(g,3,5.3,6.6,1.4,.35,'#85856b');
+  for(const x of [3.2,6.6,9.4])box(g,x,6.5,.12,.12,2.9,'#9b9b7d');
+  polygon(fg,[point(2.8,5.15,3),point(9.8,5.15,3),point(9.8,6.8,2.7),point(2.8,6.8,2.7)],texture('wood',shade(roof,15),seed),'#263e2b',2);
+  line(fg,point(3.2,6.55,.9),point(5.2,6.55,.9),'#9c9d80',3);
+  box(g,8.4,2,.5,.6,6.1,'#7e6a51');
+ }
+}
+function architecture(g,fg,scene,theme){
+ if(scene.theme==='ruins'){
+  const r=rng(seed);for(const [x,y]of[[0,0],[2,-1],[5,-1],[12,0],[15,3],[1,9]])pine(g,x,y,170+r()*80,r);
+  wall(g,[1,1],[6,1],1.3,'#596450');wall(g,[1,1],[1,7],1.7,'#53624b');return;
+ }
+ if(scene.kind==='exterior'){drawFacade(g,fg,scene,theme);return;}
+ wall(g,[0,0],[14,0],3.8,theme.wall);wall(g,[0,0],[0,13],3.8,shade(theme.wall,-10));
+ for(const x of [2,6.8,11])windowOnWall(g,x,.02,1.4,1.7,1.8,'x',scene.theme==='police');
+ for(const y of [2,6.5,10])windowOnWall(g,.02,y,1.4,1.6,1.8,'y');
+ if(['police','registry','library','meatpacking','motel','gasstation'].includes(scene.theme)){
+  wall(g,[10.8,0],[10.8,4.1],1.2,shade(theme.wall,-5));
+  polygon(g,[point(10.8,0,1.25),point(10.8,4,1.25),point(10.8,4,3.5),point(10.8,0,3.5)],'#77958b20','#708676',3);
+  for(let i=0;i<5;i++)line(g,point(10.8,i,1.3),point(10.8,i,3.5),'#435a4d',3);
+ }
+ if(scene.theme==='sarah'||scene.theme==='suspect'){wall(g,[0,6],[4.5,6],1.35,'#7b7560');wall(g,[9.7,0],[9.7,5.7],1.6,'#747461');}
+ if(scene.theme==='dam'){
+  wall(g,[0,0],[14,0],4.4,'#536562');for(let i=0;i<4;i++)box(g,10.8,i*2.5,.4,1.8,1.4,'#3c5c53');
+  polygon(g,[point(12,0),point(16,0),point(16,13),point(12,13)],'#334c4d','#1b3433',3);
+  for(let y=0;y<13;y+=.6)line(g,point(12,y),point(15.7,y),'#69828128',2);
+  for(let y=0;y<12;y+=2.7){box(g,13.2,y,.7,1.9,3.6,'#78887a');box(g,12.8,y+.1,.4,1.5,2.7,'#536c63');}
+  line(fg,point(13.55,0,3.7),point(13.55,12,3.7),'#a3aa90',5);
+  for(let y=0;y<12;y+=.7)line(fg,point(13.55,y,3.7),point(13.55,y,4.4),'#566f61',2);
+ }
+ if(scene.theme==='gasstation'){
+  for(const x of [5.4,10.8])box(fg,x,7.1,.16,.16,3.4,'#6f775f');
+  polygon(fg,[point(5,6.7,3.5),point(11.4,6.7,3.5),point(11.4,10.5,3.5),point(5,10.5,3.5)],texture('wood','#526c5c',seed),'#182b23',3);
+ }
+ const p=point(4.5,0,3.3);wallText(fg,theme.sign,p.x,p.y,280);
+}
+function foreground(g,scene){
+ if(scene.kind==='character'||scene.kind==='vehicle')return;
+ if(scene.kind==='exterior'){
+  if(scene.theme!=='ruins')for(const [x,y]of[[1,7],[13.5,10]]){
+   const p=point(x,y),top=point(x,y,3.8);line(g,p,top,'#465d4e',7);line(g,top,{x:top.x+27,y:top.y-4},'#60735d',5);ellipse(g,{x:top.x+27,y:top.y},16,6,state.lights?'#c8a463':'#68745e');
+   if(state.lights){const glow=g.createRadialGradient(top.x+27,top.y,2,top.x+27,top.y,95);glow.addColorStop(0,'#dab36b45');glow.addColorStop(1,'#c69b4d00');g.fillStyle=glow;g.fillRect(top.x-70,top.y-95,190,190);}
+  }
+  const r=rng(seed+96);for(let i=0;i<5;i++){const x=130+r()*1350,y=300+r()*360,glow=g.createRadialGradient(x,y,20,x,y,220);glow.addColorStop(0,'#8fa5a00d');glow.addColorStop(1,'#80969700');g.fillStyle=glow;g.fillRect(x-220,y-220,440,440);}return;
+ }
+ for(const [x,y]of[[2.5,2.5],[10.7,3.2]]){
+  const p=point(x,y,4.1),q=point(x+2.4,y,4.1);line(g,{x:p.x,y:0},p,'#233a30',3);line(g,{x:q.x,y:0},q,'#233a30',3);g.save();g.shadowColor='#e1d294';g.shadowBlur=state.lights?20:0;line(g,p,q,'#222f25',14);line(g,{x:p.x,y:p.y+3},{x:q.x,y:q.y+3},state.lights?'#dfd7a6':'#7c8976',7);g.restore();
+ }
+ if(scene.kind!=='exterior'){
+  const p=point(7,6,4.2);line(g,{x:p.x,y:0},p,'#344435',5);ellipse(g,p,25,13,'#6f7154');
+  for(let i=0;i<4;i++){const a=i*Math.PI/2+.4;polygon(g,[{x:p.x+Math.cos(a)*12,y:p.y+Math.sin(a)*6},{x:p.x+Math.cos(a+.14)*110,y:p.y+Math.sin(a+.14)*53},{x:p.x+Math.cos(a+.4)*112,y:p.y+Math.sin(a+.4)*53},{x:p.x+Math.cos(a+.8)*16,y:p.y+Math.sin(a+.8)*8}],'#62674a','#263d2b',2);}ellipse(g,p,17,8,'#808069');
+ }
+}
+function lighting(g,scene){
+ if(!state.lights)return;
+ g.save();g.globalCompositeOperation='multiply';const shadeGradient=g.createLinearGradient(0,0,1600,900);shadeGradient.addColorStop(0,'#819187');shadeGradient.addColorStop(.55,'#c5c2a1');shadeGradient.addColorStop(1,'#617879');g.fillStyle=shadeGradient;g.fillRect(0,0,1600,900);
+ g.globalCompositeOperation='screen';for(const [x,y,r,color]of[[530,280,280,'#c5a75a40'],[1080,350,330,'#bf9f6b32'],[760,560,240,'#91af951c']]){const a=g.createRadialGradient(x,y,0,x,y,r);a.addColorStop(0,color);a.addColorStop(1,'#00000000');g.fillStyle=a;g.fillRect(x-r,y-r,r*2,r*2);}g.restore();
+ const r=rng(seed+33);g.fillStyle='#d8cda50e';for(let i=0;i<450;i++)g.fillRect(r()*1600,r()*900,1,1);
+}
+function drawCar(g,direction,frame){
+ const angle=[Math.PI/2,Math.PI*.75,Math.PI,Math.PI*1.25,Math.PI*1.5,Math.PI*1.75,0,Math.PI*.25][direction];
+ const project=(x,y,z=0)=>{const a=x*Math.cos(angle)-y*Math.sin(angle),b=x*Math.sin(angle)+y*Math.cos(angle);return{x:a*42,y:b*22-z*38};};
+ const cuboid=(x,y,w,d,h,color,z=0)=>{const a=project(x,y,z),b=project(x+w,y,z),c=project(x+w,y+d,z),e=project(x,y+d,z),at=project(x,y,z+h),bt=project(x+w,y,z+h),ct=project(x+w,y+d,z+h),et=project(x,y+d,z+h);polygon(g,[a,b,bt,at],shade(color,-18));polygon(g,[b,c,ct,bt],shade(color,-30));polygon(g,[c,e,et,ct],shade(color,-6));polygon(g,[e,a,at,et],shade(color,-10));polygon(g,[at,bt,ct,et],shade(color,14));};
+ ellipse(g,{x:0,y:8},100,38,'#020d1033');
+ const tires=[[-1.15,-.69],[-1.15,.69],[1.05,-.69],[1.05,.69]].sort((a,b)=>project(...a).y-project(...b).y);
+ for(const [x,y]of tires){const p=project(x,y,.15);ellipse(g,p,13,17,'#101a18');ellipse(g,p,7,10,'#7b8a7d');}
+ cuboid(-1.85,-.65,3.7,1.3,.5,'#afb1a0',.2);cuboid(-1.75,-.62,1.1,1.24,.2,'#263b36',.7);cuboid(.8,-.62,.95,1.24,.2,'#2b3b36',.7);cuboid(-.6,-.57,1.4,1.14,.6,'#5b736b',.7);cuboid(-.5,-.6,1.2,1.2,.12,'#b4b3a1',1.3);
+ for(const x of [-.27,.05])cuboid(x,-.35,.26,.7,.12,x<0?'#81504b':'#4f6887',1.43);
+ const p=project(1.87,0,.55);g.fillStyle='#b5c2aa';g.fillRect(p.x-3,p.y-2,7,4);
+ for(const y of [-.66,.66]){const p=project(0,y,.64);g.save();g.translate(p.x,p.y);g.fillStyle='#5e6245';g.font='bold 8px monospace';g.textAlign='center';g.fillText('POLICE',0,0);g.restore();}
+}
+function drawPerson(g,id,direction,frame){
+ const [coat,pants,skin]=PALETTES[id],walk=frame>0,phase=(frame-1)/5*Math.PI*2;
+ const angle=[Math.PI/2,Math.PI*.75,Math.PI,Math.PI*1.25,Math.PI*1.5,Math.PI*1.75,0,Math.PI*.25][direction];
+ const side=Math.cos(angle),frontness=Math.sin(angle),bob=walk?Math.abs(Math.sin(phase))*2:0;
+ g.save();g.transform(.67+.33*Math.abs(frontness),side*.035,0,1,0,0);
+ ellipse(g,{x:0,y:0},25,9,'#05101233');
+ const limb=(x,y,dx,dy,color,width)=>{line(g,{x,y},{x:x+dx,y:y+dy},shade(color,-20),width+3);line(g,{x,y},{x:x+dx,y:y+dy},color,width);};
+ for(const sign of [-1,1]){const stride=walk?Math.sin(phase)*sign*13:0;const lx=sign*9+stride*side*.7,ly=-39+bob;limb(sign*8,ly,stride*side*.7,31+stride*frontness*.2,pants,12);ellipse(g,{x:lx+side*3,y:-5+stride*frontness*.2},10,5,'#292e25');}
+ const long=['alex','helen','clara','viktor','coroner'].includes(id),top=-91+bob,bottom=long?-31:-48;
+ polygon(g,[{x:-15,y:top},{x:15,y:top+1},{x:20,y:bottom},{x:-21,y:bottom}],coat,shade(coat,-30),2);
+ polygon(g,[{x:-15,y:top+5},{x:-3,y:top+10},{x:-6,y:bottom},{x:-21,y:bottom}],shade(coat,-15),null);line(g,{x:1,y:top+5},{x:1,y:bottom-2},shade(coat,25),1);
+ for(let i=0;i<4;i++)ellipse(g,{x:3,y:top+18+i*9},1.3,1.6,'#b2a078');
+ if(frontness>-.5){polygon(g,[{x:-8,y:top},{x:1,y:top+18},{x:10,y:top}],shade(coat,32),shade(coat,-25),1);}
+ const rearArm=side>=0?-1:1;for(const sign of [rearArm,-rearArm]){const swing=walk?Math.sin(phase)*-sign*9:0;const ax=sign*18;limb(ax,top+8,sign*4+swing*side,35+swing*frontness,shade(coat,sign===rearArm?-18:4),11);ellipse(g,{x:ax+sign*4+swing*side,y:top+45+swing*frontness},5,6,skin);}
+ const head={x:side*3,y:top-17};ellipse(g,{x:head.x-1,y:head.y},13,18,shade(skin,-20));ellipse(g,{x:head.x+3,y:head.y-2},10,16,skin);
+ const hair=id==='clara'||id==='ruth'?'#655e4a':id==='sam'?'#554b36':'#413b2b';ellipse(g,{x:head.x,y:head.y-12},14,9,hair);
+ if(frontness<-.35){ellipse(g,{x:head.x,y:head.y-1},13,15,hair);line(g,{x:head.x-7,y:head.y+7},{x:head.x+6,y:head.y+13},shade(hair,15),2);}
+ else{const eyeY=head.y-1;if(side<.8)line(g,{x:head.x-7+side*3,y:eyeY},{x:head.x-3+side*4,y:eyeY-1},'#342f26',1.5);if(side>-.8)line(g,{x:head.x+4+side*2,y:eyeY},{x:head.x+8+side*2,y:eyeY+1},'#342f26',1.5);line(g,{x:head.x+side*4,y:eyeY+2},{x:head.x+side*10,y:eyeY+7},shade(skin,-40),1);line(g,{x:head.x-3+side*4,y:head.y+11},{x:head.x+5+side*4,y:head.y+11},shade(skin,-50),1);if(['sam','deputy','viktor'].includes(id))line(g,{x:head.x-5,y:head.y+8},{x:head.x+7,y:head.y+9},hair,id==='sam'?5:2);}
+ if(['clara','coroner'].includes(id)&&frontness>-.35){g.strokeStyle='#313d32';g.lineWidth=1;g.strokeRect(head.x-10,head.y-4,8,6);g.strokeRect(head.x+2,head.y-4,8,6);line(g,{x:head.x-2,y:head.y-1},{x:head.x+2,y:head.y-1},'#313d32');}
+ if(id==='sam'){ellipse(g,{x:head.x,y:head.y-15},15,6,'#6e7256');line(g,{x:head.x,y:head.y-13},{x:head.x+side*18,y:head.y-9},'#858467',5);}
+ if(id==='helen'){line(g,{x:-12,y:top+2},{x:12,y:top+5},'#9f8b72',7);line(g,{x:7,y:top+5},{x:12,y:top+29},'#9f8b72',6);}
+ if(id==='ruth'||id==='deputy'){ellipse(g,{x:-8,y:top+20},4,5,'#b4a26b');line(g,{x:-18,y:-48},{x:18,y:-48},'#3d4131',5);}
+ if(id==='coroner'){polygon(g,[{x:-7,y:top+2},{x:0,y:top+31},{x:7,y:top+1}],'#5d726b',null);}
+ // Fine irregular strokes make the silhouettes less mechanically flat.
+ const r=rng(hash(id)+direction*17+frame);for(let i=0;i<35;i++){const xx=(r()-.5)*28,yy=top+r()*(bottom-top);line(g,{x:xx,y:yy},{x:xx+2,y:yy+3},i%2?'#c6b99b12':'#101b1618',.7);}
+ g.restore();
+}
+function spriteMetadata(scene){const vehicle=scene.kind==='vehicle';return{columns:8,rows:vehicle?1:7,frameWidth:vehicle?256:192,frameHeight:192,directions:['S','SW','W','NW','N','NE','E','SE'],animations:vehicle?{idle:{row:0,frames:1}}:{idle:{row:0,frames:1},walk:{rows:[1,2,3,4,5,6],fps:9}},layout:'columns = directions; rows = animation frames',anchor:{x:.5,y:vehicle?.62:.91}};}
+function buildLayers(scene=current){
+ const sprite=scene.kind==='character'||scene.kind==='vehicle';
+ const meta=sprite?spriteMetadata(scene):null;
+ const width=sprite?meta.columns*meta.frameWidth:1600,height=sprite?meta.rows*meta.frameHeight:900;
+ baseCanvas.width=frontCanvas.width=width;baseCanvas.height=frontCanvas.height=height;
+ base=baseCanvas.getContext('2d');front=frontCanvas.getContext('2d');
+ if(sprite){
+  for(let row=0;row<meta.rows;row++)for(let col=0;col<8;col++){base.save();base.beginPath();base.rect(col*meta.frameWidth,row*meta.frameHeight,meta.frameWidth,meta.frameHeight);base.clip();base.translate(col*meta.frameWidth+meta.frameWidth*meta.anchor.x,row*meta.frameHeight+meta.frameHeight*meta.anchor.y);if(scene.kind==='vehicle')drawCar(base,col,row);else{base.scale(1.05,1.05);drawPerson(base,scene.theme,col,row);}base.restore();}
+ }else{
+  const theme=renderTheme(scene);
+  const bg=base.createRadialGradient(800,400,90,800,400,900);bg.addColorStop(0,'#2a3931');bg.addColorStop(1,'#071116');base.fillStyle=bg;base.fillRect(0,0,width,height);
+  floor(base,theme,scene);if(settings.showArchitecture)architecture(base,front,scene,theme);
+  if(settings.showProps)for(const object of [...objects].sort((a,b)=>a.sortY-b.sortY))drawProp(base,object,theme);
+  lighting(base,scene);if(settings.showOverhead)foreground(front,scene);else front.clearRect(0,0,width,height);
+  const vignette=base.createRadialGradient(800,490,180,800,490,860);vignette.addColorStop(0,'#01090a00');vignette.addColorStop(1,'#01090ab3');base.fillStyle=vignette;base.fillRect(0,0,width,height);
+ }
+ art.width=width;art.height=height;
+ $('.canvas-wrap').classList.toggle('checker',sprite||state.layer==='foreground');
+}
+function rain(g,time,width,height,scene){
+ if(!state.rain||scene.kind==='character'||scene.kind==='vehicle'||state.layer==='foreground')return;
+ const r=rng(seed+91);g.save();
+ if(scene.kind!=='exterior'){
+  g.beginPath();for(const x of [2,6.8,11]){const a=point(x,0,1.4),b=point(x+1.7,0,1.4),c=point(x+1.7,0,3.2),d=point(x,0,3.2);g.moveTo(a.x,a.y);g.lineTo(b.x,b.y);g.lineTo(c.x,c.y);g.lineTo(d.x,d.y);g.closePath();}g.clip();
+ }
+ g.strokeStyle='#b4c9cb52';g.lineWidth=.8;g.beginPath();for(let i=0;i<state.rainPower*520;i++){const speed=190+r()*200;const x=((r()*width+time*55)%width);const y=((r()*height+time*speed)%height);g.moveTo(x,y);g.lineTo(x-7,y+14+r()*12);}g.stroke();g.restore();
+}
+function objectHull(o){return footprint(o).map(p=>point(p.x,p.y,o.z));}
+function hitHull(o){const pts=footprint(o).flatMap(p=>[point(p.x,p.y,o.z),point(p.x,p.y,o.z+o.h)]).sort((a,b)=>a.x-b.x||a.y-b.y),cross=(a,b,c)=>(b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x);const half=list=>{const out=[];for(const p of list){while(out.length>1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}return out;};return [...half(pts).slice(0,-1),...half([...pts].reverse()).slice(0,-1)];}
+function inPoly(p,poly){let hit=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++)if((poly[i].y>p.y)!==(poly[j].y>p.y)&&p.x<(poly[j].x-poly[i].x)*(p.y-poly[i].y)/(poly[j].y-poly[i].y)+poly[i].x)hit=!hit;return hit;}
+function drawSelection(g){
+ if(state.debug)for(const o of objects){polygon(g,objectHull(o),o.solid?'#cf806219':'#a78cdb19',o.solid?'#c8a278aa':'#a683d9aa',1);}
+ if(selected){const poly=objectHull(selected);g.save();g.shadowColor='#9b63dc';g.shadowBlur=15;polygon(g,poly,'#7b2cbf35','#b291eb',2.5);const p=point(selected.x,selected.y,selected.z+selected.h+.2);g.font='12px system-ui';g.fillStyle='#eee5cf';g.fillText(selected.name,p.x,p.y);g.restore();}
+}
+function paint(time=0){
+ ctx.clearRect(0,0,art.width,art.height);
+ if(state.layer!=='foreground')ctx.drawImage(baseCanvas,0,0);
+ rain(ctx,time,art.width,art.height,current);
+ if(state.layer!=='base')ctx.drawImage(frontCanvas,0,0);
+ if(state.layer!=='foreground')drawSelection(ctx);
+}
+function describeObject(o){
+ if(!o)return 'Selecione um objeto na imagem ou na lista.';
+ return `${o.name}\nID: ${o.id}\nPosição: x ${o.x} · y ${o.y} · z ${o.z}\nVolume: ${o.w} × ${o.d} × ${o.h}\nColisão: ${o.solid?'sólido':'livre / detalhe examinável'}\nÂncora projetada: ${Math.round(point(o.x,o.y,o.z).x)}, ${Math.round(point(o.x,o.y,o.z).y)} px\nInteração: examinar`;
+}
+function selectObject(o){selected=o||null;$('#object').value=o?.id||'';$('#object-info').textContent=describeObject(o);$('#inspector').hidden=!o;if(o){for(const field of ['name','x','y','z','w','d','h','rotation'])$('#edit-'+field).value=o[field]??0;$('#edit-solid').checked=o.solid;$('#edit-color').value=o.color||THEMES[current.theme].wood;$('#edit-material').value=o.material||'original';}paint(frameTime);}
+function refreshEditor(){
+ const id=selected?.id;updateDepths();buildLayers();
+ $('#object').replaceChildren(new Option('Selecionar objeto…',''),...objects.map(o=>new Option(o.name+' · '+o.id.split(':')[1],o.id)));
+ $('#object').disabled=!objects.length;selectObject(objects.find(o=>o.id===id));
+ $('#dimensions').textContent=`${art.width} × ${art.height} · ${current.kind==='character'?'8 direções / 7 poses':current.kind==='vehicle'?'8 direções':objects.length+' objetos'}`;
+ $('#undo').disabled=!history().past.length;$('#redo').disabled=!history().future.length;
+ for(const [id,key]of[['wall-color','wall'],['floor-color','floor'],['roof-color','roof'],['sign-text','sign']])$('#'+id).value=settings[key];
+ for(const [id,key]of[['show-architecture','showArchitecture'],['show-overhead','showOverhead'],['show-props','showProps']])$('#'+id).checked=settings[key];
+}
+function rebuild(){
+ seed=Math.max(1,Math.min(2147483647,Math.floor(Number($('#seed').value)||1989)));$('#seed').value=seed;
+ const doc=docFor(current,seed);objects=doc.objects;settings=doc.settings;selected=null;placing=null;art.classList.remove('placing');
+ refreshEditor();
+ $('#scene-title').textContent=current.name;
+ $('#dimensions').textContent=`${art.width} × ${art.height} · ${current.kind==='character'?'8 direções / 7 poses':current.kind==='vehicle'?'8 direções':objects.length+' objetos'}`;
+ $('#prompt').value=current.prompt;
+ $('#object-info').textContent=objects.length?describeObject(null):JSON.stringify(spriteMetadata(current),null,2);
+ const env=SCENES.filter(s=>s.kind!=='character'&&s.kind!=='vehicle');const count=env.reduce((sum,s)=>sum+makeObjects(s,seed).length,0);
+ $('#catalog-stats').textContent=`${SCENES.length} presets: ${env.length} ambientes, 8 personagens e 1 viatura. ${count} objetos examináveis distribuídos pelos ambientes; ${new Set(Object.values(THEMES).flatMap(t=>t.props)).size} tipos de props.`;
+ const sprite=current.kind==='character'||current.kind==='vehicle';$('#layer').disabled=sprite;$('#resolution').disabled=sprite;$('.editor-tools').hidden=sprite;
+ if(sprite){state.layer='composite';$('#layer').value='composite';}
+ $('#status').textContent=sprite?'Grade limpa com fundo transparente. Linha 0: idle; linhas seguintes: ciclo de caminhada.':'Arraste para mover. Escolha um item no catálogo para colocá-lo no piso. Alterações são preservadas ao trocar de ambiente.';
+ renderPalette();
+ paint(frameTime);
+}
+function metadata(scene=current){
+ const sprite=scene.kind==='character'||scene.kind==='vehicle';
+ return{format:'northvale-asset-v1',id:scene.id,name:scene.name,seed,kind:scene.kind,width:sprite?art.width:Number(state.resolution),height:sprite?art.height:Math.round(Number(state.resolution)*9/16),prompt:scene.prompt,layer:state.layer,rain:{enabled:state.rain,intensity:state.rainPower,snapshotTime:0},lighting:state.lights,
+  ...(sprite?{spritesheet:spriteMetadata(scene)}:{settings:{...settings},architectureProfile:FACADE_PROFILES[scene.theme]?.name||scene.theme,projection:{type:'isometric',origin:{x:800,y:205},tileHalfWidth:43,tileHalfHeight:22,heightScale:42,referenceWidth:1600,referenceHeight:900,exportScale:Number(state.resolution)/1600},walkable:[{x:0,y:0},{x:15,y:0},{x:15,y:13},{x:0,y:13}],objects:objects.map(o=>({...o,action:'examine',screenAnchor:point(o.x,o.y,o.z),collision:o.solid?footprint(o):null}))})};
+}
+function thumbnail(type){
+ const c=document.createElement('canvas');c.width=104;c.height=62;const g=c.getContext('2d'),[w,d,h]=dimensions(type),o={type,x:0,y:0,z:0,w,d,h,rotation:0,seed:hash(type)};
+ const hull=hitHull(o),minX=Math.min(...hull.map(p=>p.x)),maxX=Math.max(...hull.map(p=>p.x)),minY=Math.min(...hull.map(p=>p.y)),maxY=Math.max(...hull.map(p=>p.y)),s=Math.min(85/Math.max(40,maxX-minX),48/Math.max(40,maxY-minY));
+ g.translate(52,30);g.scale(s,s);g.translate(-(minX+maxX)/2,-(minY+maxY)/2);drawProp(g,o,THEMES[current.theme]||THEMES.police);return c;
+}
+function renderPalette(){
+ const category=$('#prop-category').value,query=$('#prop-search').value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(),suggested=THEMES[current.theme]?.props||[];
+ const list=PROP_TYPES.filter(type=>{const name=LABELS[type].normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();return name.includes(query)&&(category==='all'||category==='theme'&&suggested.includes(type)||category==='furniture'&&FURNITURE.has(type)||category==='clues'&&CLUES.has(type)||category==='equipment'&&EQUIPMENT.has(type)||category==='decoration'&&!FURNITURE.has(type)&&!CLUES.has(type)&&!EQUIPMENT.has(type));});
+ const fragment=document.createDocumentFragment();for(const type of list){const button=document.createElement('button');button.className='prop-choice';button.dataset.type=type;button.title=`Colocar ${LABELS[type]}`;button.setAttribute('aria-pressed',String(placing===type));button.append(thumbnail(type),document.createTextNode(LABELS[type]));button.onclick=()=>{placing=type;selectObject(null);art.classList.add('placing');$('#placement-hint').textContent=`${LABELS[type]}: clique no piso para colocar. Esc cancela.`;for(const b of $('#palette').querySelectorAll('button'))b.setAttribute('aria-pressed',String(b.dataset.type===type));};fragment.append(button);}
+ $('#palette').replaceChildren(fragment);if(!list.length)$('#palette').textContent='Nenhum item com esse filtro.';
+}
+function cancelPlacement(){placing=null;art.classList.remove('placing');$('#placement-hint').textContent='Selecione e arraste um objeto. Escolha um item para adicionar.';for(const b of $('#palette').querySelectorAll('button'))b.setAttribute('aria-pressed','false');}
+function clamp(n,min,max){return Math.min(max,Math.max(min,n));}
+function snap(n){return $('#snap').checked?Math.round(n*4)/4:Math.round(n*1000)/1000;}
+function addObject(type,x,y){
+ if(!editable())return;const before=serializeEdit(),[w,d,h]=dimensions(type);let index=1;while(objects.some(o=>o.id===`${current.id}:added-${type}-${index}`))index++;
+  const o={id:`${current.id}:added-${type}-${index}`,type,name:LABELS[type],x:clamp(snap(x),0,15),y:clamp(snap(y),0,13),z:0,w,d,h,rotation:0,seed:hash(`${seed}:${type}:${index}`),interactive:true,solid:!SMALL.has(type)};objects.push(o);settings.showProps=true;selected=o;cancelPlacement();commit(before);
+}
+function attached(o){const ids=new Set([o.id]);let changed=true;while(changed){changed=false;for(const child of objects)if(child.supportId&&ids.has(child.supportId)&&!ids.has(child.id)){ids.add(child.id);changed=true;}}return objects.filter(p=>p!==o&&ids.has(p.id));}
+function moveObject(o,x,y){const dx=x-o.x,dy=y-o.y;for(const child of attached(o)){child.x+=dx;child.y+=dy;}o.x=x;o.y=y;}
+function rotateSelected(){if(!editable()||!selected)return;const before=serializeEdit(),o=selected;for(const c of attached(o)){const dx=c.x-o.x,dy=c.y-o.y;c.x=o.x-dy;c.y=o.y+dx;c.rotation=((c.rotation||0)+90)%360;}o.rotation=((o.rotation||0)+90)%360;commit(before);}
+function duplicateSelected(){
+ if(!editable()||!selected)return;const before=serializeEdit(),original=selected,group=[original,...attached(original)],ids=new Map();for(const o of group){let n=1;while(objects.some(p=>p.id===`${o.id}-copy-${n}`))n++;ids.set(o.id,`${o.id}-copy-${n}`);}
+ const copies=group.map(o=>({...o,id:ids.get(o.id),x:o.x+.5,y:o.y+.5,...(o.supportId?{supportId:ids.get(o.supportId)||o.supportId}:{})}));objects.push(...copies);selected=copies[0];commit(before);
+}
+function deleteSelected(){if(!editable()||!selected)return;const before=serializeEdit(),ids=new Set([selected.id,...attached(selected).map(o=>o.id)]);objects=objects.filter(o=>!ids.has(o.id));selected=null;commit(before);}
+function editSelected(field,value){
+ if(!editable()||!selected)return;const before=serializeEdit(),o=selected;
+ if(field==='x'||field==='y'){const x=field==='x'?clamp(Number(value),0,15):o.x,y=field==='y'?clamp(Number(value),0,13):o.y;if(!Number.isFinite(x)||!Number.isFinite(y))return;moveObject(o,x,y);}
+ else if(['z','w','d','h'].includes(field)){const v=Number(value);if(!Number.isFinite(v))return;o[field]=clamp(v,field==='z'?0:.05,8);}
+ else if(field==='name')o.name=String(value).slice(0,80);
+ else if(field==='solid')o.solid=Boolean(value);
+ else if(field==='rotation'){const angle=(Number(value)-(o.rotation||0))*Math.PI/180;for(const c of attached(o)){const dx=c.x-o.x,dy=c.y-o.y;c.x=o.x+dx*Math.cos(angle)-dy*Math.sin(angle);c.y=o.y+dx*Math.sin(angle)+dy*Math.cos(angle);c.rotation=((c.rotation||0)+Number(value)-(o.rotation||0)+360)%360;}o.rotation=Number(value);}
+ else o[field]=value;
+ commit(before);
+}
+function pointerPosition(event){const r=art.getBoundingClientRect();return{x:(event.clientX-r.left)*art.width/r.width,y:(event.clientY-r.top)*art.height/r.height};}
+function unproject(p,z=0){const a=(p.x-800)/43,b=(p.y-205+z*42)/22;return{x:(a+b)/2,y:(b-a)/2};}
+function pickObject(p){return settings.showProps?[...objects].sort((a,b)=>b.sortY-a.sortY).find(o=>inPoly(p,hitHull(o))):null;}
+function finishDrag(cancel=false){if(!drag)return;const old=drag;drag=null;art.classList.remove('dragging');if(cancel){const data=JSON.parse(old.before);objects=data.objects;settings=data.settings;stash();refreshEditor();}else commit(old.before);}
+function validateDocument(raw){
+ const scene=SCENES.find(s=>s.id===raw.id);if(!scene||!Number.isInteger(raw.seed)||raw.seed<1||raw.seed>2147483647||!Array.isArray(raw.objects)||raw.objects.length>500)throw Error('Ambiente, semente ou lista de objetos inválidos.');
+ const clean=[],ids=new Set();for(const o of raw.objects){if(!o||!PROP_TYPES.includes(o.type)||typeof o.id!=='string'||!o.id.length||o.id.length>200||ids.has(o.id))throw Error('Objeto desconhecido ou ID repetido.');ids.add(o.id);
+  for(const key of ['x','y','z','w','d','h'])if(!Number.isFinite(o[key])||o[key]<(['x','y'].includes(key)?-32:key==='z'?0:.05)||o[key]>(key==='x'||key==='y'?32:8))throw Error('Coordenadas ou dimensões inválidas.');
+  if(![0,90,180,270].includes(o.rotation||0))throw Error('Rotação inválida.');if(o.color&&!/^#[0-9a-f]{6}$/i.test(o.color))throw Error('Cor inválida.');if(o.material&&!['original','wood','brick','tile','metal'].includes(o.material))throw Error('Material inválido.');
+  clean.push({id:o.id,type:o.type,name:String(o.name||LABELS[o.type]).slice(0,80),x:o.x,y:o.y,z:o.z,w:o.w,d:o.d,h:o.h,rotation:o.rotation||0,seed:Number.isFinite(o.seed)?o.seed:hash(o.id),solid:Boolean(o.solid),interactive:true,...(o.color?{color:o.color}:{}),...(o.material?{material:o.material}:{})});
+ }
+ const style=defaultSettings(scene);for(const key of ['wall','floor','roof'])if(raw.settings?.[key]){if(!/^#[0-9a-f]{6}$/i.test(raw.settings[key]))throw Error('Cor de ambiente inválida.');style[key]=raw.settings[key];}
+ if(typeof raw.settings?.sign==='string')style.sign=raw.settings.sign.slice(0,60);for(const key of ['showArchitecture','showOverhead','showProps'])if(typeof raw.settings?.[key]==='boolean')style[key]=raw.settings[key];
+ return{id:scene.id,seed:raw.seed,objects:clean,settings:style};
+}
+function importProject(raw){
+ if(busy)throw Error('Aguarde a exportação.');let docs,currentId,currentSeed;
+ if(raw?.format==='northvale-studio-project-v2'&&Array.isArray(raw.documents)&&raw.documents.length<=100){docs=raw.documents.map(validateDocument);currentId=raw.current;currentSeed=raw.seed;}
+ else if(raw?.format==='northvale-asset-v1'&&Array.isArray(raw.objects)){docs=[validateDocument(raw)];currentId=raw.id;currentSeed=raw.seed;}
+ else throw Error('Selecione um projeto do Studio ou um JSON de ambiente.');
+ if(!SCENES.some(s=>s.id===currentId)||!docs.some(d=>d.id===currentId&&d.seed===currentSeed)||new Set(docs.map(d=>keyFor({id:d.id},d.seed))).size!==docs.length)throw Error('Projeto incompleto ou ambientes repetidos.');
+ const view=raw.view;if(view&&(typeof view.rain!=='boolean'||typeof view.lights!=='boolean'||!Number.isFinite(view.rainPower)||view.rainPower<0||view.rainPower>1||![1600,1920,2560].includes(view.resolution)||!['base','foreground','composite'].includes(view.layer)))throw Error('Configuração de visualização inválida.');
+ // Validation completes before any existing document is changed.
+ for(const doc of docs){documents.set(keyFor({id:doc.id},doc.seed),doc);histories.delete(keyFor({id:doc.id},doc.seed));}
+ if(view){for(const key of ['rain','lights','rainPower','resolution','layer'])state[key]=view[key];$('#rain').checked=state.rain;$('#lights').checked=state.lights;$('#rain-power').value=state.rainPower*100;$('#resolution').value=state.resolution;$('#layer').value=state.layer;}
+ current=SCENES.find(s=>s.id===currentId);$('#scene').value=current.id;$('#seed').value=currentSeed;rebuild();autosave();$('#status').textContent=`Projeto aberto: ${docs.length} ambiente(s).`;
+}
+function exportCanvas(){
+ const sprite=current.kind==='character'||current.kind==='vehicle',c=document.createElement('canvas');
+ c.width=sprite?art.width:Number(state.resolution);c.height=sprite?art.height:Math.round(Number(state.resolution)*9/16);
+ const g=c.getContext('2d');g.scale(c.width/art.width,c.height/art.height);
+ if(state.layer!=='foreground')g.drawImage(baseCanvas,0,0);
+ rain(g,0,art.width,art.height,current);
+ if(state.layer!=='base')g.drawImage(frontCanvas,0,0);
+ return c;
+}
+const downloadUrls=[];
+function download(blob,name){
+ const url=URL.createObjectURL(blob);downloadUrls.push(url);const a=document.createElement('a');a.href=url;a.download=name;a.textContent=`Baixar novamente: ${name}`;$('#download-links').prepend(a);a.click();
+ while(downloadUrls.length>4){URL.revokeObjectURL(downloadUrls.shift());$('#download-links').lastElementChild?.remove();}
+}
+const encoder=new TextEncoder();
+const crcTable=Uint32Array.from({length:256},(_,i)=>{let c=i;for(let n=0;n<8;n++)c=c&1?0xedb88320^(c>>>1):c>>>1;return c>>>0;});
+function crc32(bytes){let c=0xffffffff;for(const b of bytes)c=crcTable[(c^b)&255]^(c>>>8);return(c^0xffffffff)>>>0;}
+function zip(entries){
+ const parts=[],central=[];let offset=0,centralSize=0;
+ for(const entry of entries){const name=encoder.encode(entry.name),bytes=entry.bytes,crc=crc32(bytes),head=new Uint8Array(30+name.length),h=new DataView(head.buffer);h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(12,33,true);h.setUint32(14,crc,true);h.setUint32(18,bytes.length,true);h.setUint32(22,bytes.length,true);h.setUint16(26,name.length,true);head.set(name,30);parts.push(head,bytes);
+  const cd=new Uint8Array(46+name.length),d=new DataView(cd.buffer);d.setUint32(0,0x02014b50,true);d.setUint16(4,20,true);d.setUint16(6,20,true);d.setUint16(8,0x0800,true);d.setUint16(14,33,true);d.setUint32(16,crc,true);d.setUint32(20,bytes.length,true);d.setUint32(24,bytes.length,true);d.setUint16(28,name.length,true);d.setUint32(42,offset,true);cd.set(name,46);central.push(cd);centralSize+=cd.length;offset+=head.length+bytes.length;
+ }
+ const end=new Uint8Array(22),e=new DataView(end.buffer);e.setUint32(0,0x06054b50,true);e.setUint16(8,entries.length,true);e.setUint16(10,entries.length,true);e.setUint32(12,centralSize,true);e.setUint32(16,offset,true);return new Blob([...parts,...central,end],{type:'application/zip'});
+}
+async function pngBlob(){const c=exportCanvas();return new Promise((resolve,reject)=>c.toBlob(blob=>blob?resolve(blob):reject(Error('Não foi possível criar PNG.')),'image/png'));}
+async function exportAll(){
+ if(busy)return;busy=true;const old=current,oldLayer=state.layer,entries=[],manifest=[];let message='';$('#progress').style.display='block';$('#progress').value=0;
+ for(const button of document.querySelectorAll('button,select,input'))button.disabled=true;
+ try{
+  for(const [index,scene]of SCENES.entries()){
+   current=scene;const doc=docFor(current,seed);objects=doc.objects;settings=doc.settings;updateDepths();state.layer='composite';buildLayers();
+   const data=metadata(),image=await pngBlob();
+   entries.push({name:`png/${scene.id}.png`,bytes:new Uint8Array(await image.arrayBuffer())});
+   entries.push({name:`data/${scene.id}.json`,bytes:encoder.encode(JSON.stringify(data,null,2))});
+   if(scene.kind!=='character'&&scene.kind!=='vehicle'){
+    state.layer='base';entries.push({name:`layers/${scene.id}-base.png`,bytes:new Uint8Array(await(await pngBlob()).arrayBuffer())});
+    state.layer='foreground';entries.push({name:`layers/${scene.id}-foreground.png`,bytes:new Uint8Array(await(await pngBlob()).arrayBuffer())});
+   }
+   manifest.push({id:scene.id,name:scene.name,png:`png/${scene.id}.png`,data:`data/${scene.id}.json`});
+   $('#progress').value=index+1;$('#status').textContent=`Exportando ${index+1}/${SCENES.length}: ${scene.name}`;
+   await new Promise(resolve=>setTimeout(resolve,0));
+  }
+  entries.push({name:'manifest.json',bytes:encoder.encode(JSON.stringify({version:1,seed,assets:manifest},null,2))});
+  entries.push({name:'PROMPTS.txt',bytes:encoder.encode(SCENES.map(s=>`${s.name}\n${s.prompt}`).join('\n\n'))});
+  entries.push({name:'LEIA-ME.txt',bytes:encoder.encode('NORTHVALE ASSET STUDIO\n31 presets: 22 ambientes, 8 personagens e 1 viatura.\nPNG: composição limpa; layers/: fundo e máscara frontal; data/: coordenadas, colisões, projeção e animações.\nSprites: colunas S, SO, O, NO, N, NE, E, SE. Linha 0 idle; linhas 1-6 walk.\nArte procedural original para prototipagem e composição.\n')});
+  download(zip(entries),`NorthVale-Assets-${seed}.zip`);
+  message='Catálogo exportado: 31 composições, 44 camadas e 31 arquivos de coordenadas.';
+ }catch(error){message=`Falha na exportação: ${error.message}`;}
+ finally{busy=false;current=old;state.layer=oldLayer;$('#layer').value=oldLayer;for(const button of document.querySelectorAll('button,select,input'))button.disabled=false;$('#progress').style.display='none';rebuild();$('#status').textContent=message;}
+}
+const groups=[['Ambientes',s=>s.kind!=='character'&&s.kind!=='vehicle'],['Personagens e viatura',s=>s.kind==='character'||s.kind==='vehicle']];
+for(const [label,filter]of groups){const group=document.createElement('optgroup');group.label=label;for(const s of SCENES.filter(filter))group.append(new Option(s.name,s.id));$('#scene').append(group);}
+$('#scene').value=current.id;
+$('#scene').onchange=()=>{current=SCENES.find(s=>s.id===$('#scene').value);rebuild();};
+$('#regenerate').onclick=()=>{if(!editable())return;const before=serializeEdit();objects=makeObjects(current,seed);settings=defaultSettings(current);selected=null;commit(before);$('#status').textContent='Layout original restaurado. Desfazer recupera sua edição.';};
+$('#new-seed').onclick=()=>{$('#seed').value=1+Math.floor(Math.random()*2147483646);rebuild();};
+$('#seed').onchange=rebuild;
+$('#layer').onchange=()=>{state.layer=$('#layer').value;$('.canvas-wrap').classList.toggle('checker',state.layer==='foreground');paint(frameTime);};
+$('#resolution').onchange=()=>state.resolution=Number($('#resolution').value);
+$('#rain').onchange=()=>state.rain=$('#rain').checked;
+$('#rain-power').oninput=()=>state.rainPower=Number($('#rain-power').value)/100;
+$('#lights').onchange=()=>{state.lights=$('#lights').checked;buildLayers();};
+$('#debug').onchange=()=>state.debug=$('#debug').checked;
+$('#object').onchange=()=>selectObject(objects.find(o=>o.id===$('#object').value));
+art.addEventListener('pointerdown',event=>{
+ if(!editable()||event.button!==0||state.layer==='foreground'&&!placing)return;if(placing&&state.layer==='foreground'){state.layer='composite';$('#layer').value='composite';buildLayers();}event.preventDefault();const p=pointerPosition(event),world=unproject(p);
+ if(placing){if(world.x<0||world.x>15||world.y<0||world.y>13){$('#status').textContent='Clique dentro do piso para colocar o objeto.';return;}addObject(placing,world.x,world.y);return;}
+ const hit=pickObject(p);selectObject(hit);if(hit){const pos=unproject(p,hit.z);drag={id:hit.id,dx:pos.x-hit.x,dy:pos.y-hit.y,before:serializeEdit(),moved:false};art.setPointerCapture(event.pointerId);art.classList.add('dragging');}
+});
+art.addEventListener('pointermove',event=>{if(!drag)return;const o=objects.find(o=>o.id===drag.id);if(!o)return;const p=unproject(pointerPosition(event),o.z),x=clamp(snap(p.x-drag.dx),0,15),y=clamp(snap(p.y-drag.dy),0,13);if(x!==o.x||y!==o.y){drag.moved=true;moveObject(o,x,y);updateDepths();buildLayers();paint(frameTime);}});
+art.addEventListener('pointerup',()=>finishDrag());art.addEventListener('pointercancel',()=>finishDrag(true));
+$('#prop-search').oninput=renderPalette;$('#prop-category').onchange=renderPalette;$('#select-tool').onclick=cancelPlacement;
+$('#undo').onclick=()=>undoEdit();$('#redo').onclick=()=>undoEdit(true);
+$('#clear-objects').onclick=()=>{if(!editable())return;const before=serializeEdit();objects=[];selected=null;commit(before);$('#status').textContent='Ambiente vazio. Escolha objetos no catálogo; Desfazer recupera o layout.';};
+$('#rotate-object').onclick=rotateSelected;$('#duplicate-object').onclick=duplicateSelected;$('#delete-object').onclick=deleteSelected;
+for(const field of ['name','x','y','z','w','d','h','rotation','color','material'])$('#edit-'+field).onchange=event=>editSelected(field,event.target.value);
+$('#edit-solid').onchange=event=>editSelected('solid',event.target.checked);
+for(const [id,key]of[['wall-color','wall'],['floor-color','floor'],['roof-color','roof'],['sign-text','sign'],['show-architecture','showArchitecture'],['show-overhead','showOverhead'],['show-props','showProps']])$('#'+id).onchange=event=>{if(!editable())return;const before=serializeEdit();settings[key]=event.target.type==='checkbox'?event.target.checked:event.target.value;commit(before);};
+$('#save-project').onclick=()=>{download(new Blob([JSON.stringify(project(),null,2)],{type:'application/json'}),'NorthVale-Projeto.json');$('#project-status').textContent='Projeto salvo em arquivo JSON.';};
+$('#open-project').onclick=()=>$('#import-file').click();
+$('#import-file').onchange=async event=>{const file=event.target.files[0];if(!file)return;try{if(file.size>8*1024*1024)throw Error('O projeto deve ter até 8 MB.');importProject(JSON.parse(await file.text()));}catch(error){$('#project-status').textContent=`Não foi possível abrir: ${error.message}`;}finally{event.target.value='';}};
+window.addEventListener('keydown',event=>{
+ if(event.target.matches('input,textarea,select')||event.isComposing)return;
+ const key=event.key.toLowerCase(),control=event.ctrlKey||event.metaKey;
+ if(key==='escape'){cancelPlacement();finishDrag(true);return;}if(!editable())return;
+ if(control&&key==='z'){event.preventDefault();undoEdit(event.shiftKey);return;}
+ if(control&&key==='y'){event.preventDefault();undoEdit(true);return;}
+ if(control&&key==='d'){event.preventDefault();duplicateSelected();return;}
+ if(key==='delete'||key==='backspace'){event.preventDefault();deleteSelected();return;}
+ if(key==='r'&&!control){event.preventDefault();rotateSelected();return;}
+ if(selected&&['arrowup','arrowdown','arrowleft','arrowright'].includes(key)){event.preventDefault();const before=serializeEdit(),step=event.shiftKey?1:.25;moveObject(selected,clamp(selected.x+({'arrowright':step,'arrowleft':-step}[key]||0),0,15),clamp(selected.y+({'arrowdown':step,'arrowup':-step}[key]||0),0,13));commit(before);}
+});
+$('#export-png').onclick=async()=>{try{download(await pngBlob(),`${current.id}-${state.layer}-${seed}.png`);$('#status').textContent='PNG pronto. Use o link abaixo dos botões se o download não começar.';}catch(error){$('#status').textContent=error.message;}};
+$('#export-data').onclick=()=>download(new Blob([JSON.stringify(metadata(),null,2)],{type:'application/json'}),`${current.id}-${seed}.json`);
+$('#export-all').onclick=exportAll;
+$('#copy-prompt').onclick=async()=>{try{await navigator.clipboard.writeText(current.prompt);$('#status').textContent='Prompt copiado com o Sufixo Base.';}catch{$('#prompt').focus();$('#prompt').select();$('#status').textContent='Prompt selecionado. Use Ctrl+C ou o comando Copiar do navegador.';}};
+window.addEventListener('pagehide',()=>downloadUrls.forEach(url=>URL.revokeObjectURL(url)));
+// Read-only catalog API for tools that ingest the exported format.
+window.NorthValeAssetStudio=Object.freeze({catalog:()=>SCENES.map(s=>({...s})),metadata:()=>metadata(),select:id=>{const scene=SCENES.find(s=>s.id===id);if(!scene)throw Error('Preset desconhecido');if(busy)throw Error('Exportação em curso');current=scene;$('#scene').value=id;rebuild();},snapshot:()=>exportCanvas().toDataURL('image/png')});
+rebuild();
+try{const saved=localStorage.getItem(PROJECT_KEY);if(saved)importProject(JSON.parse(saved));}catch{$('#project-status').textContent='Salve um projeto JSON para guardar a edição.';}
+let previous=0;function frame(now){if(now-previous>40&&!busy&&!document.hidden){frameTime=now/1000;paint(frameTime);previous=now;}requestAnimationFrame(frame);}requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

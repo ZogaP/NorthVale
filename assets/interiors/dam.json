@@ -1,0 +1,315 @@
+{
+  "version": 1,
+  "id": "dam",
+  "name": "Estação da Represa",
+  "profile": "Infraestrutura de concreto, controle analógico e turbinas em funcionamento.",
+  "entranceRoom": "control",
+  "rooms": [
+    {
+      "id": "control",
+      "name": "Sala de controle analógico",
+      "bounds": {
+        "w": 650,
+        "h": 440
+      },
+      "finish": {
+        "floor": "#65736c",
+        "wall": "#78887a",
+        "material": "tile",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 325,
+        "y": 375
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 234,
+          "y": 167.2,
+          "z": 110,
+          "radius": 468,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 520,
+          "y": 24,
+          "z": 85,
+          "radius": 403,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "console-a",
+          "type": "console",
+          "name": "Painéis analógicos com escalas de pressão",
+          "x": 40,
+          "y": 35,
+          "w": 210,
+          "h": 70,
+          "height": 85,
+          "solid": true,
+          "interactive": true,
+          "text": "Painéis analógicos com escalas de pressão."
+        },
+        {
+          "id": "console-b",
+          "type": "console",
+          "name": "Manômetros e lâmpadas de alarme",
+          "x": 390,
+          "y": 35,
+          "w": 190,
+          "h": 70,
+          "height": 85,
+          "solid": true,
+          "interactive": true,
+          "text": "Manômetros e lâmpadas de alarme."
+        },
+        {
+          "id": "shift-desk",
+          "type": "steel",
+          "name": "Mesa de troca de turno",
+          "x": 220,
+          "y": 240,
+          "w": 150,
+          "h": 75,
+          "height": 46,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa de troca de turno."
+        },
+        {
+          "id": "shift-log",
+          "type": "paper",
+          "name": "O turno noturno foi alterado no dia 15",
+          "x": 245,
+          "y": 260,
+          "w": 55,
+          "h": 30,
+          "height": 1,
+          "solid": false,
+          "interactive": true,
+          "text": "O turno noturno foi alterado no dia 15.",
+          "baseZ": 47,
+          "parentId": "shift-desk"
+        },
+        {
+          "id": "radio",
+          "type": "radio",
+          "name": "Rádio de comunicação com a comporta",
+          "x": 330,
+          "y": 250,
+          "w": 33,
+          "h": 25,
+          "height": 18,
+          "solid": false,
+          "interactive": true,
+          "text": "Rádio de comunicação com a comporta.",
+          "baseZ": 47,
+          "parentId": "shift-desk"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 592,
+          "y": 350,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "control:Sala de controle analógico",
+        "density": 80,
+        "types": [
+          "paper",
+          "wire",
+          "calculator",
+          "calendar"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 80,
+      "fluorescent": true
+    },
+    {
+      "id": "turbines",
+      "name": "Galeria das turbinas",
+      "bounds": {
+        "w": 760,
+        "h": 560
+      },
+      "finish": {
+        "floor": "#536c66",
+        "wall": "#687e74",
+        "material": "stone",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 380,
+        "y": 495
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 273.59999999999997,
+          "y": 212.8,
+          "z": 110,
+          "radius": 547.1999999999999,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 608,
+          "y": 24,
+          "z": 85,
+          "radius": 471.2,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "turbine-one",
+          "type": "turbine",
+          "name": "Turbina com vibração constante",
+          "x": 80,
+          "y": 60,
+          "w": 155,
+          "h": 145,
+          "height": 110,
+          "solid": true,
+          "interactive": true,
+          "text": "Turbina com vibração constante."
+        },
+        {
+          "id": "turbine-two",
+          "type": "turbine",
+          "name": "Turbina ao lado da passagem de serviço",
+          "x": 460,
+          "y": 260,
+          "w": 165,
+          "h": 155,
+          "height": 110,
+          "solid": true,
+          "interactive": true,
+          "text": "Turbina ao lado da passagem de serviço."
+        },
+        {
+          "id": "maintenance",
+          "type": "table",
+          "name": "Ferramentas de manutenção",
+          "x": 350,
+          "y": 45,
+          "w": 160,
+          "h": 75,
+          "height": 48,
+          "solid": true,
+          "interactive": true,
+          "text": "Ferramentas de manutenção."
+        },
+        {
+          "id": "rail",
+          "type": "bars",
+          "name": "Corrimão acima do canal de drenagem",
+          "x": 40,
+          "y": 450,
+          "w": 210,
+          "h": 12,
+          "height": 74,
+          "solid": true,
+          "interactive": true,
+          "text": "Corrimão acima do canal de drenagem."
+        },
+        {
+          "id": "drain",
+          "type": "drain",
+          "name": "Água escorrendo para o canal",
+          "x": 300,
+          "y": 375,
+          "w": 100,
+          "h": 25,
+          "height": 0,
+          "solid": false,
+          "interactive": true,
+          "text": "Água escorrendo para o canal."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 702,
+          "y": 470,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "turbines:Galeria das turbinas",
+        "density": 90,
+        "types": [
+          "wire",
+          "mud",
+          "damp",
+          "paper"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 90,
+      "fluorescent": true
+    }
+  ],
+  "doors": [
+    {
+      "id": "control-turbines",
+      "name": "Galeria das turbinas",
+      "a": {
+        "room": "control",
+        "side": "east",
+        "offset": 300,
+        "width": 76
+      },
+      "b": {
+        "room": "turbines",
+        "side": "west",
+        "offset": 300,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "control",
+    "x": 325,
+    "y": 416,
+    "w": 60,
+    "h": 16
+  }
+}

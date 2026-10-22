@@ -1,0 +1,316 @@
+{
+  "version": 1,
+  "id": "scrapyard",
+  "name": "Oficina de Sam",
+  "profile": "Ferro-velho de trabalhador autônomo; ferramentas usadas, motor desmontado e rádio de fita.",
+  "entranceRoom": "workshop",
+  "rooms": [
+    {
+      "id": "workshop",
+      "name": "Oficina de Sam",
+      "bounds": {
+        "w": 680,
+        "h": 560
+      },
+      "finish": {
+        "floor": "#625d49",
+        "wall": "#7b7660",
+        "material": "stone",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 340,
+        "y": 495
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 244.79999999999998,
+          "y": 212.8,
+          "z": 110,
+          "radius": 489.59999999999997,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 544,
+          "y": 24,
+          "z": 85,
+          "radius": 421.6,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "workbench",
+          "type": "table",
+          "name": "Bancada cheia de marcas de chave de fenda",
+          "x": 40,
+          "y": 35,
+          "w": 210,
+          "h": 70,
+          "height": 49,
+          "solid": true,
+          "interactive": true,
+          "text": "Bancada cheia de marcas de chave de fenda."
+        },
+        {
+          "id": "engine",
+          "type": "engine",
+          "name": "Motor desmontado sobre cavaletes",
+          "x": 320,
+          "y": 160,
+          "w": 140,
+          "h": 100,
+          "height": 65,
+          "solid": true,
+          "interactive": true,
+          "text": "Motor desmontado sobre cavaletes."
+        },
+        {
+          "id": "tires",
+          "type": "tires",
+          "name": "Pneus separados por medida",
+          "x": 520,
+          "y": 40,
+          "w": 85,
+          "h": 80,
+          "height": 75,
+          "solid": true,
+          "interactive": true,
+          "text": "Pneus separados por medida."
+        },
+        {
+          "id": "tools",
+          "type": "tools",
+          "name": "Pé de cabra, alicates e chaves",
+          "x": 70,
+          "y": 53,
+          "w": 110,
+          "h": 28,
+          "height": 5,
+          "solid": false,
+          "interactive": true,
+          "text": "Pé de cabra, alicates e chaves.",
+          "baseZ": 50,
+          "parentId": "workbench"
+        },
+        {
+          "id": "cassette-radio",
+          "type": "radio",
+          "name": "Rádio tocando uma fita gasta",
+          "x": 185,
+          "y": 48,
+          "w": 40,
+          "h": 26,
+          "height": 22,
+          "solid": false,
+          "interactive": true,
+          "text": "Rádio tocando uma fita gasta.",
+          "baseZ": 50,
+          "parentId": "workbench"
+        },
+        {
+          "id": "barrels",
+          "type": "barrel",
+          "name": "Tambores com óleo usado",
+          "x": 45,
+          "y": 340,
+          "w": 62,
+          "h": 65,
+          "height": 72,
+          "solid": true,
+          "interactive": true,
+          "text": "Tambores com óleo usado."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 622,
+          "y": 470,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "workshop:Oficina de Sam",
+        "density": 90,
+        "types": [
+          "wire",
+          "mud",
+          "paper",
+          "bottle"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 90,
+      "fluorescent": true
+    },
+    {
+      "id": "cabin",
+      "name": "Escritório improvisado de Sam",
+      "bounds": {
+        "w": 340,
+        "h": 370
+      },
+      "finish": {
+        "floor": "#776143",
+        "wall": "#897d60",
+        "material": "wood",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 170,
+        "y": 305
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 122.39999999999999,
+          "y": 140.6,
+          "z": 110,
+          "radius": 266.4,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 272,
+          "y": 24,
+          "z": 85,
+          "radius": 210.8,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "desk",
+          "type": "table",
+          "name": "Porta velha apoiada em cavaletes como escrivaninha",
+          "x": 110,
+          "y": 90,
+          "w": 160,
+          "h": 65,
+          "height": 43,
+          "solid": true,
+          "interactive": true,
+          "text": "Porta velha apoiada em cavaletes como escrivaninha."
+        },
+        {
+          "id": "key-hooks",
+          "type": "keys",
+          "name": "Chaves com placas de veículos",
+          "x": 35,
+          "y": 24,
+          "w": 70,
+          "h": 12,
+          "height": 38,
+          "solid": false,
+          "interactive": true,
+          "text": "Chaves com placas de veículos.",
+          "action": "search"
+        },
+        {
+          "id": "chair",
+          "type": "chair",
+          "name": "Cadeira de escritório sem uma roda",
+          "x": 140,
+          "y": 190,
+          "w": 40,
+          "h": 40,
+          "height": 41,
+          "solid": true,
+          "interactive": true,
+          "text": "Cadeira de escritório sem uma roda."
+        },
+        {
+          "id": "parts-box",
+          "type": "box",
+          "name": "Recibos e pequenas peças",
+          "x": 30,
+          "y": 240,
+          "w": 65,
+          "h": 60,
+          "height": 60,
+          "solid": true,
+          "interactive": true,
+          "text": "Recibos e pequenas peças.",
+          "action": "search"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 282,
+          "y": 280,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "cabin:Escritório improvisado de Sam",
+        "density": 65,
+        "types": [
+          "ash",
+          "paper",
+          "directory",
+          "mug"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 65
+    }
+  ],
+  "doors": [
+    {
+      "id": "shop-cabin",
+      "name": "Escritório de Sam",
+      "a": {
+        "room": "workshop",
+        "side": "east",
+        "offset": 360,
+        "width": 76
+      },
+      "b": {
+        "room": "cabin",
+        "side": "west",
+        "offset": 190,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "workshop",
+    "x": 340,
+    "y": 536,
+    "w": 60,
+    "h": 16
+  }
+}

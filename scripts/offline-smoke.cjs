@@ -1,0 +1,7 @@
+const {chromium}=require('playwright');
+const assert=require('node:assert/strict');
+const fs=require('node:fs/promises');
+(async()=>{
+ const browser=await chromium.launch({executablePath:process.env.NORTHVALE_CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox','--enable-unsafe-swiftshader']});
+ try{const context=await browser.newContext({viewport:{width:1440,height:1000}});await context.setOffline(true);const page=await context.newPage(),errors=[],requests=[];page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>requests.push(r.url()));await page.setContent(await fs.readFile('dist/NorthVale.html','utf8'));await page.click('#begin');await page.keyboard.press('Space');await page.waitForTimeout(100);await page.keyboard.press('e');await page.waitForFunction(()=>document.querySelector('#room-hud').dataset.room==='reception');await page.locator('[data-door="reception-office"]').click();await page.waitForFunction(()=>document.querySelector('#room-hud').dataset.room==='office'&&document.querySelector('#room-hud').dataset.transitioning==='false',{timeout:20000});assert.match(await page.locator('#room-name').innerText(),/Gabinete/);assert.equal(await page.evaluate(()=>Object.keys(globalThis.NORTHVALE_INTERIORS).length),15);assert.deepEqual(requests,[]);assert.deepEqual(errors,[]);console.log('Offline bundle passed: 15 embedded manifests, painted reception, walk to office and room transition with zero network requests.');}finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});

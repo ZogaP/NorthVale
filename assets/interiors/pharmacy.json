@@ -1,0 +1,460 @@
+{
+  "version": 1,
+  "id": "pharmacy",
+  "name": "Farmácia Vale",
+  "profile": "Comércio familiar de Elias; prateleiras cheias, estoque contado e contas atrasadas.",
+  "entranceRoom": "retail",
+  "rooms": [
+    {
+      "id": "retail",
+      "name": "Balcão e venda",
+      "bounds": {
+        "w": 660,
+        "h": 480
+      },
+      "finish": {
+        "floor": "#7c8068",
+        "wall": "#849079",
+        "material": "tile",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 330,
+        "y": 415
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 237.6,
+          "y": 182.4,
+          "z": 110,
+          "radius": 475.2,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 528,
+          "y": 24,
+          "z": 85,
+          "radius": 409.2,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "counter",
+          "type": "counter",
+          "name": "Balcão com receitas guardadas sob um vidro",
+          "x": 345,
+          "y": 290,
+          "w": 205,
+          "h": 56,
+          "height": 48,
+          "solid": true,
+          "interactive": true,
+          "text": "Balcão com receitas guardadas sob um vidro."
+        },
+        {
+          "id": "register",
+          "type": "calculator",
+          "name": "Caixa registradora mecânica",
+          "x": 470,
+          "y": 304,
+          "w": 39,
+          "h": 29,
+          "height": 13,
+          "solid": false,
+          "interactive": true,
+          "text": "Caixa registradora mecânica.",
+          "baseZ": 49,
+          "parentId": "counter"
+        },
+        {
+          "id": "medicines-a",
+          "type": "medicine",
+          "name": "Remédios em caixas por ordem alfabética",
+          "x": 32,
+          "y": 38,
+          "w": 62,
+          "h": 155,
+          "height": 115,
+          "solid": true,
+          "interactive": true,
+          "text": "Remédios em caixas por ordem alfabética."
+        },
+        {
+          "id": "medicines-b",
+          "type": "medicine",
+          "name": "Xaropes e medicamentos infantis",
+          "x": 160,
+          "y": 38,
+          "w": 58,
+          "h": 150,
+          "height": 115,
+          "solid": true,
+          "interactive": true,
+          "text": "Xaropes e medicamentos infantis."
+        },
+        {
+          "id": "showcase",
+          "type": "glass",
+          "name": "Produtos de higiene sob vidro",
+          "x": 370,
+          "y": 40,
+          "w": 150,
+          "h": 50,
+          "height": 75,
+          "solid": true,
+          "interactive": true,
+          "text": "Produtos de higiene sob vidro."
+        },
+        {
+          "id": "chair",
+          "type": "chair",
+          "name": "Banqueta do farmacêutico",
+          "x": 580,
+          "y": 310,
+          "w": 33,
+          "h": 33,
+          "height": 40,
+          "solid": true,
+          "interactive": true,
+          "text": "Banqueta do farmacêutico."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 602,
+          "y": 390,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "retail:Balcão e venda",
+        "density": 75,
+        "types": [
+          "flyer",
+          "directory",
+          "paper",
+          "calculator",
+          "wire"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "fluorescent": true,
+      "density": 75
+    },
+    {
+      "id": "stock",
+      "name": "Estoque da farmácia",
+      "bounds": {
+        "w": 350,
+        "h": 570
+      },
+      "finish": {
+        "floor": "#666a57",
+        "wall": "#7a8270",
+        "material": "tile",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 175,
+        "y": 505
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 126,
+          "y": 216.6,
+          "z": 110,
+          "radius": 410.4,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 280,
+          "y": 24,
+          "z": 85,
+          "radius": 217,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "stock-a",
+          "type": "shelf",
+          "name": "Frascos fechados em bandejas",
+          "x": 25,
+          "y": 40,
+          "w": 65,
+          "h": 170,
+          "height": 130,
+          "solid": true,
+          "interactive": true,
+          "text": "Frascos fechados em bandejas."
+        },
+        {
+          "id": "stock-b",
+          "type": "shelf",
+          "name": "Pedidos ainda sem conferência",
+          "x": 250,
+          "y": 255,
+          "w": 65,
+          "h": 180,
+          "height": 130,
+          "solid": true,
+          "interactive": true,
+          "text": "Pedidos ainda sem conferência."
+        },
+        {
+          "id": "cartons",
+          "type": "box",
+          "name": "Caixas com etiquetas de distribuidores de 1989",
+          "x": 35,
+          "y": 330,
+          "w": 75,
+          "h": 100,
+          "height": 80,
+          "solid": true,
+          "interactive": true,
+          "text": "Caixas com etiquetas de distribuidores de 1989.",
+          "action": "search"
+        },
+        {
+          "id": "counting",
+          "type": "table",
+          "name": "Balanço de estoque com números corrigidos a caneta",
+          "x": 145,
+          "y": 170,
+          "w": 95,
+          "h": 60,
+          "height": 42,
+          "solid": true,
+          "interactive": true,
+          "text": "Balanço de estoque com números corrigidos a caneta."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 292,
+          "y": 480,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "stock:Estoque da farmácia",
+        "density": 90,
+        "types": [
+          "box",
+          "bottle",
+          "paper",
+          "damp"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 90,
+      "fluorescent": true
+    },
+    {
+      "id": "office",
+      "name": "Escritório de Elias",
+      "bounds": {
+        "w": 420,
+        "h": 330
+      },
+      "finish": {
+        "floor": "#78674d",
+        "wall": "#8b876e",
+        "material": "wood",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 210,
+        "y": 265
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 151.2,
+          "y": 125.4,
+          "z": 110,
+          "radius": 302.4,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 336,
+          "y": 24,
+          "z": 85,
+          "radius": 260.4,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "billing",
+          "type": "table",
+          "name": "Escrivaninha com cobranças da distribuidora",
+          "x": 170,
+          "y": 90,
+          "w": 150,
+          "h": 65,
+          "height": 44,
+          "solid": true,
+          "interactive": true,
+          "text": "Escrivaninha com cobranças da distribuidora."
+        },
+        {
+          "id": "private-files",
+          "type": "files",
+          "name": "Correspondência privada",
+          "x": 35,
+          "y": 35,
+          "w": 60,
+          "h": 90,
+          "height": 95,
+          "solid": true,
+          "interactive": true,
+          "text": "Correspondência privada.",
+          "action": "drawer"
+        },
+        {
+          "id": "bill-chair",
+          "type": "chair",
+          "name": "Cadeira com almofada improvisada",
+          "x": 210,
+          "y": 190,
+          "w": 38,
+          "h": 38,
+          "height": 40,
+          "solid": true,
+          "interactive": true,
+          "text": "Cadeira com almofada improvisada."
+        },
+        {
+          "id": "phone",
+          "type": "phone",
+          "name": "Telefone com números escritos na base",
+          "x": 200,
+          "y": 105,
+          "w": 30,
+          "h": 22,
+          "height": 14,
+          "solid": false,
+          "interactive": true,
+          "text": "Telefone com números escritos na base.",
+          "baseZ": 45,
+          "parentId": "billing"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 362,
+          "y": 240,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "office:Escritório de Elias",
+        "density": 55,
+        "types": [
+          "paper",
+          "mug",
+          "pen",
+          "calendar"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 55
+    }
+  ],
+  "doors": [
+    {
+      "id": "retail-stock",
+      "name": "Estoque",
+      "a": {
+        "room": "retail",
+        "side": "north",
+        "offset": 295,
+        "width": 76
+      },
+      "b": {
+        "room": "stock",
+        "side": "south",
+        "offset": 175,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    },
+    {
+      "id": "stock-office",
+      "name": "Escritório privado",
+      "a": {
+        "room": "stock",
+        "side": "east",
+        "offset": 260,
+        "width": 76
+      },
+      "b": {
+        "room": "office",
+        "side": "west",
+        "offset": 210,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "retail",
+    "x": 330,
+    "y": 456,
+    "w": 60,
+    "h": 16
+  }
+}

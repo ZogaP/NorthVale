@@ -1,0 +1,848 @@
+{
+  "version": 1,
+  "id": "police",
+  "name": "Delegacia de NorthVale",
+  "profile": "Serviço público decadente; trabalho acumulado e controle austero no gabinete da xerife.",
+  "entranceRoom": "reception",
+  "rooms": [
+    {
+      "id": "reception",
+      "name": "Recepção e investigação",
+      "bounds": {
+        "w": 1536,
+        "h": 1024
+      },
+      "background": "painted-police",
+      "spawn": {
+        "x": 520,
+        "y": 900
+      },
+      "ambient": 0.4,
+      "finish": {
+        "floor": "#6a715a",
+        "wall": "#65705a",
+        "material": "tile",
+        "condition": "damp"
+      },
+      "lights": [
+        {
+          "id": "fluorescent",
+          "kind": "fluorescent",
+          "x": 750,
+          "y": 400,
+          "z": 140,
+          "radius": 900,
+          "intensity": 1,
+          "color": "#d6dbb5",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "ruth",
+          "type": "npc",
+          "name": "Sargento Ruth Mercer",
+          "x": 875,
+          "y": 485,
+          "w": 1,
+          "h": 1,
+          "height": 1,
+          "solid": false,
+          "interactive": true,
+          "text": "Hale. A cidade já decidiu o que aconteceu com Sarah.",
+          "action": "ruth-dialogue",
+          "range": 92
+        },
+        {
+          "id": "report",
+          "type": "paper",
+          "name": "Relatório sobre a mesa",
+          "x": 585,
+          "y": 530,
+          "w": 1,
+          "h": 1,
+          "height": 1,
+          "solid": false,
+          "interactive": true,
+          "text": "Relatório dos desaparecimentos.",
+          "evidence": "report",
+          "action": "report-dialogue",
+          "range": 132,
+          "approach": {
+            "x": 600,
+            "y": 640
+          }
+        },
+        {
+          "id": "board",
+          "type": "corkboard",
+          "name": "Quadro de pistas",
+          "x": 330,
+          "y": 350,
+          "w": 1,
+          "h": 1,
+          "height": 1,
+          "solid": false,
+          "interactive": true,
+          "text": "Fotografias e linhas vermelhas terminam na estrada da represa.",
+          "range": 250,
+          "approach": {
+            "x": 428,
+            "y": 558
+          }
+        }
+      ],
+      "dressing": {
+        "seed": "painted-reception",
+        "density": 0,
+        "types": []
+      }
+    },
+    {
+      "id": "office",
+      "name": "Gabinete da xerife",
+      "bounds": {
+        "w": 480,
+        "h": 390
+      },
+      "finish": {
+        "floor": "#4f4938",
+        "wall": "#6f7866",
+        "material": "wood",
+        "condition": "clean"
+      },
+      "spawn": {
+        "x": 240,
+        "y": 325
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 172.79999999999998,
+          "y": 148.2,
+          "z": 110,
+          "radius": 345.59999999999997,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 384,
+          "y": 24,
+          "z": 85,
+          "radius": 297.6,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "ruth-desk",
+          "type": "table",
+          "name": "Mesa de carvalho encerada",
+          "x": 180,
+          "y": 135,
+          "w": 150,
+          "h": 70,
+          "height": 48,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa de carvalho encerada. Nenhum papel fora de ordem.",
+          "color": "#514130"
+        },
+        {
+          "id": "ordered-reports",
+          "type": "files",
+          "name": "Relatórios alinhados por data, sem rascunhos",
+          "x": 365,
+          "y": 36,
+          "w": 70,
+          "h": 62,
+          "height": 100,
+          "solid": true,
+          "interactive": true,
+          "text": "Relatórios alinhados por data, sem rascunhos."
+        },
+        {
+          "id": "cell-keys",
+          "type": "drawer",
+          "name": "Gaveta trancada por um trinco interno",
+          "x": 206,
+          "y": 152,
+          "w": 42,
+          "h": 25,
+          "height": 5,
+          "solid": false,
+          "interactive": true,
+          "text": "Gaveta trancada por um trinco interno. Contém as chaves das celas.",
+          "baseZ": 49,
+          "parentId": "ruth-desk",
+          "action": "drawer",
+          "givesKey": "Chave das celas"
+        },
+        {
+          "id": "desk-phone",
+          "type": "phone",
+          "name": "Linha particular sem número no aparelho",
+          "x": 288,
+          "y": 147,
+          "w": 30,
+          "h": 26,
+          "height": 15,
+          "solid": false,
+          "interactive": true,
+          "text": "Linha particular sem número no aparelho.",
+          "baseZ": 49,
+          "parentId": "ruth-desk"
+        },
+        {
+          "id": "ruth-chair",
+          "type": "armchair",
+          "name": "Poltrona de couro sem sinais de desgaste",
+          "x": 230,
+          "y": 60,
+          "w": 55,
+          "h": 55,
+          "height": 56,
+          "solid": true,
+          "interactive": true,
+          "text": "Poltrona de couro sem sinais de desgaste.",
+          "color": "#37463c"
+        },
+        {
+          "id": "transfer-record",
+          "type": "paper",
+          "name": "Registro da transferência de Alex com observações a lápis",
+          "x": 190,
+          "y": 153,
+          "w": 31,
+          "h": 19,
+          "height": 1,
+          "solid": false,
+          "interactive": true,
+          "text": "Registro da transferência de Alex com observações a lápis.",
+          "baseZ": 49,
+          "parentId": "ruth-desk"
+        },
+        {
+          "id": "oak-case",
+          "type": "shelf",
+          "name": "Livros de legislação e medalhas",
+          "x": 28,
+          "y": 25,
+          "w": 102,
+          "h": 40,
+          "height": 116,
+          "solid": true,
+          "interactive": true,
+          "text": "Livros de legislação e medalhas."
+        },
+        {
+          "id": "safe",
+          "type": "safe",
+          "name": "Cofre atrás de uma cortina curta",
+          "x": 30,
+          "y": 270,
+          "w": 60,
+          "h": 55,
+          "height": 68,
+          "solid": true,
+          "interactive": true,
+          "text": "Cofre atrás de uma cortina curta.",
+          "action": "search"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 422,
+          "y": 300,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "office:Gabinete da xerife",
+        "density": 38,
+        "types": [
+          "pen",
+          "directory",
+          "calendar",
+          "wire"
+        ],
+        "story": "Ordem excessiva; relatórios completos demais para uma investigação ausente."
+      },
+      "density": 38,
+      "fluorescent": false,
+      "story": "Ordem excessiva; relatórios completos demais para uma investigação ausente."
+    },
+    {
+      "id": "archive",
+      "name": "Arquivo de ocorrências",
+      "bounds": {
+        "w": 430,
+        "h": 580
+      },
+      "finish": {
+        "floor": "#657068",
+        "wall": "#667467",
+        "material": "tile",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 215,
+        "y": 515
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 154.79999999999998,
+          "y": 220.4,
+          "z": 110,
+          "radius": 417.59999999999997,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 344,
+          "y": 24,
+          "z": 85,
+          "radius": 266.6,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "cold-case-a",
+          "type": "files",
+          "name": "Ocorrências de 1981 a 1984",
+          "x": 28,
+          "y": 38,
+          "w": 58,
+          "h": 120,
+          "height": 110,
+          "solid": true,
+          "interactive": true,
+          "text": "Ocorrências de 1981 a 1984."
+        },
+        {
+          "id": "cold-case-b",
+          "type": "files",
+          "name": "Ocorrências de 1985 a 1988",
+          "x": 338,
+          "y": 50,
+          "w": 58,
+          "h": 125,
+          "height": 110,
+          "solid": true,
+          "interactive": true,
+          "text": "Ocorrências de 1985 a 1988."
+        },
+        {
+          "id": "current-files",
+          "type": "files",
+          "name": "Pasta de outubro de 1989 com três folhas idênticas",
+          "x": 28,
+          "y": 365,
+          "w": 58,
+          "h": 130,
+          "height": 110,
+          "solid": true,
+          "interactive": true,
+          "text": "Pasta de outubro de 1989 com três folhas idênticas.",
+          "action": "drawer"
+        },
+        {
+          "id": "map-table",
+          "type": "table",
+          "name": "Planta dos caminhos de acesso à represa",
+          "x": 155,
+          "y": 245,
+          "w": 120,
+          "h": 66,
+          "height": 43,
+          "solid": true,
+          "interactive": true,
+          "text": "Planta dos caminhos de acesso à represa."
+        },
+        {
+          "id": "town-map",
+          "type": "map",
+          "name": "Rotas antigas marcadas sob a estrada atual",
+          "x": 165,
+          "y": 256,
+          "w": 72,
+          "h": 42,
+          "height": 1,
+          "solid": false,
+          "interactive": true,
+          "text": "Rotas antigas marcadas sob a estrada atual.",
+          "baseZ": 44,
+          "parentId": "map-table"
+        },
+        {
+          "id": "boxes",
+          "type": "box",
+          "name": "Caixas numeradas",
+          "x": 331,
+          "y": 410,
+          "w": 55,
+          "h": 90,
+          "height": 71,
+          "solid": true,
+          "interactive": true,
+          "text": "Caixas numeradas. Uma contém jornais recortados.",
+          "action": "search"
+        },
+        {
+          "id": "ladder",
+          "type": "broom",
+          "name": "Escada de arquivo com tinta descascada",
+          "x": 312,
+          "y": 240,
+          "w": 18,
+          "h": 45,
+          "height": 90,
+          "solid": true,
+          "interactive": true,
+          "text": "Escada de arquivo com tinta descascada."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 372,
+          "y": 490,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "archive:Arquivo de ocorrências",
+        "density": 100,
+        "types": [
+          "paper",
+          "box",
+          "calendar",
+          "wire",
+          "damp"
+        ],
+        "story": "Poeira em todos os anos, exceto nas pastas dos desaparecidos."
+      },
+      "density": 100,
+      "fluorescent": true,
+      "story": "Poeira em todos os anos, exceto nas pastas dos desaparecidos."
+    },
+    {
+      "id": "interrogation",
+      "name": "Sala de interrogatório",
+      "bounds": {
+        "w": 510,
+        "h": 340
+      },
+      "finish": {
+        "floor": "#5d655b",
+        "wall": "#5a6a62",
+        "material": "tile",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 255,
+        "y": 275
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 183.6,
+          "y": 129.2,
+          "z": 110,
+          "radius": 367.2,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 408,
+          "y": 24,
+          "z": 85,
+          "radius": 316.2,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "steel-table",
+          "type": "steel",
+          "name": "Mesa de aço aparafusada ao piso",
+          "x": 190,
+          "y": 120,
+          "w": 135,
+          "h": 70,
+          "height": 43,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa de aço aparafusada ao piso."
+        },
+        {
+          "id": "suspect-chair",
+          "type": "chair",
+          "name": "Cadeira do depoente com pés desnivelados",
+          "x": 190,
+          "y": 220,
+          "w": 38,
+          "h": 38,
+          "height": 46,
+          "solid": true,
+          "interactive": true,
+          "text": "Cadeira do depoente com pés desnivelados."
+        },
+        {
+          "id": "interviewer-chair",
+          "type": "chair",
+          "name": "Cadeira voltada para o espelho",
+          "x": 290,
+          "y": 50,
+          "w": 40,
+          "h": 40,
+          "height": 46,
+          "solid": true,
+          "interactive": true,
+          "text": "Cadeira voltada para o espelho."
+        },
+        {
+          "id": "recorder",
+          "type": "reel",
+          "name": "Gravador de rolo, sem fita identificada",
+          "x": 216,
+          "y": 140,
+          "w": 44,
+          "h": 25,
+          "height": 17,
+          "solid": false,
+          "interactive": true,
+          "text": "Gravador de rolo, sem fita identificada.",
+          "baseZ": 44,
+          "parentId": "steel-table"
+        },
+        {
+          "id": "ashtray",
+          "type": "ashtray",
+          "name": "Cinzeiro com marcas de três cigarros diferentes",
+          "x": 276,
+          "y": 148,
+          "w": 19,
+          "h": 17,
+          "height": 4,
+          "solid": false,
+          "interactive": true,
+          "text": "Cinzeiro com marcas de três cigarros diferentes.",
+          "baseZ": 44,
+          "parentId": "steel-table"
+        },
+        {
+          "id": "mirror",
+          "type": "mirror",
+          "name": "Espelho escurecido na parede",
+          "x": 365,
+          "y": 22,
+          "w": 78,
+          "h": 12,
+          "height": 58,
+          "solid": false,
+          "interactive": true,
+          "text": "Espelho escurecido na parede."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 452,
+          "y": 250,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "interrogation:Sala de interrogatório",
+        "density": 45,
+        "types": [
+          "ash",
+          "paper",
+          "wire",
+          "damp"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 45,
+      "fluorescent": true
+    },
+    {
+      "id": "cells",
+      "name": "Corredor das celas",
+      "bounds": {
+        "w": 380,
+        "h": 500
+      },
+      "finish": {
+        "floor": "#53625b",
+        "wall": "#4e625c",
+        "material": "tile",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 190,
+        "y": 435
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 136.79999999999998,
+          "y": 190,
+          "z": 110,
+          "radius": 360,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 304,
+          "y": 24,
+          "z": 85,
+          "radius": 235.6,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "bars",
+          "type": "bars",
+          "name": "Grades de aço com números raspados",
+          "x": 80,
+          "y": 120,
+          "w": 210,
+          "h": 13,
+          "height": 115,
+          "solid": true,
+          "interactive": true,
+          "text": "Grades de aço com números raspados."
+        },
+        {
+          "id": "bunk",
+          "type": "bed",
+          "name": "Beliche sem travesseiro",
+          "x": 60,
+          "y": 30,
+          "w": 150,
+          "h": 55,
+          "height": 32,
+          "solid": true,
+          "interactive": true,
+          "text": "Beliche sem travesseiro.",
+          "color": "#556452"
+        },
+        {
+          "id": "bench",
+          "type": "bench",
+          "name": "Banco marcado com iniciais",
+          "x": 240,
+          "y": 260,
+          "w": 55,
+          "h": 120,
+          "height": 32,
+          "solid": true,
+          "interactive": true,
+          "text": "Banco marcado com iniciais."
+        },
+        {
+          "id": "bucket",
+          "type": "bottle",
+          "name": "Balde de limpeza junto ao ralo",
+          "x": 35,
+          "y": 360,
+          "w": 22,
+          "h": 22,
+          "height": 25,
+          "solid": true,
+          "interactive": true,
+          "text": "Balde de limpeza junto ao ralo."
+        },
+        {
+          "id": "graffiti",
+          "type": "poster",
+          "name": "Uma data riscada: 15/10/89",
+          "x": 34,
+          "y": 160,
+          "w": 56,
+          "h": 10,
+          "height": 34,
+          "solid": false,
+          "interactive": true,
+          "text": "Uma data riscada: 15/10/89."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 322,
+          "y": 410,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "cells:Corredor das celas",
+        "density": 65,
+        "types": [
+          "mud",
+          "ash",
+          "damp",
+          "wire"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 65,
+      "fluorescent": true
+    }
+  ],
+  "doors": [
+    {
+      "id": "reception-office",
+      "name": "Gabinete da xerife",
+      "a": {
+        "room": "reception",
+        "side": "marker",
+        "x": 820,
+        "y": 430,
+        "width": 44,
+        "approach": {
+          "x": 800,
+          "y": 465
+        }
+      },
+      "b": {
+        "room": "office",
+        "side": "south",
+        "offset": 240,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    },
+    {
+      "id": "reception-archive",
+      "name": "Arquivo de ocorrências",
+      "a": {
+        "room": "reception",
+        "side": "marker",
+        "x": 800,
+        "y": 610,
+        "width": 44,
+        "approach": {
+          "x": 790,
+          "y": 580
+        }
+      },
+      "b": {
+        "room": "archive",
+        "side": "south",
+        "offset": 210,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": true,
+      "requiresKey": "Crachá"
+    },
+    {
+      "id": "office-interrogation",
+      "name": "Interrogatório",
+      "a": {
+        "room": "office",
+        "side": "east",
+        "offset": 270,
+        "width": 76
+      },
+      "b": {
+        "room": "interrogation",
+        "side": "west",
+        "offset": 170,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    },
+    {
+      "id": "archive-cells",
+      "name": "Celas",
+      "a": {
+        "room": "archive",
+        "side": "east",
+        "offset": 290,
+        "width": 76
+      },
+      "b": {
+        "room": "cells",
+        "side": "west",
+        "offset": 250,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": true,
+      "requiresKey": "Chave das celas",
+      "latchFrom": "cells"
+    }
+  ],
+  "exit": {
+    "room": "reception",
+    "x": 520,
+    "y": 945,
+    "w": 1,
+    "h": 1,
+    "range": 105
+  }
+}

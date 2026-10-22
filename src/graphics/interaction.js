@@ -1,0 +1,5 @@
+import {distanceToProp} from './interiors.js';
+export function pointInPolygon(point,polygon){let inside=false;for(let i=0,j=polygon.length-1;i<polygon.length;j=i++){const a=polygon[i],b=polygon[j];if((a.y>point.y)!==(b.y>point.y)&&point.x<(b.x-a.x)*(point.y-a.y)/(b.y-a.y)+a.x)inside=!inside;}return inside;}
+export function propPolygon(o,project){const z=o.baseZ||0,h=o.height||25;return [project(o.x,o.y,z+h),project(o.x+o.w,o.y,z+h),project(o.x+o.w,o.y,z),project(o.x+o.w,o.y+o.h,z),project(o.x,o.y+o.h,z),project(o.x,o.y+o.h,z+h)];}
+export function pickProp(objects,point,project){return [...objects].sort((a,b)=>(b.x+b.y+b.w+b.h)-(a.x+a.y+a.w+a.h)).find(o=>o.interactive&&pointInPolygon(point,propPolygon(o,project)))||null;}
+export function selectInteraction(objects,player,hovered=null,range=85){if(hovered&&distanceToProp(player,hovered)<=range)return hovered;return objects.filter(o=>o.interactive&&distanceToProp(player,o)<=range).sort((a,b)=>distanceToProp(player,a)-distanceToProp(player,b))[0]||null;}

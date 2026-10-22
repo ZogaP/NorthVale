@@ -1,0 +1,27 @@
+{
+  "name": "northvale",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "check": "node scripts/check.mjs",
+    "test:browser": "node scripts/browser-smoke.cjs",
+    "build": "node scripts/export-shaders.mjs && node scripts/build-offline.mjs",
+    "assets:bake": "node scripts/bake-assets.mjs",
+    "test:graphics": "node scripts/graphics-smoke.cjs",
+    "test:police": "node scripts/police-scene-smoke.cjs",
+    "test:studio": "node scripts/asset-studio-smoke.cjs",
+    "test:editor": "node scripts/asset-editor-smoke.cjs",
+    "test:interiors": "node scripts/interior-smoke.cjs",
+    "interiors:author": "node scripts/build-interior-manifests.mjs",
+    "test:offline": "node scripts/offline-smoke.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "playwright": "1.58.2"
+  }
+}

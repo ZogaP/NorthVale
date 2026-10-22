@@ -1,0 +1,289 @@
+{
+  "version": 1,
+  "id": "gasstation",
+  "name": "Posto florestal Pine Ridge",
+  "profile": "Ponto isolado da estrada; mantimentos, ferramentas e registros de abastecimento.",
+  "entranceRoom": "store",
+  "rooms": [
+    {
+      "id": "store",
+      "name": "Loja de conveniência",
+      "bounds": {
+        "w": 460,
+        "h": 450
+      },
+      "finish": {
+        "floor": "#7b7a5e",
+        "wall": "#849175",
+        "material": "tile",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 230,
+        "y": 385
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 165.6,
+          "y": 171,
+          "z": 110,
+          "radius": 331.2,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 368,
+          "y": 24,
+          "z": 85,
+          "radius": 285.2,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "counter",
+          "type": "counter",
+          "name": "Balcão com recibos de combustível",
+          "x": 170,
+          "y": 260,
+          "w": 190,
+          "h": 60,
+          "height": 47,
+          "solid": true,
+          "interactive": true,
+          "text": "Balcão com recibos de combustível."
+        },
+        {
+          "id": "snacks",
+          "type": "shelf",
+          "name": "Latas de comida e guloseimas",
+          "x": 30,
+          "y": 40,
+          "w": 70,
+          "h": 150,
+          "height": 115,
+          "solid": true,
+          "interactive": true,
+          "text": "Latas de comida e guloseimas."
+        },
+        {
+          "id": "fridge",
+          "type": "fridge",
+          "name": "Refrigerador de bebidas",
+          "x": 320,
+          "y": 35,
+          "w": 75,
+          "h": 65,
+          "height": 115,
+          "solid": true,
+          "interactive": true,
+          "text": "Refrigerador de bebidas."
+        },
+        {
+          "id": "register",
+          "type": "calculator",
+          "name": "Caixa registradora com uma tecla presa",
+          "x": 230,
+          "y": 274,
+          "w": 40,
+          "h": 27,
+          "height": 18,
+          "solid": false,
+          "interactive": true,
+          "text": "Caixa registradora com uma tecla presa.",
+          "baseZ": 48,
+          "parentId": "counter"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 402,
+          "y": 360,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "store:Loja de conveniência",
+        "density": 70,
+        "types": [
+          "flyer",
+          "paper",
+          "directory",
+          "mug",
+          "mud"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 70,
+      "fluorescent": true
+    },
+    {
+      "id": "service",
+      "name": "Sala de serviço do posto",
+      "bounds": {
+        "w": 570,
+        "h": 360
+      },
+      "finish": {
+        "floor": "#5d6558",
+        "wall": "#6e7e6d",
+        "material": "stone",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 285,
+        "y": 295
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 205.2,
+          "y": 136.8,
+          "z": 110,
+          "radius": 410.4,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 456,
+          "y": 24,
+          "z": 85,
+          "radius": 353.4,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "service-bench",
+          "type": "table",
+          "name": "Bancada com ferramentas para bombas antigas",
+          "x": 210,
+          "y": 45,
+          "w": 220,
+          "h": 65,
+          "height": 48,
+          "solid": true,
+          "interactive": true,
+          "text": "Bancada com ferramentas para bombas antigas."
+        },
+        {
+          "id": "fuel-log",
+          "type": "files",
+          "name": "Cadernos de abastecimento com horários noturnos",
+          "x": 35,
+          "y": 30,
+          "w": 70,
+          "h": 90,
+          "height": 90,
+          "solid": true,
+          "interactive": true,
+          "text": "Cadernos de abastecimento com horários noturnos."
+        },
+        {
+          "id": "spares",
+          "type": "box",
+          "name": "Peças de reposição e lanternas",
+          "x": 420,
+          "y": 220,
+          "w": 85,
+          "h": 70,
+          "height": 68,
+          "solid": true,
+          "interactive": true,
+          "text": "Peças de reposição e lanternas."
+        },
+        {
+          "id": "tools",
+          "type": "tools",
+          "name": "Chaves e uma fita isolante ressecada",
+          "x": 250,
+          "y": 59,
+          "w": 100,
+          "h": 26,
+          "height": 5,
+          "solid": false,
+          "interactive": true,
+          "text": "Chaves e uma fita isolante ressecada.",
+          "baseZ": 49,
+          "parentId": "service-bench"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 512,
+          "y": 270,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "service:Sala de serviço do posto",
+        "density": 65,
+        "types": [
+          "wire",
+          "paper",
+          "box",
+          "damp"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 65
+    }
+  ],
+  "doors": [
+    {
+      "id": "store-service",
+      "name": "Sala de serviço",
+      "a": {
+        "room": "store",
+        "side": "east",
+        "offset": 180,
+        "width": 76
+      },
+      "b": {
+        "room": "service",
+        "side": "west",
+        "offset": 210,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "store",
+    "x": 230,
+    "y": 426,
+    "w": 60,
+    "h": 16
+  }
+}

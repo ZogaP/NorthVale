@@ -1,0 +1,9 @@
+export function pointContribution(light,x,y,z=0){const distance=Math.hypot(x-light.x,y-light.y,z-light.z);return Math.max(0,1-distance/light.radius)**2*light.intensity;}
+export function contactOcclusion(x,y,objects){let occlusion=0;for(const o of objects){if(!o.solid)continue;const dx=Math.max(o.x-x,0,x-o.x-o.w),dy=Math.max(o.y-y,0,y-o.y-o.h),distance=Math.hypot(dx,dy);occlusion+=Math.max(0,1-distance/24)*.16;}return Math.min(.65,occlusion);}
+export class InteriorLighting{
+ constructor(){this.ambient=.56;this.lights=[];this.enabled=true;this.ao=true;}
+ setRoom(id){const warm=id==='sarah'||id==='home'||id==='motel';this.lights=[{x:130,y:150,z:110,radius:360,intensity:1.5,color:warm?'#ffd390':'#d8ead0'},{x:420,y:270,z:85,radius:290,intensity:1.2,color:warm?'#e1ae65':'#9ec9df'},{x:270,y:35,z:100,radius:200,intensity:.8,color:'#829ec4'}];}
+ brightness(x,y,z=0){return !this.enabled?1:Math.min(1.35,this.ambient+this.lights.reduce((sum,l)=>sum+pointContribution(l,x,y,z)*.38,0));}
+ drawContact(renderer,objects){if(!this.ao)return;const c=renderer.ctx;for(const o of objects){if(!o.solid)continue;const p=renderer.project(o.x+o.w/2,o.y+o.h/2);c.save();c.translate(p.x,p.y+4);c.scale(1,.46);const radius=Math.max(o.w,o.h)*.78,g=c.createRadialGradient(0,0,2,0,0,radius);g.addColorStop(0,'#08171699');g.addColorStop(.6,'#08171650');g.addColorStop(1,'#08171600');c.fillStyle=g;c.fillRect(-radius,-radius,radius*2,radius*2);c.restore();}}
+ drawLightPools(renderer){if(!this.enabled)return;const c=renderer.ctx;c.save();c.globalCompositeOperation='screen';for(const l of this.lights){const p=renderer.project(l.x,l.y);c.save();c.translate(p.x,p.y);c.scale(1,.5);const r=l.radius*.6,g=c.createRadialGradient(0,0,0,0,0,r);g.addColorStop(0,l.color+'2a');g.addColorStop(.5,l.color+'0d');g.addColorStop(1,l.color+'00');c.fillStyle=g;c.fillRect(-r,-r,r*2,r*2);c.restore();}c.restore();}
+}

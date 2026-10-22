@@ -1,0 +1,247 @@
+{
+  "version": 1,
+  "faces": {
+    "alex": {
+      "id": "face:alex",
+      "kind": "face",
+      "profile": {
+        "skin": [
+          177,
+          138,
+          109
+        ],
+        "hair": "#352f29",
+        "eyes": "#697c7e",
+        "age": 38,
+        "seed": 501,
+        "brow": 5,
+        "jaw": 0.86
+      },
+      "size": 256,
+      "maps": {
+        "base": "/assets/materials/faces/alex-base.png",
+        "normal": "/assets/materials/faces/alex-normal.png",
+        "specular": "/assets/materials/faces/alex-specular.png",
+        "ao": "/assets/materials/faces/alex-ao.png"
+      }
+    },
+    "helen": {
+      "id": "face:helen",
+      "kind": "face",
+      "profile": {
+        "skin": [
+          192,
+          149,
+          119
+        ],
+        "hair": "#69513d",
+        "eyes": "#618274",
+        "age": 46,
+        "seed": 900,
+        "brow": 2,
+        "jaw": 0.73
+      },
+      "size": 256,
+      "maps": {
+        "base": "/assets/materials/faces/helen-base.png",
+        "normal": "/assets/materials/faces/helen-normal.png",
+        "specular": "/assets/materials/faces/helen-specular.png",
+        "ao": "/assets/materials/faces/helen-ao.png"
+      }
+    },
+    "ruth": {
+      "id": "face:ruth",
+      "kind": "face",
+      "profile": {
+        "skin": [
+          158,
+          113,
+          86
+        ],
+        "hair": "#34302b",
+        "eyes": "#7e6844",
+        "age": 54,
+        "seed": 307,
+        "brow": 4,
+        "jaw": 0.82
+      },
+      "size": 256,
+      "maps": {
+        "base": "/assets/materials/faces/ruth-base.png",
+        "normal": "/assets/materials/faces/ruth-normal.png",
+        "specular": "/assets/materials/faces/ruth-specular.png",
+        "ao": "/assets/materials/faces/ruth-ao.png"
+      }
+    },
+    "elias": {
+      "id": "face:elias",
+      "kind": "face",
+      "profile": {
+        "skin": [
+          119,
+          82,
+          65
+        ],
+        "hair": "#24282a",
+        "eyes": "#50462e",
+        "age": 32,
+        "seed": 702,
+        "brow": 3,
+        "jaw": 0.78
+      },
+      "size": 256,
+      "maps": {
+        "base": "/assets/materials/faces/elias-base.png",
+        "normal": "/assets/materials/faces/elias-normal.png",
+        "specular": "/assets/materials/faces/elias-specular.png",
+        "ao": "/assets/materials/faces/elias-ao.png"
+      }
+    },
+    "owen": {
+      "id": "face:owen",
+      "kind": "face",
+      "profile": {
+        "skin": [
+          205,
+          157,
+          119
+        ],
+        "hair": "#8a7356",
+        "eyes": "#6a8595",
+        "age": 58,
+        "seed": 114,
+        "brow": 6,
+        "jaw": 0.93
+      },
+      "size": 256,
+      "maps": {
+        "base": "/assets/materials/faces/owen-base.png",
+        "normal": "/assets/materials/faces/owen-normal.png",
+        "specular": "/assets/materials/faces/owen-specular.png",
+        "ao": "/assets/materials/faces/owen-ao.png"
+      }
+    }
+  },
+  "surfaces": {
+    "wood": {
+      "id": "surface:wood",
+      "kind": "surface",
+      "surface": "wood",
+      "profile": {
+        "seed": 1,
+        "color": [
+          103,
+          77,
+          49
+        ]
+      },
+      "size": 128,
+      "maps": {
+        "base": "/assets/materials/surfaces/wood-base.png",
+        "normal": "/assets/materials/surfaces/wood-normal.png",
+        "specular": "/assets/materials/surfaces/wood-specular.png",
+        "ao": "/assets/materials/surfaces/wood-ao.png"
+      }
+    },
+    "brick": {
+      "id": "surface:brick",
+      "kind": "surface",
+      "surface": "brick",
+      "profile": {
+        "seed": 2,
+        "color": [
+          113,
+          78,
+          63
+        ]
+      },
+      "size": 128,
+      "maps": {
+        "base": "/assets/materials/surfaces/brick-base.png",
+        "normal": "/assets/materials/surfaces/brick-normal.png",
+        "specular": "/assets/materials/surfaces/brick-specular.png",
+        "ao": "/assets/materials/surfaces/brick-ao.png"
+      }
+    },
+    "plaster": {
+      "id": "surface:plaster",
+      "kind": "surface",
+      "surface": "plaster",
+      "profile": {
+        "seed": 3,
+        "color": [
+          139,
+          145,
+          126
+        ]
+      },
+      "size": 128,
+      "maps": {
+        "base": "/assets/materials/surfaces/plaster-base.png",
+        "normal": "/assets/materials/surfaces/plaster-normal.png",
+        "specular": "/assets/materials/surfaces/plaster-specular.png",
+        "ao": "/assets/materials/surfaces/plaster-ao.png"
+      }
+    },
+    "cloth": {
+      "id": "surface:cloth",
+      "kind": "surface",
+      "surface": "cloth",
+      "profile": {
+        "seed": 4,
+        "color": [
+          107,
+          88,
+          65
+        ]
+      },
+      "size": 128,
+      "maps": {
+        "base": "/assets/materials/surfaces/cloth-base.png",
+        "normal": "/assets/materials/surfaces/cloth-normal.png",
+        "specular": "/assets/materials/surfaces/cloth-specular.png",
+        "ao": "/assets/materials/surfaces/cloth-ao.png"
+      }
+    },
+    "stone": {
+      "id": "surface:stone",
+      "kind": "surface",
+      "surface": "stone",
+      "profile": {
+        "seed": 5,
+        "color": [
+          100,
+          111,
+          108
+        ]
+      },
+      "size": 128,
+      "maps": {
+        "base": "/assets/materials/surfaces/stone-base.png",
+        "normal": "/assets/materials/surfaces/stone-normal.png",
+        "specular": "/assets/materials/surfaces/stone-specular.png",
+        "ao": "/assets/materials/surfaces/stone-ao.png"
+      }
+    },
+    "asphalt": {
+      "id": "surface:asphalt",
+      "kind": "surface",
+      "surface": "asphalt",
+      "profile": {
+        "seed": 6,
+        "color": [
+          47,
+          62,
+          65
+        ]
+      },
+      "size": 128,
+      "maps": {
+        "base": "/assets/materials/surfaces/asphalt-base.png",
+        "normal": "/assets/materials/surfaces/asphalt-normal.png",
+        "specular": "/assets/materials/surfaces/asphalt-specular.png",
+        "ao": "/assets/materials/surfaces/asphalt-ao.png"
+      }
+    }
+  }
+}

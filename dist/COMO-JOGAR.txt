@@ -1,0 +1,22 @@
+NORTHVALE 0.4 - COMO ABRIR
+
+1. Extraia o arquivo ZIP para uma pasta comum.
+2. Abra NorthVale.html com Chrome, Edge ou Firefox em um computador.
+3. Clique em "Iniciar investigação".
+
+O HTML já contém o código, os estilos e todas as imagens da delegacia.
+Não é necessário instalar Node.js nem manter conexão com a internet.
+
+INTERIORES NOVOS
+15 construções, 42 cômodos e 27 portas internas.
+Clique em portas ou objetos para Alex se aproximar e interagir.
+E: interagir. C: fechar uma porta próxima. L: trancar/destrancar.
+Na casa de Sarah, encontre a chave no armário da cozinha e siga para o quarto.
+Interações são salvas automaticamente quando o navegador permite armazenamento.
+O botão Salvar também continua disponível.
+
+O pacote inclui os manifestos JSON, as classes de interiores e a documentação
+para revisar e adaptar as plantas. O jogo funciona usando apenas NorthVale.html.
+
+Se o navegador mostrar o código em vez do jogo, salve o arquivo no computador
+e abra-o pelo Explorador de Arquivos/Finder usando a opção "Abrir com".

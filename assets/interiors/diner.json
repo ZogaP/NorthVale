@@ -1,0 +1,342 @@
+{
+  "version": 1,
+  "id": "diner",
+  "name": "Double R Diner",
+  "profile": "Comércio de turnos longos; café requentado, vinil vermelho e comandas amassadas.",
+  "entranceRoom": "dining",
+  "rooms": [
+    {
+      "id": "dining",
+      "name": "Salão do Double R",
+      "bounds": {
+        "w": 730,
+        "h": 450
+      },
+      "finish": {
+        "floor": "#9a947c",
+        "wall": "#a09072",
+        "material": "tile",
+        "condition": "worn"
+      },
+      "spawn": {
+        "x": 365,
+        "y": 385
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "tungsten",
+          "x": 262.8,
+          "y": 171,
+          "z": 110,
+          "radius": 525.6,
+          "intensity": 1.1,
+          "color": "#e0b66e",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 584,
+          "y": 24,
+          "z": 85,
+          "radius": 452.6,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "booth-one",
+          "type": "sofa",
+          "name": "Banco de vinil vermelho remendado",
+          "x": 35,
+          "y": 45,
+          "w": 150,
+          "h": 70,
+          "height": 43,
+          "solid": true,
+          "interactive": true,
+          "text": "Banco de vinil vermelho remendado.",
+          "color": "#825246"
+        },
+        {
+          "id": "booth-two",
+          "type": "sofa",
+          "name": "Última cabine junto à janela",
+          "x": 35,
+          "y": 240,
+          "w": 150,
+          "h": 70,
+          "height": 43,
+          "solid": true,
+          "interactive": true,
+          "text": "Última cabine junto à janela.",
+          "color": "#74473b"
+        },
+        {
+          "id": "counter",
+          "type": "counter",
+          "name": "Balcão de café com marcas de pratos",
+          "x": 365,
+          "y": 95,
+          "w": 240,
+          "h": 60,
+          "height": 50,
+          "solid": true,
+          "interactive": true,
+          "text": "Balcão de café com marcas de pratos."
+        },
+        {
+          "id": "coffee",
+          "type": "coffee",
+          "name": "Café queimado no fundo da jarra",
+          "x": 400,
+          "y": 110,
+          "w": 38,
+          "h": 30,
+          "height": 36,
+          "solid": false,
+          "interactive": true,
+          "text": "Café queimado no fundo da jarra.",
+          "baseZ": 51,
+          "parentId": "counter"
+        },
+        {
+          "id": "jukebox",
+          "type": "jukebox",
+          "name": "Jukebox de moedas com seleção dos anos 80",
+          "x": 615,
+          "y": 260,
+          "w": 65,
+          "h": 55,
+          "height": 110,
+          "solid": true,
+          "interactive": true,
+          "text": "Jukebox de moedas com seleção dos anos 80."
+        },
+        {
+          "id": "table-one",
+          "type": "table",
+          "name": "Mesa com um panfleto de desaparecida",
+          "x": 200,
+          "y": 100,
+          "w": 100,
+          "h": 54,
+          "height": 41,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa com um panfleto de desaparecida."
+        },
+        {
+          "id": "table-two",
+          "type": "table",
+          "name": "Duas xícaras e a conta ainda aberta",
+          "x": 200,
+          "y": 270,
+          "w": 100,
+          "h": 54,
+          "height": 41,
+          "solid": true,
+          "interactive": true,
+          "text": "Duas xícaras e a conta ainda aberta."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 672,
+          "y": 360,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "dining:Salão do Double R",
+        "density": 95,
+        "types": [
+          "mug",
+          "ash",
+          "flyer",
+          "paper",
+          "pen"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 95
+    },
+    {
+      "id": "kitchen",
+      "name": "Cozinha do diner",
+      "bounds": {
+        "w": 520,
+        "h": 570
+      },
+      "finish": {
+        "floor": "#697469",
+        "wall": "#8c9481",
+        "material": "tile",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 260,
+        "y": 505
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "ceiling",
+          "kind": "fluorescent",
+          "x": 187.2,
+          "y": 216.6,
+          "z": 110,
+          "radius": 410.4,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window",
+          "kind": "moon",
+          "x": 416,
+          "y": 24,
+          "z": 85,
+          "radius": 322.4,
+          "intensity": 0.65,
+          "color": "#819fae",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "range",
+          "type": "stove",
+          "name": "Chapa com panelas ainda quentes",
+          "x": 30,
+          "y": 35,
+          "w": 110,
+          "h": 70,
+          "height": 47,
+          "solid": true,
+          "interactive": true,
+          "text": "Chapa com panelas ainda quentes."
+        },
+        {
+          "id": "wash",
+          "type": "sink",
+          "name": "Pia de serviço e escorredor",
+          "x": 180,
+          "y": 35,
+          "w": 160,
+          "h": 60,
+          "height": 46,
+          "solid": true,
+          "interactive": true,
+          "text": "Pia de serviço e escorredor."
+        },
+        {
+          "id": "prep",
+          "type": "steel",
+          "name": "Bancada de preparação com facas guardadas",
+          "x": 195,
+          "y": 240,
+          "w": 170,
+          "h": 80,
+          "height": 46,
+          "solid": true,
+          "interactive": true,
+          "text": "Bancada de preparação com facas guardadas."
+        },
+        {
+          "id": "cold",
+          "type": "fridge",
+          "name": "Geladeira industrial com inventário na porta",
+          "x": 405,
+          "y": 35,
+          "w": 70,
+          "h": 80,
+          "height": 130,
+          "solid": true,
+          "interactive": true,
+          "text": "Geladeira industrial com inventário na porta."
+        },
+        {
+          "id": "trash",
+          "type": "bottle",
+          "name": "Balde de serviço",
+          "x": 35,
+          "y": 390,
+          "w": 35,
+          "h": 35,
+          "height": 43,
+          "solid": true,
+          "interactive": true,
+          "text": "Balde de serviço."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 462,
+          "y": 480,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "kitchen:Cozinha do diner",
+        "density": 75,
+        "types": [
+          "paper",
+          "bottle",
+          "wire",
+          "damp",
+          "mud"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 75,
+      "fluorescent": true
+    }
+  ],
+  "doors": [
+    {
+      "id": "dining-kitchen",
+      "name": "Cozinha",
+      "a": {
+        "room": "dining",
+        "side": "east",
+        "offset": 350,
+        "width": 76
+      },
+      "b": {
+        "room": "kitchen",
+        "side": "west",
+        "offset": 220,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "dining",
+    "x": 365,
+    "y": 426,
+    "w": 60,
+    "h": 16
+  }
+}

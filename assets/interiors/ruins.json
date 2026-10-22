@@ -1,0 +1,267 @@
+{
+  "version": 1,
+  "id": "ruins",
+  "name": "Capela em ruínas",
+  "profile": "Local de encontros clandestinos; musgo, velas e trilhas de barro recente.",
+  "entranceRoom": "nave",
+  "rooms": [
+    {
+      "id": "nave",
+      "name": "Nave da capela",
+      "bounds": {
+        "w": 620,
+        "h": 520
+      },
+      "finish": {
+        "floor": "#56624b",
+        "wall": "#5f7056",
+        "material": "stone",
+        "condition": "ruined"
+      },
+      "spawn": {
+        "x": 310,
+        "y": 455
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "moon",
+          "kind": "moon",
+          "x": 250,
+          "y": 20,
+          "z": 160,
+          "radius": 650,
+          "intensity": 0.9,
+          "color": "#88aaa8",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "broken-pews",
+          "type": "bench",
+          "name": "Banco partido e coberto de musgo",
+          "x": 70,
+          "y": 90,
+          "w": 160,
+          "h": 45,
+          "height": 38,
+          "solid": true,
+          "interactive": true,
+          "text": "Banco partido e coberto de musgo."
+        },
+        {
+          "id": "altar",
+          "type": "steel",
+          "name": "Pedra do altar com restos de velas",
+          "x": 380,
+          "y": 40,
+          "w": 140,
+          "h": 70,
+          "height": 55,
+          "solid": true,
+          "interactive": true,
+          "text": "Pedra do altar com restos de velas."
+        },
+        {
+          "id": "meeting-box",
+          "type": "box",
+          "name": "Caixote usado como assento",
+          "x": 390,
+          "y": 300,
+          "w": 80,
+          "h": 70,
+          "height": 48,
+          "solid": true,
+          "interactive": true,
+          "text": "Caixote usado como assento.",
+          "action": "search"
+        },
+        {
+          "id": "candles",
+          "type": "candle",
+          "name": "Velas queimadas há pouco tempo",
+          "x": 414,
+          "y": 55,
+          "w": 33,
+          "h": 22,
+          "height": 16,
+          "solid": false,
+          "interactive": true,
+          "text": "Velas queimadas há pouco tempo.",
+          "baseZ": 56,
+          "parentId": "altar"
+        },
+        {
+          "id": "photograph",
+          "type": "photos",
+          "name": "Fotografia molhada junto a pegadas",
+          "x": 268,
+          "y": 240,
+          "w": 38,
+          "h": 28,
+          "height": 1,
+          "solid": false,
+          "interactive": true,
+          "text": "Fotografia molhada junto a pegadas."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 562,
+          "y": 430,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "nave:Nave da capela",
+        "density": 100,
+        "types": [
+          "mud",
+          "damp",
+          "paper",
+          "ash"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 100
+    },
+    {
+      "id": "crypt",
+      "name": "Cripta sob a capela",
+      "bounds": {
+        "w": 350,
+        "h": 450
+      },
+      "finish": {
+        "floor": "#3f5649",
+        "wall": "#506752",
+        "material": "stone",
+        "condition": "damp"
+      },
+      "spawn": {
+        "x": 175,
+        "y": 385
+      },
+      "ambient": 0.36,
+      "lights": [
+        {
+          "id": "bulb",
+          "kind": "tungsten",
+          "x": 150,
+          "y": 190,
+          "z": 100,
+          "radius": 320,
+          "intensity": 0.75,
+          "color": "#c8a465",
+          "isOn": true
+        }
+      ],
+      "props": [
+        {
+          "id": "stone-box",
+          "type": "safe",
+          "name": "Caixa de ferro coberta de condensação",
+          "x": 35,
+          "y": 40,
+          "w": 90,
+          "h": 75,
+          "height": 65,
+          "solid": true,
+          "interactive": true,
+          "text": "Caixa de ferro coberta de condensação.",
+          "action": "search"
+        },
+        {
+          "id": "meeting-table",
+          "type": "table",
+          "name": "Mesa improvisada com três marcas de copos",
+          "x": 130,
+          "y": 230,
+          "w": 150,
+          "h": 65,
+          "height": 42,
+          "solid": true,
+          "interactive": true,
+          "text": "Mesa improvisada com três marcas de copos."
+        },
+        {
+          "id": "tape",
+          "type": "cassette",
+          "name": "Uma fita sem rótulo",
+          "x": 172,
+          "y": 244,
+          "w": 36,
+          "h": 24,
+          "height": 8,
+          "solid": false,
+          "interactive": true,
+          "text": "Uma fita sem rótulo.",
+          "baseZ": 43,
+          "parentId": "meeting-table"
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 292,
+          "y": 360,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
+        }
+      ],
+      "dressing": {
+        "seed": "crypt:Cripta sob a capela",
+        "density": 65,
+        "types": [
+          "damp",
+          "mud",
+          "paper",
+          "wire"
+        ],
+        "story": "Vestígios da rotina de outubro de 1989."
+      },
+      "density": 65
+    }
+  ],
+  "doors": [
+    {
+      "id": "nave-crypt",
+      "name": "Escada para a cripta",
+      "a": {
+        "room": "nave",
+        "side": "east",
+        "offset": 340,
+        "width": 76
+      },
+      "b": {
+        "room": "crypt",
+        "side": "west",
+        "offset": 270,
+        "width": 76
+      },
+      "isOpen": false,
+      "isLocked": false,
+      "requiresKey": null
+    }
+  ],
+  "exit": {
+    "room": "nave",
+    "x": 310,
+    "y": 496,
+    "w": 60,
+    "h": 16
+  }
+}
