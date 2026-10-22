@@ -1,22 +1,21 @@
-NORTHVALE 0.4 - COMO ABRIR
+NORTHVALE — SOMBRAS DE 1989 · 0.6
 
-1. Extraia o arquivo ZIP para uma pasta comum.
-2. Abra NorthVale.html com Chrome, Edge ou Firefox em um computador.
-3. Clique em "Iniciar investigação".
+Extraia o ZIP e abra NorthVale.html no Chrome, Edge ou Firefox de desktop.
+O HTML inclui código, estilos, imagens e os 15 manifestos; dispensa servidor.
 
-O HTML já contém o código, os estilos e todas as imagens da delegacia.
-Não é necessário instalar Node.js nem manter conexão com a internet.
+WASD / setas: mover. Shift: correr. E / mouse esquerdo: interagir.
+J: caderno. C: quadro de cortiça. T: relógio. L: isqueiro.
+O / K: fechar / trancar portas. F: viatura. M: mapa.
+X ou botão Missões e decisões: acompanhar missões, favores e decisões do local.
+Controles: remapear teclado e mouse; Escape permanece reservado.
 
-INTERIORES NOVOS
-15 construções, 42 cômodos e 27 portas internas.
-Clique em portas ou objetos para Alex se aproximar e interagir.
-E: interagir. C: fechar uma porta próxima. L: trancar/destrancar.
-Na casa de Sarah, encontre a chave no armário da cozinha e siga para o quarto.
-Interações são salvas automaticamente quando o navegador permite armazenamento.
-O botão Salvar também continua disponível.
+Comece pela carta no quarto de Sarah. A chave do quarto está no armário
+na cozinha. Investigue os registros, complete os favores e confronte os
+depoimentos com provas. O relógio influencia o resgate na represa.
 
-O pacote inclui os manifestos JSON, as classes de interiores e a documentação
-para revisar e adaptar as plantas. O jogo funciona usando apenas NorthVale.html.
+Os 14 finais dependem das provas intactas, do resgate e das decisões.
+Encerrar uma partida é definitivo para aquele slot; recarregar mantém o final.
+O navegador precisa permitir armazenamento local para persistir o progresso.
 
-Se o navegador mostrar o código em vez do jogo, salve o arquivo no computador
-e abra-o pelo Explorador de Arquivos/Finder usando a opção "Abrir com".
+Os módulos do motor estão em src/engine e src/systems neste pacote.
+Regras e integração: docs/ENGINE-SYSTEMS.md.

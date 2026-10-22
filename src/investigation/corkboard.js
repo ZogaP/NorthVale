@@ -2,7 +2,8 @@
 // Canvas & DOM drag-and-drop corkboard with red string (linha vermelha) connections, pin nodes, and logical deduction unlocking.
 
 export class CorkboardSystem {
-  constructor(state, cluesRegistry, onDeductionUnlocked, achievementSystem) {
+  constructor(state, cluesRegistry, onDeductionUnlocked, achievementSystem, onChange=()=>{}) {
+    this.onChange=onChange;
     this.state = state;
     this.cluesRegistry = cluesRegistry;
     this.onDeductionUnlocked = onDeductionUnlocked;
@@ -75,6 +76,7 @@ export class CorkboardSystem {
     `;
 
     document.body.appendChild(this.modal);
+    this.modal.addEventListener('close',()=>this.onChange());
     this.canvas = this.modal.querySelector('#corkboard-canvas');
     this.ctx = this.canvas.getContext('2d');
 
@@ -107,8 +109,8 @@ export class CorkboardSystem {
     const surface = this.modal.querySelector('#corkboard-surface');
     if (!surface) return;
     const rect = surface.getBoundingClientRect();
-    this.canvas.width = rect.width;
-    this.canvas.height = rect.height;
+    if(this.canvas.width!==Math.round(rect.width))this.canvas.width=Math.round(rect.width);
+    if(this.canvas.height!==Math.round(rect.height))this.canvas.height=Math.round(rect.height);
   }
 
   syncNodes() {
@@ -216,13 +218,16 @@ export class CorkboardSystem {
   }
 
   connectNodes(a, b) {
+    if(this.state.ending||a===b||![a,b].every(id=>this.state.evidence.includes(id)))return;
     const exists = this.state.corkboardLinks.some(
       pair => (pair[0] === a && pair[1] === b) || (pair[0] === b && pair[1] === a)
     );
     if (!exists) {
       this.state.corkboardLinks.push([a, b]);
-      this.achievementSystem?.unlock('red_string_master');
+      const supported=this.state.case?.deductions.some(d=>d.requiredClueIds.includes(a)&&d.requiredClueIds.includes(b));if(!supported){this.state.PARANOIA=Math.min(100,(this.state.PARANOIA??20)+5);this.state.obsession=this.state.PARANOIA;}
+      if(supported)this.achievementSystem?.unlock('red_string_master');
       this.evaluateDeductions();
+      this.onChange();
     }
   }
 
@@ -283,6 +288,8 @@ export class CorkboardSystem {
   }
 
   render() {
+    if(!this.modal?.open)return;
+    this.setupCanvasSize();
     const c = this.ctx;
     const w = this.canvas.width;
     const h = this.canvas.height;

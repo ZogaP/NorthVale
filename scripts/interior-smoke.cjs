@@ -11,7 +11,7 @@ const fs=require('node:fs/promises');
   const load=async(building,room,player)=>{const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('northvale-save')));state.interior=building;state.interiorRoom=room;state.outdoor={...initial.player};state.player={...player,vx:0,vy:0,angle:0};await page.evaluate(s=>localStorage.setItem('northvale-save',JSON.stringify(s)),state);await page.click('#load');await page.waitForFunction(r=>document.querySelector('#room-hud').dataset.room===r,room);return state;};
   const read=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('northvale-save')));
   const waitRoom=room=>page.waitForFunction(r=>document.querySelector('#room-hud').dataset.room===r,room);
-  const clickWorld=async(w,h,x,y,z)=>{const p=await page.evaluate(({w,h,x,y,z})=>{const scale=Math.min(1.85,(innerWidth-210)/((w+h)*.78+180),(innerHeight-210)/((w+h)*.39+170));return{x:innerWidth*.5+((x-y)*.78-(w-h)*.39)*scale,y:innerHeight*.56+((x+y)*.39-z-(w+h)*.195)*scale};},{w,h,x,y,z});await page.mouse.click(p.x,p.y);};
+  const clickWorld=async(w,h,x,y,z)=>{const p=await page.evaluate(({w,h,x,y,z})=>{const scale=Math.min(1.85,(innerWidth-210)/((w+h)*(Math.sqrt(3)/2)+180),(innerHeight-210)/((w+h)*.5+170));return{x:innerWidth*.5+((x-y)*(Math.sqrt(3)/2)-(w-h)*(Math.sqrt(3)/4))*scale,y:innerHeight*.56+((x+y)*.5-z-(w+h)*.25)*scale};},{w,h,x,y,z});await page.mouse.click(p.x,p.y);};
   await load('sarah','living',{x:270,y:395});
   await page.locator('[data-door="living-kitchen"]').click();await waitRoom('kitchen');
   assert.equal((await read()).interiorRoom,'kitchen','transition checkpoint is automatic');

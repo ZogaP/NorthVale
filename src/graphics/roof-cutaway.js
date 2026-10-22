@@ -1,48 +1,21 @@
+import {RenderQueue} from '../engine/RenderQueue.js';
 // Roof Cutaway & Volumetric Lighting/Shadow Engine for NorthVale — Sombras de 1989
 // 300ms Smooth Roof Cutaway Transition, Volumetric 2.5D Shadows (shadowBlur & vectors),
 // Wet Asphalt Specular Reflections and Cracked Sidewalk Slabs.
 
 export class RoofCutawaySystem {
   constructor() {
-    this.alphas = new Map(); // buildingId -> alpha (1.0 to 0.0)
+    this.queue = new RenderQueue();
+    this.alphas = this.queue.cutaways; // buildingId -> alpha (1.0 to 0.0)
     this.ripples = [];
     this.splashes = [];
-    this.transitionDuration = 0.30; // 300ms smooth cutaway
+    this.transitionDuration = 0.25; // 300ms smooth cutaway
   }
 
   update(dt, player, buildings, isInterior = false, currentInteriorId = null) {
-    const fadeRate = dt / this.transitionDuration;
-
-    // Update cutaway alphas for all buildings
-    for (const b of buildings) {
-      const current = this.alphas.get(b.id) ?? 1.0;
-      let target = 1.0;
-
-      const insideCollision = (
-        player.x >= b.x && player.x <= b.x + b.w &&
-        player.y >= b.y && player.y <= b.y + b.h
-      );
-      const nearEntrance = Math.hypot(player.x - (b.x + b.w / 2), player.y - (b.y + b.h + 15)) < 75;
-
-      if (isInterior) {
-        target = (currentInteriorId === b.id) ? 0.0 : 1.0;
-      } else if (insideCollision) {
-        target = 0.0; // Complete cutaway reveal
-      } else if (nearEntrance) {
-        target = 0.22; // Partial cutaway preview
-      } else {
-        target = 1.0; // Solid exterior
-      }
-
-      // Exact 300ms linear/smoothstep interpolation
-      let next = current;
-      if (current < target) {
-        next = Math.min(target, current + fadeRate);
-      } else if (current > target) {
-        next = Math.max(target, current - fadeRate);
-      }
-      this.alphas.set(b.id, next);
-    }
+    const building=isInterior?buildings.find(b=>b.id===currentInteriorId):null;
+    const x=building?building.x+building.w/2:player.x,y=building?building.y+building.h/2:player.y;
+    this.queue.updateCutaways(x,y,buildings,dt);
 
     // Update rain puddles ripples on wet asphalt
     for (let i = this.ripples.length - 1; i >= 0; i--) {

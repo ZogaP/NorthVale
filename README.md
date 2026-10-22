@@ -1,6 +1,6 @@
 # NorthVale — Sombras de 1989
 
-Jogo investigativo isométrico, versão 0.4, com 15 construções, 42 cômodos e portas internas funcionais. Os interiores carregam plantas JSON exclusivas, com objetos e luzes persistentes. A recepção pintada da delegacia se conecta ao gabinete, arquivo, interrogatório e celas. Veja [arquitetura e manifestos dos interiores](docs/INTERIORS.md).
+Jogo investigativo isométrico, versão 0.6, com campanha canônica: Bobby Miller é o culpado e Ruth Mercer participa do acobertamento. Há cinco missões, controles remapeáveis e 14 finais determinísticos, além das 15 construções e 42 cômodos persistentes. Veja [núcleo, migração, regras e precedência dos finais](docs/ENGINE-SYSTEMS.md) e [manifestos dos interiores](docs/INTERIORS.md).
 
 Veja [pipeline gráfico, shaders e assets](docs/GRAPHICS.md). Durante o jogo, use **Gráficos** para comparar os rostos, canais de material, iluminação, AO e densidade.
 
@@ -12,7 +12,7 @@ O [Editor de Cenários NorthVale](NorthVale_AssetStudio.html) abre separadamente
 
 Baixe o [NorthVale-JOGAR.zip](https://github.com/ZogaP/NorthVale/raw/refs/heads/main/dist/NorthVale-JOGAR.zip), extraia e abra `NorthVale.html` no navegador. A aba **Issues** do GitHub serve para relatar problemas; o jogo está no ZIP.
 
-A versão autocontida está em `dist/NorthVale.html`. Copie ou baixe esse arquivo para seu computador e abra no Chrome, Edge ou Firefox em desktop. Ele inclui código, estilos, os 15 manifestos de interiores e os oito PNGs da delegacia e dos personagens, sem buscar módulos ou imagens externas. A persistência depende de o navegador permitir armazenamento local para arquivos.
+A versão autocontida está em `dist/NorthVale.html`. Copie ou baixe esse arquivo para seu computador e abra no Chrome, Edge ou Firefox em desktop. Ele inclui código, estilos, os 15 manifestos de interiores e os nove PNGs da delegacia e dos personagens, sem buscar módulos ou imagens externas. A persistência depende de o navegador permitir armazenamento local para arquivos.
 
 Para recriar essa distribuição após editar o projeto:
 
@@ -30,9 +30,9 @@ Instale Node.js 20 ou superior. No terminal, entre na pasta `NorthVale` e execut
 npm start
 ```
 
-Abra o navegador no endereço local da porta 5173 (HTTP). Não abra `index.html` diretamente pelo explorador de arquivos, pois o jogo usa módulos JavaScript. Nenhuma instalação de pacote é necessária para jogar ou executar os testes de lógica. `NORTHVALE_PORT` permite escolher outra porta.
+Abra o navegador no endereço local da porta 5173 (HTTP). Não abra `index.html` diretamente pelo explorador de arquivos, pois o jogo usa módulos JavaScript. Nenhuma instalação de pacote é necessária para jogar ou executar os testes de lógica. `NORTHVALE_PORT` permite escolher outra porta. `index.html` usa módulos ES e deve ser servido por HTTP; para abrir por duplo clique, use `JOGAR_OFFLINE.html` ou `dist/NorthVale.html`. Os antigos bundles manuais não são mais carregados.
 
-Comece a investigação e assista ao prólogo breve ou pule com Espaço. Entre na delegacia para conversar com Ruth e explorar as salas internas. Na casa dos Miller, encontre a chave na gaveta do armário da cozinha e siga pelo corredor até o quarto de Sarah. Clique em portas ou objetos para Alex se aproximar. Colete documentos e compare as pistas no caderno. Esta versão não tem desfecho da campanha.
+Comece a investigação e assista ao prólogo breve ou pule com Espaço. Entre na delegacia para conversar com Ruth e explorar as salas internas. Na casa dos Miller, encontre a chave na gaveta do armário da cozinha e siga pelo corredor até o quarto de Sarah. Clique em portas ou objetos para Alex se aproximar. Colete documentos e compare as pistas no caderno. O painel **Missões e decisões** acompanha os favores e permite executar decisões específicas em cada local, incluindo resgate nas turbinas e envio de provas pelo trem. Os desfechos têm epílogos textuais; a campanha não inclui novas cutscenes para cada final.
 
 | Tecla | Ação |
 |---|---|
@@ -40,7 +40,9 @@ Comece a investigação e assista ao prólogo breve ou pule com Espaço. Entre n
 | Shift | Correr |
 | E | Conversar, entrar, sair e examinar |
 | Clique | Aproximar-se de objetos e portas internas e interagir |
-| C / L | Fechar / trancar ou destrancar uma porta interna próxima |
+| C / L / T | Quadro de cortiça / isqueiro / relógio |
+| O / K | Fechar / trancar ou destrancar uma porta interna próxima |
+| X | Missões, favores e decisões do local |
 | F | Entrar/sair da viatura quando próximo |
 | Espaço | Frear a viatura / pular prólogo |
 | J | Caderno, inventário, provas, ligações e espera de 1h |
@@ -54,7 +56,7 @@ Botões inferiores salvam/carregam um slot no armazenamento do navegador e ativa
 ```sh
 npm test
 npm run check
-npm run test:police
+npm run test:canonical
 ```
 
 Para o smoke de navegador (servidor precisa estar iniciado em outro terminal):
@@ -69,6 +71,6 @@ Em máquina com Chromium já instalado, `NORTHVALE_CHROMIUM_PATH` pode indicar s
 
 ## Organização e colaboração
 
-Sistemas em módulos ES em `src/`, testes de lógica em `tests/`, smoke em `scripts/`. Não há backend, credenciais, telemetria, serviços externos ou assets de terceiros no jogo. Use o checkout existente; tarefas de nuvem já têm ambiente isolado e não precisam de worktree. Alterações ficam locais para revisão; nenhum commit ou envio remoto é feito automaticamente.
+Sistemas em módulos ES em `src/`, testes de lógica em `tests/`, smoke em `scripts/`. Não há backend, credenciais, telemetria, serviços externos ou assets de terceiros no jogo. Use o checkout existente; tarefas de nuvem já têm ambiente isolado e não precisam de worktree. Alterações ficam locais para revisão; publicações são feitas quando solicitadas na tarefa.
 
-Prioridades seguintes: aplicar o mesmo tratamento pintado aos demais interiores, ampliar as animações narrativas, dirigir o prólogo e concluir o mistério. A lista detalhada de recursos ausentes está na auditoria.
+Prioridades seguintes: ampliar a arte dos interiores, dirigir as cenas dos 14 desfechos e validar o alvo NW.js no desktop. A lista detalhada de recursos ausentes está na auditoria.

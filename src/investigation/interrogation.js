@@ -107,7 +107,8 @@ export class InterrogationSystem {
     document.body.appendChild(this.modal);
     this.modal.querySelector('#interrogation-close').onclick = () => this.close();
     this.modal.querySelector('#btn-close-drawer').onclick = () => {
-      this.modal.querySelector('#interrogation-evidence-drawer').hidden = true;
+      if(this.state.ending||!this.state.evidence.includes(clueId))return;
+    this.modal.querySelector('#interrogation-evidence-drawer').hidden = true;
     };
 
     this.modal.querySelector('#btn-ask-alibi').onclick = () => this.askAlibi();
@@ -229,9 +230,11 @@ export class InterrogationSystem {
   }
 
   confrontClue(clueId) {
+    if(this.state.ending||!this.state.evidence.includes(clueId))return;
     this.modal.querySelector('#interrogation-evidence-drawer').hidden = true;
     const clue = this.cluesRegistry[clueId];
     const mood = this.getSuspectMood(this.activeSuspect.id);
+    mood.presented??=[];if(mood.presented.includes(clueId))return;mood.presented.push(clueId);
 
     this.addLog('alex', 'Alex Hale', `[APRESENTA: ${clue.title.toUpperCase()}] Explique como isso se encaixa na sua versão dos fatos.`);
 
@@ -249,7 +252,9 @@ export class InterrogationSystem {
       }
     }
 
+    if(this.state.canonVersion===1)isContradiction=(this.activeSuspect.id==='bobby'&&['viatura04','bobby_trace'].includes(clueId))||(this.activeSuspect.id==='ruth'&&clueId==='ruth_order');
     if (isContradiction) {
+      this.onContradictionProven?.(this.activeSuspect.id, clueId);
       mood.nervousness = Math.min(100, mood.nervousness + 35);
       mood.hostility = Math.max(0, mood.hostility - 10);
 
@@ -259,7 +264,7 @@ export class InterrogationSystem {
         mood.broken = true;
         this.addLog('suspect', this.activeSuspect.name, `[QUEBRA DE POSTURA] Chega! Eu falo! Não vou carregar a culpa inteira por esse pesadelo. ${this.seedCase.solutionSummary}`, true);
         this.achievementSystem?.unlock('breakthrough');
-        this.onContradictionProven?.(this.activeSuspect.id, clueId);
+        // The contradiction callback was already emitted above.
       }
     } else {
       mood.hostility = Math.min(100, mood.hostility + 25);

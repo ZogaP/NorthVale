@@ -8,7 +8,7 @@ import {RoofCutawaySystem} from '../src/graphics/roof-cutaway.js';
 import {createState, collect, serialize, deserialize} from '../src/state.js';
 import {InternalDoor} from '../src/interiors/interior-world.js';
 
-test('KillerGenerator gera sementes determinísticas e cobre os 4 arquétipos', () => {
+test('legacy archive: KillerGenerator gera sementes determinísticas e cobre os 4 arquétipos', () => {
   const genA = new KillerGenerator(1989);
   const caseA1 = genA.generate();
   const caseA2 = new KillerGenerator(1989).generate();
@@ -58,7 +58,7 @@ test('AchievementSystem rastreia conquistas normais, difíceis e secretas', () =
   assert.equal(achievements.has('night_wanderer'), true);
 });
 
-test('EndingsEvaluator ramifica para os 7 finais distintos', () => {
+test('legacy archive: EndingsEvaluator ramifica para os 7 finais distintos', () => {
   const state = createState(1989);
   const evaluator = new EndingsEvaluator(state);
   const culpritId = state.case.culpritId;
