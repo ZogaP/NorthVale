@@ -4,6 +4,7 @@ import {SpriteCache} from '../graphics/sprite-cache.js';
 import {dressRoom} from './room-dressing.js';
 import {globalObjectId} from './save-system.js';
 import {random,hash} from '../graphics/random.js';
+import {PlayerRenderer} from '../graphics/Player.js';
 
 const alias={table:'table',counter:'desk',steel:'table',files:'cabinet',catalog:'cabinet',medicine:'shelf',books:'book',photos:'frame',directory:'book',flyer:'paper',drawer:'cabinet'};
 const ellipse=(c,p,rx,ry,color)=>{c.fillStyle=color;c.beginPath();c.ellipse(p.x,p.y,rx,ry,0,0,Math.PI*2);c.fill();};
@@ -62,7 +63,22 @@ export class RoomPropPainter{
   }
   if(type==='coat'||type==='broom'){const q=r.project(o.x+o.w/2,o.y+o.h/2,z+h);stroke(c,q,{x:q.x+2,y:q.y+h},'#8d8965',3);if(type==='coat')r.poly([{x:q.x-10,y:q.y+9},{x:q.x+13,y:q.y+13},{x:q.x+18,y:q.y+51},{x:q.x-14,y:q.y+45}],'#5d6c51','#344b34');else for(let i=0;i<6;i++)stroke(c,{x:q.x+2,y:q.y+h-15},{x:q.x-9+i*4,y:q.y+h},'#a39765',2);return;}
   if(type==='lamp'||type==='candle'){stroke(c,p,{x:p.x,y:p.y-h},'#7d865c',3);ellipse(c,p,7,3,'#4d6149');ellipse(c,{x:p.x,y:p.y-h},type==='lamp'?13:3,type==='lamp'?5:6,type==='lamp'?'#a6ae7e':'#e0bb70');return;}
-  if(type==='ashtray'){ellipse(c,p,Math.max(4,o.w*.4),Math.max(2,o.h*.3),'#a0a88e');ellipse(c,p,Math.max(2,o.w*.29),Math.max(1,o.h*.2),'#4d5c45');stroke(c,p,{x:p.x+7,y:p.y+1},'#d2c99b',2);return;}
+  if(type==='ashtray'){
+    ellipse(c,p,Math.max(4,o.w*.4),Math.max(2,o.h*.3),'#a0a88e');
+    ellipse(c,p,Math.max(2,o.w*.29),Math.max(1,o.h*.2),'#4d5c45');
+    stroke(c,p,{x:p.x+7,y:p.y+1},'#d2c99b',2);
+    // Environmental storytelling: translucent curling smoke wisps
+    c.save();
+    c.strokeStyle='rgba(215, 226, 220, 0.35)';
+    c.lineWidth=1.2;
+    c.beginPath();
+    const t=r.time||0;
+    c.moveTo(p.x+2,p.y-1);
+    c.bezierCurveTo(p.x+4+Math.sin(t*3)*3,p.y-8, p.x-2+Math.cos(t*2)*4,p.y-18, p.x+3+Math.sin(t*2.5)*6,p.y-28);
+    c.stroke();
+    c.restore();
+    return;
+  }
   if(type==='pen'||type==='tools'){for(let i=0;i<(type==='tools'?5:1);i++)stroke(c,{x:p.x+i*3,y:p.y},{x:p.x+9+i*3,y:p.y+5},'#b1b49b',type==='pen'?1.2:2.5);return;}
   if(['mud','ash','dust','damp','wire','drain','floorboard'].includes(type)){
    if(type==='wire'){const a=r.project(o.x,14,78),b=r.project(o.x+o.w+30,14,40);stroke(c,a,b,'#293e2e',1.5);return;}
@@ -76,18 +92,28 @@ export class RoomPropPainter{
 }
 
 export class InteriorRoomRenderer{
- constructor(world,police){this.world=world;this.police=police;this.painter=new RoomPropPainter();this.dressing=new Map();this.frame={x:0,y:0,scale:1};this.focus=null;}
- screenToWorld(point){const x=(point.x-this.frame.x)/this.frame.scale,y=(point.y-this.frame.y)/this.frame.scale;return{x:(x/.78+y/.39)/2,y:(y/.39-x/.78)/2};}
- pick(point,state){if(!point)return null;const room=this.world.room(state),targets=this.world.targets(state);if(room.background==='painted-police'){const p=this.police.screenToScene(point);return [...targets].reverse().find(t=>Math.hypot(p.x-(t.kind==='door'?t.anchor.x:t.x),p.y-(t.kind==='door'?t.anchor.y:t.y))<(t.kind==='door'?35:Math.min(70,t.range*.6)))||null;}const p={x:(point.x-this.frame.x)/this.frame.scale,y:(point.y-this.frame.y)/this.frame.scale},project=(x,y,z=0)=>({x:(x-y)*.78,y:(x+y)*.39-z});const depth=t=>{const parent=t.object?.parentId&&room.props.find(o=>o.id===t.object.parentId);return parent?parent.x+parent.y+parent.w+parent.h+.1:t.x+t.y+t.w+t.h;};return [...targets].sort((a,b)=>depth(b)-depth(a)).find(t=>pointInPolygon(p,propPolygon(t.kind==='prop'?t.object:{...t,height:t.kind==='door'?85:2},project)))||null;}
+ constructor(world,police){
+  this.world=world;
+  this.police=police;
+  this.painter=new RoomPropPainter();
+  this.dressing=new Map();
+  this.frame={x:0,y:0,scale:1};
+  this.focus=null;
+  this.playerRenderer=new PlayerRenderer({id:'alex',sheet:police?.alexSheet,targetHeight:50});
+ }
+ screenToWorld(point){const x=(point.x-this.frame.x)/this.frame.scale,y=(point.y-this.frame.y)/this.frame.scale;return{x:(x/.866+y/.5)/2,y:(y/.5-x/.866)/2};}
+ pick(point,state){
+  if(!point)return null;
+  const room=this.world.room(state),targets=this.world.targets(state);
+  const p={x:(point.x-this.frame.x)/this.frame.scale,y:(point.y-this.frame.y)/this.frame.scale},project=(x,y,z=0)=>({x:(x-y)*.866,y:(x+y)*.5-z});
+  const depth=t=>{const parent=t.object?.parentId&&room.props.find(o=>o.id===t.object.parentId);return parent?parent.x+parent.y+parent.w+parent.h+.1:t.x+t.y+t.w+t.h;};
+  return [...targets].sort((a,b)=>depth(b)-depth(a)).find(t=>pointInPolygon(p,propPolygon(t.kind==='prop'?t.object:{...t,height:t.kind==='door'?85:2},project)))||null;
+ }
  draw(renderer,state,dt){
   const room=this.world.room(state),r=renderer,c=r.ctx;
-  if(room.background==='painted-police'){
-   this.police.update(dt,state.player);const target=this.focus;this.police.draw(c,r.w,r.h,state.player,target?{x:target.kind==='door'?target.anchor.x:target.x,y:target.kind==='door'?target.anchor.y:target.y,radius:target.range||80}:null);
-   c.save();c.translate(this.police.frame.x,this.police.frame.y);c.scale(this.police.frame.scale,this.police.frame.scale);for(const d of this.world.doors(state)){c.strokeStyle=d.isLocked?'#b18c74':'#a084c7';c.lineWidth=3;c.strokeRect(d.x,d.y,d.w,d.h);c.font='13px Georgia';c.fillStyle='#d9d0af';c.fillText(d.name,d.x-15,d.y-15);}c.restore();return;
-  }
   const lightState=this.world.lights(state),mask=lightState.map(l=>l.id).join(','),roomKey=`${state.interior}:${room.id}:${mask}:${r.lighting.enabled}`;
   r.room=roomKey;r.surface=null;r.lighting.ambient=room.ambient;r.lighting.lights=lightState.map(l=>({...l,intensity:l.intensity*(l.kind==='fluorescent'?1+Math.sin(r.time*31+hash(l.id))*.015:1)}));
-  const scale=Math.min(1.85,(r.w-210)/((room.bounds.w+room.bounds.h)*.78+180),(r.h-210)/((room.bounds.w+room.bounds.h)*.39+170));
+  const scale=Math.min(1.85,(r.w-210)/((room.bounds.w+room.bounds.h)*.866+180),(r.h-210)/((room.bounds.w+room.bounds.h)*.5+170));
   const center=r.project(room.bounds.w/2,room.bounds.h/2);this.frame={x:r.w*.50-center.x*scale,y:r.h*.56-center.y*scale,scale};
   c.save();c.translate(this.frame.x,this.frame.y);c.scale(scale,scale);
   this.floor(r,room);this.walls(r,state,room);
@@ -96,7 +122,12 @@ export class InteriorRoomRenderer{
   for(const o of props.filter(o=>['rug','mud','ash','floorboard','drain'].includes(o.type)))this.painter.draw(r,o,save.read(globalObjectId(state.interior,room.id,o.id)),roomKey);
   const list=props.filter(o=>!['rug','mud','ash','floorboard','drain'].includes(o.type)).map(o=>{const parent=o.parentId&&room.props.find(p=>p.id===o.parentId);return{depth:parent?parent.x+parent.y+parent.w+parent.h+.1:o.x+o.y+o.w+o.h,draw:()=>{if(o.solid&&o.height>20)this.shadow(r,o,lightState);this.painter.draw(r,o,save.read(globalObjectId(state.interior,room.id,o.id)),roomKey);}};});
   for(const d of this.world.doors(state))list.push({depth:d.x+d.y+d.w+d.h,draw:()=>this.drawDoor(r,d)});
-  list.push({depth:state.player.x+state.player.y+12,draw:()=>{const p=r.project(state.player.x,state.player.y);ellipse(c,{x:p.x,y:p.y+2},13,5,'#0a171a77');const actor=this.police.alex;actor.update(dt,(state.player.vx-state.player.vy)*.78,(state.player.vx+state.player.vy)*.39);if(!actor.sheet.draw(c,actor.direction,actor.frame,p.x,p.y,{scale:.47}))r.person(state.player.x,state.player.y,'#8e8c69',r.time*8,state.player.angle);}});
+  list.push({depth:state.player.x+state.player.y+12,draw:()=>{
+    const p=r.project(state.player.x,state.player.y);
+    if(this.police?.alexSheet)this.playerRenderer.setSheet(this.police.alexSheet);
+    this.playerRenderer.update(dt,state.player.vx,state.player.vy,state.player.angle);
+    this.playerRenderer.draw(c,p.x,p.y,{scale:50/(this.playerRenderer.sheet?.frameHeight||128)});
+  }});
   list.sort((a,b)=>a.depth-b.depth).forEach(item=>item.draw());
   this.illumination(r,room);this.windows(r,room);
   if(this.focus){const target=this.focus,polygon=target.kind==='prop'?propPolygon(target.object,(x,y,z)=>r.project(x,y,z)): [r.project(target.x,target.y),r.project(target.x+target.w,target.y),r.project(target.x+target.w,target.y+target.h),r.project(target.x,target.y+target.h)];c.save();c.strokeStyle='#bc96e7';c.shadowColor='#8f5dbe';c.shadowBlur=12;c.lineWidth=2;c.beginPath();polygon.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.closePath();c.stroke();c.restore();}

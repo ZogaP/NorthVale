@@ -9,31 +9,52 @@
       "id": "reception",
       "name": "Recepção e investigação",
       "bounds": {
-        "w": 1536,
-        "h": 1024
+        "w": 680,
+        "h": 480
       },
-      "background": "painted-police",
       "spawn": {
-        "x": 520,
-        "y": 900
+        "x": 340,
+        "y": 420
       },
-      "ambient": 0.4,
+      "ambient": 0.38,
       "finish": {
-        "floor": "#6a715a",
-        "wall": "#65705a",
+        "floor": "#657068",
+        "wall": "#667467",
         "material": "tile",
         "condition": "damp"
       },
       "lights": [
         {
-          "id": "fluorescent",
+          "id": "fluorescent-a",
           "kind": "fluorescent",
-          "x": 750,
-          "y": 400,
-          "z": 140,
-          "radius": 900,
-          "intensity": 1,
-          "color": "#d6dbb5",
+          "x": 260,
+          "y": 200,
+          "z": 120,
+          "radius": 420,
+          "intensity": 1.1,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "fluorescent-b",
+          "kind": "fluorescent",
+          "x": 490,
+          "y": 200,
+          "z": 120,
+          "radius": 390,
+          "intensity": 1.0,
+          "color": "#c8dbc3",
+          "isOn": true
+        },
+        {
+          "id": "window-rain",
+          "kind": "moon",
+          "x": 560,
+          "y": 24,
+          "z": 85,
+          "radius": 340,
+          "intensity": 0.65,
+          "color": "#819fae",
           "isOn": true
         }
       ],
@@ -42,8 +63,8 @@
           "id": "ruth",
           "type": "npc",
           "name": "Sargento Ruth Mercer",
-          "x": 875,
-          "y": 485,
+          "x": 480,
+          "y": 220,
           "w": 1,
           "h": 1,
           "height": 1,
@@ -51,51 +72,217 @@
           "interactive": true,
           "text": "Hale. A cidade já decidiu o que aconteceu com Sarah.",
           "action": "ruth-dialogue",
-          "range": 92
+          "range": 92,
+          "approach": {
+            "x": 480,
+            "y": 270
+          }
+        },
+        {
+          "id": "ruth-desk",
+          "type": "table",
+          "name": "Mesa da sargento Mercer",
+          "x": 420,
+          "y": 160,
+          "w": 120,
+          "h": 60,
+          "height": 24,
+          "solid": true,
+          "interactive": true,
+          "color": "#4d4233",
+          "text": "Mesa da sargento Mercer com carimbos e inquéritos protocolados."
+        },
+        {
+          "id": "ruth-chair",
+          "type": "armchair",
+          "name": "Cadeira da sargento",
+          "x": 455,
+          "y": 95,
+          "w": 40,
+          "h": 40,
+          "height": 18,
+          "solid": true,
+          "interactive": true,
+          "color": "#38453b",
+          "text": "Cadeira de couro com encosto reto."
+        },
+        {
+          "id": "investigation-desk",
+          "type": "table",
+          "name": "Mesa de investigação de Alex",
+          "x": 180,
+          "y": 240,
+          "w": 110,
+          "h": 56,
+          "height": 24,
+          "solid": true,
+          "interactive": true,
+          "color": "#544634",
+          "text": "Mesa de trabalho de Alex Hale, coberta de relatórios de desaparecimento."
         },
         {
           "id": "report",
           "type": "paper",
           "name": "Relatório sobre a mesa",
-          "x": 585,
-          "y": 530,
-          "w": 1,
-          "h": 1,
+          "x": 195,
+          "y": 255,
+          "w": 30,
+          "h": 20,
           "height": 1,
+          "baseZ": 25,
+          "parentId": "investigation-desk",
           "solid": false,
           "interactive": true,
           "text": "Relatório dos desaparecimentos.",
           "evidence": "report",
           "action": "report-dialogue",
-          "range": 132,
+          "range": 100,
           "approach": {
-            "x": 600,
-            "y": 640
+            "x": 235,
+            "y": 320
           }
+        },
+        {
+          "id": "typewriter",
+          "type": "typewriter",
+          "name": "Máquina de escrever Remington",
+          "x": 240,
+          "y": 250,
+          "w": 32,
+          "h": 26,
+          "height": 10,
+          "baseZ": 25,
+          "parentId": "investigation-desk",
+          "solid": false,
+          "interactive": true,
+          "text": "Máquina de escrever com fita preta gasta."
+        },
+        {
+          "id": "ashtray",
+          "type": "ashtray",
+          "name": "Cinzeiro de vidro pesado",
+          "x": 430,
+          "y": 175,
+          "w": 16,
+          "h": 14,
+          "height": 3,
+          "baseZ": 25,
+          "parentId": "ruth-desk",
+          "solid": false,
+          "interactive": true,
+          "text": "Cinzeiro cheio de beatas com fiapos de fumaça subindo."
         },
         {
           "id": "board",
           "type": "corkboard",
           "name": "Quadro de pistas",
-          "x": 330,
-          "y": 350,
-          "w": 1,
-          "h": 1,
-          "height": 1,
+          "x": 160,
+          "y": 22,
+          "w": 85,
+          "h": 10,
+          "height": 40,
           "solid": false,
           "interactive": true,
           "text": "Fotografias e linhas vermelhas terminam na estrada da represa.",
-          "range": 250,
+          "range": 120,
           "approach": {
-            "x": 428,
-            "y": 558
+            "x": 200,
+            "y": 80
           }
+        },
+        {
+          "id": "bench",
+          "type": "chair",
+          "name": "Banco de espera de madeira",
+          "x": 80,
+          "y": 340,
+          "w": 90,
+          "h": 36,
+          "height": 18,
+          "solid": true,
+          "interactive": true,
+          "color": "#63523f",
+          "text": "Banco de espera polido por cidadãos aguardando atendimento."
+        },
+        {
+          "id": "file-cabinet-a",
+          "type": "files",
+          "name": "Arquivo de ocorrências abertas",
+          "x": 28,
+          "y": 80,
+          "w": 55,
+          "h": 90,
+          "height": 44,
+          "solid": true,
+          "interactive": true,
+          "text": "Arquivo metálico com gavetas rotuladas 1989."
+        },
+        {
+          "id": "file-cabinet-b",
+          "type": "files",
+          "name": "Arquivo de mandados arquivados",
+          "x": 28,
+          "y": 185,
+          "w": 55,
+          "h": 90,
+          "height": 44,
+          "solid": true,
+          "interactive": true,
+          "text": "Gavetas emperradas pela umidade de NorthVale."
+        },
+        {
+          "id": "water-cooler",
+          "type": "bottle",
+          "name": "Bebedouro de garrafão",
+          "x": 28,
+          "y": 300,
+          "w": 24,
+          "h": 24,
+          "height": 30,
+          "solid": true,
+          "interactive": true,
+          "text": "Galão de água quase vazio com copos de papel amassados no chão."
+        },
+        {
+          "id": "holding-bars",
+          "type": "bars",
+          "name": "Grades de triagem temporária",
+          "x": 540,
+          "y": 330,
+          "w": 110,
+          "h": 12,
+          "height": 56,
+          "solid": true,
+          "interactive": true,
+          "text": "Grades divisórias de ferro fundido para triagem provisória."
+        },
+        {
+          "id": "switch",
+          "type": "switch",
+          "name": "Interruptor de baquelite",
+          "x": 620,
+          "y": 390,
+          "w": 12,
+          "h": 10,
+          "height": 2,
+          "solid": false,
+          "interactive": true,
+          "text": "Interruptor de baquelite. A fiação segue por fora da parede.",
+          "action": "switch"
         }
       ],
       "dressing": {
-        "seed": "painted-reception",
-        "density": 0,
-        "types": []
+        "seed": "police-reception-modular",
+        "density": 75,
+        "types": [
+          "paper",
+          "ash",
+          "damp",
+          "wire",
+          "flyer",
+          "mug"
+        ],
+        "story": "Café requentado, beatas de cigarro apagadas no cinzeiro e pilhas de inquéritos ignorados."
       }
     },
     {
@@ -754,14 +941,9 @@
       "name": "Gabinete da xerife",
       "a": {
         "room": "reception",
-        "side": "marker",
-        "x": 820,
-        "y": 430,
-        "width": 44,
-        "approach": {
-          "x": 800,
-          "y": 465
-        }
+        "side": "north",
+        "offset": 240,
+        "width": 76
       },
       "b": {
         "room": "office",
@@ -778,14 +960,9 @@
       "name": "Arquivo de ocorrências",
       "a": {
         "room": "reception",
-        "side": "marker",
-        "x": 800,
-        "y": 610,
-        "width": 44,
-        "approach": {
-          "x": 790,
-          "y": 580
-        }
+        "side": "east",
+        "offset": 240,
+        "width": 76
       },
       "b": {
         "room": "archive",
@@ -839,10 +1016,10 @@
   ],
   "exit": {
     "room": "reception",
-    "x": 520,
-    "y": 945,
-    "w": 1,
-    "h": 1,
-    "range": 105
+    "x": 340,
+    "y": 460,
+    "w": 60,
+    "h": 16,
+    "range": 65
   }
 }

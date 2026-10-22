@@ -1,14 +1,77 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NorthVale — Sombras de 1989</title><link rel="stylesheet" href="/style.css"></head><body>
-<canvas id="world" aria-label="Cidade isométrica de NorthVale"></canvas>
-<header><div class="eyebrow">UM CASO QUE A CIDADE PREFERE ESQUECER</div><h1>NORTHVALE<span>SOMBRAS DE 1989</span></h1><div id="status"></div></header>
-<aside id="case"><small>ARQUIVO 001 / DESAPARECIMENTOS</small><h2>O silêncio de Sarah</h2><p id="objective">Helen espera perto da delegacia.</p><hr><div id="location"></div><p class="muted">Chuva persistente · Visibilidade reduzida</p></aside>
-<div id="toast" role="status"></div><div id="prompt"></div>
-<section id="room-hud" hidden aria-label="Navegação entre cômodos"><div class="eyebrow">INTERIOR / NORTHVALE</div><h3 id="room-name"></h3><div id="room-doors"></div><div class="room-controls"><button id="door-close">Fechar porta [C]</button><button id="door-lock">Trancar [L]</button></div><small>Clique em uma porta ou objeto para Alex se aproximar.</small></section>
-<footer><span><b>W A S D</b> mover / dirigir</span><span><b>SHIFT</b> correr</span><span><b>E</b> interagir</span><span><b>F</b> viatura</span><span><b>J</b> caderno</span><span><b>M</b> mapa</span><span><b>ESC</b> fechar</span><button id="save">Salvar</button><button id="load">Carregar</button><button id="sound">Som: desligado</button><button id="graphics">Gráficos</button></footer>
-<dialog id="panel"><button id="close">Fechar ×</button><div id="content"></div></dialog>
-<section id="dialogue" class="dialogue" hidden aria-live="polite">
-  <img class="dialogue-portrait" width="256" height="256" alt="">
-  <div class="dialogue-copy"><div class="dialogue-speaker"></div><p class="dialogue-text"></p><div class="dialogue-choices"></div><button class="dialogue-skip">[Espaço para continuar]</button></div>
-</section>
-<section id="intro"><small>17 DE OUTUBRO DE 1989 · OREGON</small><h2>Bem-vindo a<br><em>NorthVale.</em></h2><p>Três desaparecimentos. Uma cidade que aprendeu a desviar o olhar.</p><button id="begin">Iniciar investigação</button><p class="muted">Versão 0.4 · interiores únicos, cômodos conectados e portas persistentes</p></section>
-<script type="module" src="/src/main.js"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NorthVale — Sombras de 1989</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <canvas id="world" aria-label="Cidade isométrica de NorthVale"></canvas>
+  <header>
+    <div class="eyebrow">UM CASO QUE A CIDADE PREFERE ESQUECER</div>
+    <h1>NORTHVALE<span>SOMBRAS DE 1989</span></h1>
+    <div id="status"></div>
+  </header>
+  <aside id="case">
+    <small>ARQUIVO 001 / DESAPARECIMENTOS</small>
+    <h2>O silêncio de Sarah</h2>
+    <p id="objective">Helen espera perto da delegacia.</p>
+    <hr>
+    <div id="location"></div>
+    <p class="muted">Chuva persistente · Visibilidade reduzida</p>
+  </aside>
+  <div id="toast" role="status"></div>
+  <div id="prompt"></div>
+  <section id="room-hud" hidden aria-label="Navegação entre cômodos">
+    <div class="eyebrow">INTERIOR / NORTHVALE</div>
+    <h3 id="room-name"></h3>
+    <div id="room-doors"></div>
+    <div class="room-controls">
+      <button id="door-close">Fechar porta [C]</button>
+      <button id="door-lock">Trancar [L]</button>
+    </div>
+    <small>Clique em uma porta ou objeto para Alex se aproximar.</small>
+  </section>
+  <footer>
+    <span><b>W A S D</b> mover</span>
+    <span><b>SHIFT</b> correr</span>
+    <span><b>E</b> interagir</span>
+    <span><b>C</b> cortiça</span>
+    <span><b>I</b> interrogar</span>
+    <button id="corkboard-btn">Quadro de Cortiça [C]</button>
+    <button id="sound">Som: desligado</button>
+  </footer>
+  <dialog id="panel">
+    <button id="close">Fechar ×</button>
+    <div id="content"></div>
+  </dialog>
+  <section id="dialogue" class="dialogue" hidden aria-live="polite">
+    <div class="dialogue-portrait-wrapper">
+      <img class="dialogue-portrait" width="96" height="96" alt="">
+    </div>
+    <div class="dialogue-copy">
+      <div class="dialogue-speaker"></div>
+      <div class="dialogue-occupation"></div>
+      <p class="dialogue-text"></p>
+      <div class="dialogue-choices"></div>
+      <button class="dialogue-skip">[Espaço para continuar]</button>
+    </div>
+  </section>
+  <section id="intro">
+    <small>17 DE OUTUBRO DE 1989 · OREGON</small>
+    <h2>Bem-vindo a<br><em>NorthVale.</em></h2>
+    <p>Três desaparecimentos. Uma cidade que aprendeu a desviar o olhar.</p>
+    <button id="begin">Iniciar investigação</button>
+    <p class="muted">Versão 100% Offline · Sem necessidade de servidor ou terminal</p>
+  </section>
+
+  <!-- Scripts offline executados sequencialmente sem CORS ou módulos -->
+  <script src="./src/interiors-data.js"></script>
+  <script src="./src/bundle-graphics.js"></script>
+  <script src="./src/bundle-world.js"></script>
+  <script src="./src/bundle-interiors.js"></script>
+  <script src="./src/bundle-narrative.js"></script>
+  <script src="./src/bundle-main.js"></script>
+</body>
+</html>

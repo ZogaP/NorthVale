@@ -4,6 +4,14 @@ export const FACADE_STYLES = Object.freeze({police:'tower-and-cells',sarah:'weat
 
 export function drawTownFacade(r,b,minute) {
  const c=r.ctx,{x,y,w,h}=b,front=y+h,open=(minute/60)%24>=b.open&&(minute/60)%24<b.close;
+ const alpha = r.roofCutaway?.getAlpha(b.id) ?? 1.0;
+ if (alpha < 0.98) {
+  r.ground(x, y, w, h, b.kind === 'house' ? '#5a4635' : b.kind === 'industrial' ? '#434f4b' : '#3d4d4a');
+  r.box(x, y, w, 6, 24, '#38433d', '#4d5c55');
+  r.box(x, y, 6, h, 24, '#2e3833', '#4d5c55');
+ }
+ c.save();
+ if (alpha < 0.99) c.globalAlpha = alpha;
  const p=(a,d,z)=>r.project(a,d,z),quad=(a,d,z,width,height,color,stroke='#172729')=>r.poly([p(a,d,z),p(a+width,d,z),p(a+width,d,z+height),p(a,d,z+height)],color,stroke);
  const box=(a,d,width,depth,height,color=b.color,roof=b.roof,base=0)=>{
   const surface=r.surface;r.surface=width>60&&depth>50&&height>40?surface:null;
@@ -16,7 +24,7 @@ export function drawTownFacade(r,b,minute) {
   }
  };
  const window=(a,z,width=25,height=30,barred=false)=>{quad(a,front+.7,z,width,height,open?'#b3a570':'#293f47');quad(a+2,front+1,z+2,width-4,height-4,open?'#817d5966':'#5c788344');for(let j=barred?4:width/2;j<width;j+=barred?6:width)quad(a+j,front+1.5,z,1.5,height,'#263431');quad(a,front+1.8,z+height/2,width,1.4,'#273a37');};
- const sign=(text,z,width=w*.9,color='#d6c79f',back='#223b38',center=x+w/2)=>{quad(center-width/2,front+3,z,width,17,back);const q=p(center,front+3.2,z+4);c.save();c.translate(q.x,q.y);c.transform(.78,.39,0,1,0,0);c.fillStyle=color;c.textAlign='center';c.font='bold 10px Georgia';c.fillText(text,0,0,width-8);c.restore();};
+ const sign=(text,z,width=w*.9,color='#d6c79f',back='#223b38',center=x+w/2)=>{quad(center-width/2,front+3,z,width,17,back);const q=p(center,front+3.2,z+4);c.save();c.translate(q.x,q.y);c.transform(.866,.5,0,1,0,0);c.fillStyle=color;c.textAlign='center';c.font='bold 10px Georgia';c.fillText(text,0,0,width-8);c.restore();};
  const gable=(a,d,width,depth,base,rise,color=b.roof)=>{r.poly([p(a,d,base),p(a+width/2,d,base+rise),p(a+width/2,d+depth,base+rise),p(a,d+depth,base)],color,'#23302c');r.poly([p(a+width/2,d,base+rise),p(a+width,d,base),p(a+width,d+depth,base),p(a+width/2,d+depth,base+rise)],'#394745','#23302c');r.poly([p(a,d+depth,base),p(a+width/2,d+depth,base+rise),p(a+width,d+depth,base)],b.color,'#25332e');};
  const columns=(z=0,top=100)=>{for(const a of [x+18,x+w-27])box(a,front-8,9,8,top,'#a0a18b','#b5ad8b',z);};
  r.ground(x+18,y+26,w+14,h+12,'#05121866');
@@ -26,7 +34,7 @@ export function drawTownFacade(r,b,minute) {
  case 'police':
   height=106;box(x,y,w,h,height);box(x+7,y+7,43,45,157,'#54625e','#253b41');box(x+w-58,y+28,58,h-28,77,'#4c5e5c','#394a49');
   for(const a of [x+18,x+w-48])window(a,32,29,32,true);sign('DELEGACIA DE NORTHVALE',81,w-12);{
-   const clock=p(x+28,y+52,134);c.save();c.translate(clock.x,clock.y);c.transform(.78,.39,0,1,0,0);c.fillStyle='#c5b991';c.beginPath();c.arc(0,0,11,0,Math.PI*2);c.fill();c.strokeStyle='#263b36';c.lineWidth=2;c.beginPath();c.moveTo(0,-7);c.lineTo(0,0);c.lineTo(6,2);c.stroke();c.restore();
+   const clock=p(x+28,y+52,134);c.save();c.translate(clock.x,clock.y);c.transform(.866,.5,0,1,0,0);c.fillStyle='#c5b991';c.beginPath();c.arc(0,0,11,0,Math.PI*2);c.fill();c.strokeStyle='#263b36';c.lineWidth=2;c.beginPath();c.moveTo(0,-7);c.lineTo(0,0);c.lineTo(6,2);c.stroke();c.restore();
   }break;
  case 'sarah':
   height=74;box(x,y,w,h,height);gable(x-3,y-3,w+6,h+6,height,43);window(x+12,25,31,30);window(x+w-45,30,30,25);
@@ -41,7 +49,7 @@ export function drawTownFacade(r,b,minute) {
  case 'pharmacy':
   height=88;box(x,y,w,h,height);for(const a of [x+9,x+w-65])window(a,14,55,44);box(x,front-25,w,25,6,'#476b58','#6b8d74',63);sign('FARMÁCIA VALE  •  1937',72,w-10);quad(x+w-26,front+2,93,9,29,'#99b18b');quad(x+w-35,front+2,103,27,9,'#99b18b');break;
  case 'library':
-  height=126;box(x,y,w,h,height,'#827a65','#424b43');for(const a of [x+18,x+w-53]){window(a,31,35,64);const q=p(a+17.5,front+1,95);c.save();c.translate(q.x,q.y);c.transform(.78,.39,0,1,0,0);c.beginPath();c.ellipse(0,0,17.5,14,0,Math.PI,0);c.fillStyle='#747e67';c.fill();c.restore();}columns(0,110);gable(x,front-15,w,15,height,32,'#5e6754');sign('BIBLIOTECA PÚBLICA',105,w-12);break;
+  height=126;box(x,y,w,h,height,'#827a65','#424b43');for(const a of [x+18,x+w-53]){window(a,31,35,64);const q=p(a+17.5,front+1,95);c.save();c.translate(q.x,q.y);c.transform(.866,.5,0,1,0,0);c.beginPath();c.ellipse(0,0,17.5,14,0,Math.PI,0);c.fillStyle='#747e67';c.fill();c.restore();}columns(0,110);gable(x,front-15,w,15,height,32,'#5e6754');sign('BIBLIOTECA PÚBLICA',105,w-12);break;
  case 'motel':
   height=136;box(x,y,w,h,height);for(const z of [10,77])for(let a=x+10;a<x+w-30;a+=47){window(a,z+10,20,28);quad(a+25,front+1,z,13,43,'#58483a');}box(x,front-18,w,18,4,'#686459','#85806a',72);for(let a=x+6;a<x+w;a+=17)quad(a,front+3,76,2,15,'#a8a38a');quad(x,front+3,91,w,2,'#aea38a');sign('NORTHVALE  •  VACANCY',143,w-20,'#d49a7b','#443c38');break;
  case 'registry':
@@ -65,4 +73,5 @@ export function drawTownFacade(r,b,minute) {
  for(let k=0;k<32;k++){const a=x+((k*47+height*3)%w),z=6+(k*31)%(height-10);quad(a,front+2,z,1+(k%3),5+k%9,'#152c2725',null);}
  // A real entrance at the same position as the interaction/collision system.
  quad(x+w/2-13,front+4,0,26,48,'#263b35');quad(x+w/2-10,front+4.2,26,20,18,open?'#9c9772':'#425b55');quad(x+w/2+8,front+4.4,21,2,3,'#c3ae79');
+ c.restore();
 }
