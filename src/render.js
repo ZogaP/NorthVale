@@ -1,3 +1,6 @@
+import {IsoProjection} from './engine/IsoProjection.js';
+import {RenderQueue} from './engine/RenderQueue.js';
+import {BuildingTransition} from './graphics/building-transition.js';
 // NorthVale — Sombras de 1989
 // True 2.5D Isometric Rendering Engine (Canvas 2D)
 // Mathematical Z-axis Projection, Dynamic Depth Y-Sorting (renderQueue),
@@ -23,14 +26,8 @@ import {PlayerRenderer} from './graphics/Player.js';
  * X: screen-space X (scaled by cos(30°) = 0.866)
  * Y: screen-space Y (scaled by sin(30°) = 0.5, minus vertical height z)
  */
-export function iso(x, y, z = 0, originX = 660, originY = 170) {
-  const ORIGIN_X = originX;
-  const ORIGIN_Y = originY;
-  return {
-    x: ORIGIN_X + (x - y) * 0.866,
-    y: ORIGIN_Y + (x + y) * 0.5 - z
-  };
-}
+const projection = new IsoProjection();
+export function iso(x,y,z=0,originX=660,originY=170){return projection.worldToScreen(x,y,z,originX,originY);}
 
 /**
  * Helper to adjust hex or rgb color brightness for 2.5D face shading.
@@ -65,7 +62,9 @@ export class Renderer {
 
     this.originX = 660;
     this.originY = 170;
-    this.renderQueue = [];
+    this.buildingTransition=new BuildingTransition();
+    this.depthQueue = new RenderQueue(projection);
+    this.renderQueue = this.depthQueue.renderQueue;
 
     this.roofCutaway = new RoofCutawaySystem();
     this.assets = new VisualAssets();
@@ -128,12 +127,7 @@ export class Renderer {
     const cam = this.iso(this.camera.x, this.camera.y, 0);
     const sx = point.x - (this.w / 2 - cam.x) - this.originX;
     const sy = point.y - (this.h * 0.55 - cam.y) - this.originY;
-    const inv0866 = sx / 0.866;
-    const inv050 = (sy + z) / 0.5;
-    return {
-      x: (inv0866 + inv050) * 0.5,
-      y: (inv050 - inv0866) * 0.5
-    };
+    return projection.screenToWorld(sx,sy,z);
   }
 
   poly(points, fill, stroke) {
@@ -348,6 +342,7 @@ export class Renderer {
   }
 
   draw(state, dt, cinematic = false) {
+    this.lastMinute=state.minute;
     this.time += dt;
     this.lastDt = dt;
 
@@ -378,6 +373,7 @@ export class Renderer {
         c.font = '18px Georgia';
         c.fillText(this.interiors.error?.message || 'Carregando interiores de NorthVale…', 50, this.h / 2);
       }
+      this.buildingTransition.draw(this,dt);
       this.drawVignette(c);
       return;
     }
@@ -461,7 +457,8 @@ export class Renderer {
     }
 
     // 2. Global Render Queue initialization for dynamic Y-Sorting
-    const renderQueue = [];
+    const renderQueue = this.depthQueue;
+    renderQueue.clear();
 
     // Streetlight sources for volumetric shadow projections
     const lightSources = [];
@@ -470,7 +467,9 @@ export class Renderer {
     }
 
     // Outdoor atmospheric storytelling: manhole steam, puddles, soggy boxes, fog, gutter leaves
-    this.envManager.drawOutdoorEnvironment(this, c, lightSources);
+    this.envManager.drawStreetClutter(this,c);
+    this.envManager.drawVolumetricFog(this,c);
+    this.envManager.drawStreetMoths(this,c,lightSources);
 
     // A. Volumetric Buildings with Cutaway Occlusion
     for (const b of buildings) {
@@ -568,17 +567,12 @@ export class Renderer {
 
     // 3. Dynamic Y-Sorting Execution:
     // Sort every frame based on the world coordinate sum (x + y).
-    renderQueue.sort((a, b) => (a.worldY + a.worldX) - (b.worldY + b.worldX));
+    // Sorting happens once in depthQueue.draw().
 
     // 4. Frustum Culling & Drawing Pass (60 FPS optimization)
-    const camCenter = this.iso(this.camera.x, this.camera.y, 0);
-    for (const item of renderQueue) {
-      const approx = this.iso(item.worldX, item.worldY, item.z || 0);
-      if (Math.abs(approx.y - camCenter.y) < this.h + 350 &&
-          Math.abs(approx.x - camCenter.x) < this.w + 400) {
-        item.draw(c);
-      }
-    }
+    const camCenter = this.iso(this.camera.x,this.camera.y,0);
+    for(const item of renderQueue){item.width=item.id.startsWith('building-')?550:100;item.height=item.id.startsWith('building-')?300:110;}
+    this.depthQueue.draw(c,{x:camCenter.x-this.w/2,y:camCenter.y-this.h*.55,width:this.w,height:this.h},this.originX,this.originY);
 
     // 5. Overhead Streetlamps Lighting & Volumetric Glow Cones
     for (const l of lightSources) {
@@ -602,7 +596,7 @@ export class Renderer {
       c.fillRect(p.x + 10, p.y - 105, 10, 5);
     }
 
-    this.renderQueue = renderQueue;
+    this.renderQueue = renderQueue.renderQueue;
   }
 
   textureQuad(points, w, h, surface, opacity = 1) {

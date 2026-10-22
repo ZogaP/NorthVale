@@ -1,4 +1,4 @@
-import {KillerGenerator} from './investigation/killer-generator.js';
+import {createCanonicalCase,migrateCanonicalState} from './systems/CanonicalCampaign.js';
 
 export const clues = {
   tape: {title: 'Fita K7', text: 'Passos na brita. Uma respiração curta. Sarah sussurra: “A represa. Depois das seis. Não confie no relatório.”', category: 'recording'},
@@ -9,7 +9,7 @@ export const clues = {
 };
 
 export function getFullCluesRegistry(state) {
-  const merged = {...clues};
+  const merged = {...state?.legacyCase?.clues,...clues};
   if (state?.case?.clues) {
     Object.assign(merged, state.case.clues);
   }
@@ -17,9 +17,8 @@ export function getFullCluesRegistry(state) {
 }
 
 export function createState(seed = null) {
-  const gen = new KillerGenerator(seed);
-  const proceduralCase = gen.generate();
-  return {
+  const proceduralCase = createCanonicalCase(seed);
+  const state = {
     version: 1,
     minute: 8 * 60 + 35,
     day: 1,
@@ -32,11 +31,13 @@ export function createState(seed = null) {
     evidence: [],
     interactions: {},
     links: [],
-    inventory: ['Lanterna', 'Crachá', 'Gazua de Aço'],
+    inventory: ['Lanterna', 'Crachá'],
     introDone: false,
     metHelen: false,
     // Investigative & Psychometric architecture
     case: proceduralCase,
+    canonVersion:1,
+    PARANOIA:20,SCRUTINY:0,REPUTATION:0,SARAH_STATUS:2,SARAH_OUTCOME_KNOWN:false,BOBBY_STABILITY:70,PROOF_WEIGHT:0,PLAYER_DECISION_FLAGS:[],quests:{},evidenceIntegrity:{},ending:null,worldControlsLocked:false,
     obsession: 20,
     integrity: 75,
     achievements: [],
@@ -47,6 +48,7 @@ export function createState(seed = null) {
     tailingEvents: [],
     footTime: 0
   };
+  return migrateCanonicalState(state);
 }
 
 export function collect(state, id) {
@@ -61,7 +63,7 @@ export function collect(state, id) {
 }
 
 export function serialize(state) {
-  return JSON.stringify(state);
+  return JSON.stringify(state,(key,value)=>value instanceof Set?[...value]:value);
 }
 
 export function deserialize(text) {
@@ -85,7 +87,7 @@ export function deserialize(text) {
 
   s.interiorRoom ??= null;
   s.interiorStates ??= {};
-  s.case ??= new KillerGenerator().generate();
+  migrateCanonicalState(s);
   s.obsession ??= 20;
   s.integrity ??= 75;
   s.achievements ??= [];

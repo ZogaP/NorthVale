@@ -1,0 +1,13 @@
+{
+  "name": "northvale",
+  "version": "0.6.0",
+  "main": "../dist/NorthVale.html",
+  "nodejs": false,
+  "window": {
+    "title": "NorthVale — Sombras de 1989",
+    "width": 1440,
+    "height": 960,
+    "min_width": 960,
+    "min_height": 640
+  }
+}

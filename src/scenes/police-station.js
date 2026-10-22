@@ -32,7 +32,7 @@ const OCCLUDERS = [
 ];
 
 export const POLICE_INTERACTIONS = [
-  {id: 'ruth', type: 'npc', name: 'Sargento Ruth Mercer', x: 875, y: 485, radius: 92, approach: {x: 875, y: 485}},
+  {id: 'ruth', type: 'npc', name: 'Xerife Ruth Mercer', x: 875, y: 485, radius: 92, approach: {x: 875, y: 485}},
   {id: 'report', type: 'evidence', name: 'Relatório sobre a mesa', x: 585, y: 530, radius: 132, approach: {x: 600, y: 640}},
   {id: 'board', type: 'evidence', name: 'Quadro de pistas', x: 330, y: 350, radius: 250, approach: {x: 428, y: 558}},
   {id: 'exit', type: 'exit', name: 'Sair da delegacia', x: 520, y: 945, radius: 105, approach: {x: 520, y: 945}},

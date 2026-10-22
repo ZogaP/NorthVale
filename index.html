@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>NorthVale — Sombras de 1989</title>
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
   <canvas id="world" aria-label="Cidade isométrica de NorthVale"></canvas>
@@ -28,8 +28,8 @@
     <h3 id="room-name"></h3>
     <div id="room-doors"></div>
     <div class="room-controls">
-      <button id="door-close">Fechar porta [C]</button>
-      <button id="door-lock">Trancar [L]</button>
+      <button id="door-close">Fechar porta [O]</button>
+      <button id="door-lock">Trancar [K]</button>
     </div>
     <small>Clique em uma porta ou objeto para Alex se aproximar.</small>
   </section>
@@ -40,7 +40,7 @@
     <span><b>C</b> cortiça</span>
     <span><b>I</b> interrogar</span>
     <button id="corkboard-btn">Quadro de Cortiça [C]</button>
-    <button id="sound">Som: desligado</button>
+    <button id="save">Salvar</button><button id="load">Carregar</button><button id="graphics">Gráficos</button><button id="achievements-btn">Conquistas</button><button id="accuse-btn">Missões e decisões</button><button id="controls-btn">Controles</button><button id="sound">Som: desligado</button>
   </footer>
   <dialog id="panel">
     <button id="close">Fechar ×</button>
@@ -63,15 +63,9 @@
     <h2>Bem-vindo a<br><em>NorthVale.</em></h2>
     <p>Três desaparecimentos. Uma cidade que aprendeu a desviar o olhar.</p>
     <button id="begin">Iniciar investigação</button>
-    <p class="muted">Versão 100% Offline · Sem necessidade de servidor ou terminal</p>
+    <p class="muted">Versão 0.6 · campanha canônica, controles remapeáveis e 14 finais</p>
   </section>
 
-  <!-- Scripts offline executados sequencialmente sem CORS ou módulos -->
-  <script src="./src/interiors-data.js"></script>
-  <script src="./src/bundle-graphics.js"></script>
-  <script src="./src/bundle-world.js"></script>
-  <script src="./src/bundle-interiors.js"></script>
-  <script src="./src/bundle-narrative.js"></script>
-  <script src="./src/bundle-main.js"></script>
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>

@@ -40,6 +40,7 @@ const embeddedAssets = [
  'assets/characters/alex_hale_walk.png',
  'assets/characters/npc_sargento_idle.png',
  'assets/characters/townspeople_walk.png',
+ 'assets/characters/town-officials_walk.png',
  'assets/portraits/alex_portrait.png',
  'assets/portraits/suspeito_portrait.png',
  'assets/portraits/ruth_portrait.png',
@@ -51,4 +52,5 @@ for (const asset of embeddedAssets) {
 }
 const out=path.join(root,'dist');await mkdir(out,{recursive:true});
 await writeFile(path.join(out,'NorthVale.html'),html);
+await writeFile(path.join(root,'JOGAR_OFFLINE.html'),html);
 console.log('Criado dist/NorthVale.html — abra diretamente em um navegador desktop.');

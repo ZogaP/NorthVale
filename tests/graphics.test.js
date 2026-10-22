@@ -23,7 +23,7 @@ test('point lights attenuate with distance, AO is bounded and descriptors valida
 test('2.5D isometric projection handles vertical height elevation z with precision',()=>{
   const ground = iso(100, 50, 0);
   const elevated = iso(100, 50, 40);
-  assert.equal(ground.x, 660 + (100 - 50) * 0.866);
+  assert.equal(ground.x, 660 + (100 - 50) * (Math.sqrt(3)/2));
   assert.equal(elevated.x, ground.x, 'Vertical elevation z does not affect horizontal axis');
   assert.equal(elevated.y, ground.y - 40, 'Vertical elevation z raises point upwards on Y axis by exact z');
 });
@@ -44,34 +44,34 @@ test('dynamic Y-sorting orders renderQueue by (worldY + worldX) every frame',()=
   ]);
 });
 
-test('roof cutaway transitions smoothly to 0.0 inside building collision footprint over 300ms',()=>{
+test('roof cutaway transitions smoothly to 0.0 inside building collision footprint over 250ms',()=>{
   const cutaway = new RoofCutawaySystem();
   const buildings = [{id: 'diner', x: 200, y: 300, w: 100, h: 80}];
   const player = {x: 250, y: 340}; // inside diner footprint
   assert.equal(cutaway.getAlpha('diner'), 1.0);
   
-  // 150ms elapsed: alpha should be halfway (~0.5)
-  cutaway.update(0.15, player, buildings, false);
+  // 125ms elapsed: alpha should be halfway (~0.5)
+  cutaway.update(0.125, player, buildings, false);
   assert.ok(cutaway.getAlpha('diner') < 0.6 && cutaway.getAlpha('diner') > 0.4);
 
-  // Another 150ms (total 300ms): alpha reaches 0.0
-  cutaway.update(0.15, player, buildings, false);
+  // Another 125ms (total 250ms): alpha reaches 0.0
+  cutaway.update(0.125, player, buildings, false);
   assert.equal(cutaway.getAlpha('diner'), 0.0);
 });
 
-test('roof cutaway fades back to 1.0 when player exits building footprint over 300ms',()=>{
+test('roof cutaway fades back to 1.0 when player exits building footprint over 250ms',()=>{
   const cutaway = new RoofCutawaySystem();
   const buildings = [{id: 'diner', x: 200, y: 300, w: 100, h: 80}];
   const insidePlayer = {x: 250, y: 340};
-  cutaway.update(0.30, insidePlayer, buildings, false);
+  cutaway.update(0.25, insidePlayer, buildings, false);
   assert.equal(cutaway.getAlpha('diner'), 0.0);
 
   // Player steps outside
   const outsidePlayer = {x: 50, y: 50};
-  cutaway.update(0.15, outsidePlayer, buildings, false);
+  cutaway.update(0.125, outsidePlayer, buildings, false);
   assert.ok(cutaway.getAlpha('diner') > 0.4 && cutaway.getAlpha('diner') < 0.6);
 
-  cutaway.update(0.15, outsidePlayer, buildings, false);
+  cutaway.update(0.125, outsidePlayer, buildings, false);
   assert.equal(cutaway.getAlpha('diner'), 1.0);
 });
 

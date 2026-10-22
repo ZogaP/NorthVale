@@ -15,7 +15,9 @@ import {DialogueSystem} from './ui/dialogue.js';
 
 // Investigative, Narrative & Social Modules
 import {AchievementSystem} from './narrative/achievements.js';
-import {EndingsEvaluator} from './narrative/endings.js';
+import {CanonicalCampaign} from './systems/CanonicalCampaign.js';
+import {InputManager} from './systems/InputManager.js';
+import {CampaignPanel} from './ui/CampaignPanel.js';
 import {CorkboardSystem} from './investigation/corkboard.js';
 import {InterrogationSystem} from './investigation/interrogation.js';
 import {TailingSystem} from './social/tailing.js';
@@ -47,8 +49,10 @@ function toast(text) {
 
 function show(html) {
   renderer.inspectingIds = [];
+  panel.classList.remove('canonical-panel');
   content.innerHTML = html;
   keys.clear();
+  input?.releaseAll();
   if (!panel.open) panel.showModal();
 }
 
@@ -64,9 +68,13 @@ window.addEventListener('blur', () => keys.clear());
 
 // Initialize Modular Investigation Systems
 const achievements = new AchievementSystem(state, toast);
-const endings = new EndingsEvaluator(state);
+let campaign = new CanonicalCampaign(state,{onLock:()=>input.setWorldEnabled(false)});
+let campaignPanel;
+let input;
 
 function onDeductionUnlocked(deduction) {
+  if(deduction.isCulpritIndictment)campaign.flag('CORRECT_DEDUCTION');
+  campaign.sync();checkpoint();
   audio.tone(440);
   toast(`DEDUÇÃO RESOLVIDA: ${deduction.title}!`);
   achievements.unlock('red_string_master');
@@ -77,10 +85,12 @@ function onDeductionUnlocked(deduction) {
 }
 
 function onContradictionProven(npcId, clueId) {
+  campaign.confront(npcId);
+  checkpoint();
   audio.tone(520);
-  toast(`CONTRADIÇÃO PROVADA: O suspeito entrou em colapso e admitiu os fatos!`);
-  achievements.unlock('breakthrough');
-  state.obsession = Math.min(100, (state.obsession || 0) + 8);
+  toast(`CONTRADIÇÃO PROVADA: o depoimento foi confrontado com prova material.`);
+  state.PARANOIA = Math.min(100, state.PARANOIA + 8);
+  state.obsession=state.PARANOIA;
 }
 
 function onClandestineMeeting(npc) {
@@ -90,7 +100,7 @@ function onClandestineMeeting(npc) {
   state.integrity = Math.max(0, (state.integrity || 50) + 5);
 }
 
-const corkboard = new CorkboardSystem(state, getFullCluesRegistry(state), onDeductionUnlocked, achievements);
+const corkboard = new CorkboardSystem(state, getFullCluesRegistry(state), onDeductionUnlocked, achievements,checkpoint);
 const interrogation = new InterrogationSystem(state, getFullCluesRegistry(state), onContradictionProven, achievements);
 const tailing = new TailingSystem(state, achievements, onClandestineMeeting);
 
@@ -100,6 +110,7 @@ function finishIntro() {
   state.introDone = true;
   state.metHelen = true;
   if (!state.inventory.includes('Chave de Sarah')) state.inventory.push('Chave de Sarah');
+  campaign.sync();checkpoint();
   toast('Helen entregou a chave da casa. “Por favor, encontre minha filha.” [J] Caderno | [C] Cortiça | [T] Conquistas');
 }
 
@@ -114,7 +125,7 @@ $('#begin').onclick = () => {
 function save() {
   try {
     new SaveSystem(state).save(localStorage);
-    toast('Investigação e seed salvas neste navegador.');
+    toast('Investigação e missões salvas neste navegador.');
   } catch {
     toast('Não foi possível salvar. Verifique o armazenamento do navegador.');
   }
@@ -133,9 +144,12 @@ async function load() {
     const saved = SaveSystem.load(localStorage);
     if (saved.interior) await renderer.interiors.ready;
     state = saved;
+    renderer.buildingTransition.cancel();
     // Re-bind systems to loaded state
     achievements.state = state;
-    endings.state = state;
+    campaign = new CanonicalCampaign(state,{onLock:()=>input.setWorldEnabled(false)});
+    campaign.sync();
+    input.setWorldEnabled(!state.ending);
     corkboard.state = state;
     corkboard.cluesRegistry = getFullCluesRegistry(state);
     interrogation.state = state;
@@ -154,7 +168,8 @@ async function load() {
     $('#intro').hidden = true;
     close();
     near = null;
-    toast(`Investigação carregada. Caso: ${state.case?.name || 'Padrão'}`);
+    toast('Investigação canônica carregada.');
+    if(state.ending)campaignPanel.ending(state.ending);
   } catch (e) {
     toast(e.message);
   }
@@ -177,13 +192,6 @@ pointerCanvas.addEventListener('pointermove', e => {
 });
 pointerCanvas.addEventListener('pointerleave', () => renderer.pointer = null);
 
-pointerCanvas.addEventListener('pointerdown', event => {
-  if (event.button !== 0 || !started || cinematic || panel.open || dialogue.active || !state.interior || !renderer.interiors.loaded) return;
-  const rect = pointerCanvas.getBoundingClientRect();
-  const point = {x: event.clientX - rect.left, y: event.clientY - rect.top};
-  const target = renderer.interiorView.pick(point, state);
-  if (target) requestInterior(target);
-});
 
 renderer.interiors.ready.catch(error => toast(error.message));
 
@@ -230,6 +238,8 @@ function updateVisualPanels() {
       c.drawImage(material.maps[canvas.dataset.map], 0, 0, 256, 256);
     }
   }
+  const output=$('#graphics-stats');if(output){const stats=renderer.assets.stats();output.textContent=`${stats.webgl&&renderer.assets.gpuEnabled?'WebGL2 ativo':'Canvas fallback'} · ${(stats.bytes/1048576).toFixed(1)} MiB · ${stats.entries} materiais · ${stats.drawCalls} passes GPU`;output.dataset.webgl=String(stats.webgl);output.dataset.drawCalls=String(stats.drawCalls);output.dataset.errors=JSON.stringify([...stats.errors,...stats.shaderErrors]);}
+
 }
 
 // Notebook / Investigation Dossier & Alex Hale Psychometrics
@@ -243,9 +253,9 @@ function notebook() {
       <p style="margin:4px 0">Obsessão / Paranoia: <b>${state.obsession || 20}%</b> · Integridade Moral: <b>${state.integrity || 75}%</b></p>
       <small style="color:#adb5bd">Inspecionar cenas perturbadoras e não dormir eleva a paranoia. Recusar subornos eleva a integridade.</small>
     </div>
-    <p>Dia ${state.day} · ${time(state.minute)} · ${state.evidence.length} evidências registradas · Seed: #${state.case?.seed || '0'}</p>
-    <h3>Inventário Pessoal</h3>
-    <p>${state.inventory.join(' · ')}</p>
+    <p>Dia ${state.day} · ${time(state.minute)} · ${state.evidence.length} evidências registradas · Campanha canônica</p>
+    <button id="journal-missions">Missões e decisões</button><button id="journal-controls">Controles</button><h3>Inventário Pessoal</h3>
+    <p>${state.inventory.map(id=>({phenol:'Frasco de fenol',luminol:'Frasco de luminol',lockpick_receipt:'Recibo das ferramentas'})[id]||id).join(' · ')}</p>
     <h3>Evidências Registradas (${state.evidence.length})</h3>
     ${state.evidence.map(id => `<div class="entry"><strong>${reg[id]?.title || id}</strong><p>${reg[id]?.text || ''}</p></div>`).join('') || '<p>Nenhuma evidência registrada ainda.</p>'}
     <h3>Deduções no Quadro de Cortiça (${state.corkboardDeductions?.length || 0})</h3>
@@ -260,7 +270,8 @@ function notebook() {
     <h3>Avanço Temporal</h3>
     <button id="wait">Esperar 1 hora</button>
   `);
-  $('#wait').onclick = () => { advance(60); notebook(); };
+  $('#journal-missions').onclick=()=>openAccusationPanel();$('#journal-controls').onclick=()=>campaignPanel.controls();
+  $('#wait').onclick = () => { if(state.ending)return;advance(60);checkpoint();notebook(); };
 }
 
 function showAchievementsPanel() {
@@ -268,41 +279,7 @@ function showAchievementsPanel() {
 }
 
 // Final Accusation & 7 Endings Panel
-function openAccusationPanel() {
-  const suspectsList = residents.filter(r => r.id !== 'alex');
-  show(`
-    <small>MINISTÉRIO PÚBLICO DO CONDADO · ENCERRAMENTO DO CASO</small>
-    <h2>Confronto Final & Veredito de NorthVale</h2>
-    <p>Você reuniu <b>${state.evidence.length}</b> evidências e <b>${state.corkboardDeductions?.length || 0}</b> deduções consolidadas no quadro de cortiça.</p>
-    <p>Alex Hale está prestes a protocolar o destino do inquérito. Escolha o suspeito a indiciar formalmente:</p>
-    <div style="margin:16px 0">
-      <label><b>Acusar formalmente:</b>
-        <select id="accused-select" style="padding:8px;font-size:14px;background:#e9e0c9;width:100%;margin-top:6px">
-          ${suspectsList.map(s => `<option value="${s.id}">${s.name} (${s.personality})</option>`).join('')}
-        </select>
-      </label>
-    </div>
-    <h3>Postura Moral do Detetive</h3>
-    <div style="display:grid;gap:8px;margin-bottom:16px">
-      <label><input type="radio" name="moral-choice" value="legal" checked> <b>Justiça Estrita:</b> Encaminhar autos com todas as provas ao Ministério Público e FBI.</label>
-      <label><input type="radio" name="moral-choice" value="vigilante"> <b>Acerto de Contas Noir:</b> Confrontar o assassino pessoalmente nas sombras sem apoio oficial.</label>
-      <label><input type="radio" name="moral-choice" value="bribe"> <b>Pacto do Silêncio:</b> Aceitar o acordo dos conspiradores e arquivar o caso por promoção.</label>
-      <label><input type="radio" name="moral-choice" value="expose_reckless"> <b>Exposição Imediata:</b> Convocação pública na rádio sem resguardo policial.</label>
-    </div>
-    <button id="btn-confirm-verdict" style="background:#581c87;color:#fff;padding:12px 20px;font-weight:bold;cursor:pointer">Executar Julgamento & Visualizar Epílogo</button>
-  `);
-
-  $('#btn-confirm-verdict').onclick = () => {
-    const accusedId = $('#accused-select').value;
-    const choice = document.querySelector('input[name="moral-choice"]:checked').value;
-    close();
-    const ending = endings.evaluateEnding(accusedId, choice);
-    endings.renderEndingScreen(ending, () => location.reload());
-    if (ending.number === 1 || ending.number === 7) {
-      achievements.unlock('truth_of_sarah');
-    }
-  };
-}
+function openAccusationPanel(){campaign.sync();campaignPanel.open();}
 
 function map() {
   show(`
@@ -319,6 +296,7 @@ function map() {
 }
 
 function advance(minutes) {
+  if(state.ending)return;
   state.minute += minutes;
   while (state.minute >= 1440) {
     state.minute -= 1440;
@@ -358,7 +336,7 @@ function requestInterior(target) {
 }
 
 function performInterior(target) {
-  if (renderer.interiors.transition) return;
+  if (renderer.interiors.transition||state.ending) return;
   const result = renderer.interiors.interact(state, target);
   if (!result.ok) {
     if (result.message) toast(result.message);
@@ -367,6 +345,7 @@ function performInterior(target) {
   keys.clear();
 
   if (result.exit) {
+    renderer.buildingTransition.cancel();
     state.player = { ...(state.outdoor || {x: 720, y: 705, angle: 0}), vx: 0, vy: 0 };
     state.interior = null;
     state.interiorRoom = null;
@@ -376,16 +355,17 @@ function performInterior(target) {
     return;
   }
 
-  // Dynamic Case Clue Matching based on the Seed
+  checkpoint();
+  // Authored canonical evidence, matched to its exact room and prop
   if (state.case?.clues) {
     for (const [clueId, clueData] of Object.entries(state.case.clues)) {
       if (
         !clueData.discovered &&
         clueData.interiorId === state.interior &&
         (clueData.roomId === state.interiorRoom || !clueData.roomId) &&
-        (clueData.propId === target.object?.id || target.object?.action === 'search' || target.object?.action === 'drawer')
+        clueData.propId === target.object?.id
       ) {
-        collect(state, clueId);
+        collect(state, clueId);campaign.sync();
         achievements.unlock('first_trace');
         if (state.interior === 'dam') achievements.unlock('deep_waters');
         toast(`NOVA EVIDÊNCIA DO CASO ENCONTRADA: ${clueData.title}!`);
@@ -404,16 +384,16 @@ function performInterior(target) {
   }
 
   if (result.evidence) {
-    collect(state, result.evidence);
+    collect(state, result.evidence);campaign.sync();
     achievements.unlock('first_trace');
     checkpoint();
   }
 
   if (result.dialogue === 'ruth-dialogue') {
     dialogue.play([
-      {speaker: 'ruth', name: 'SARGENTO RUTH MERCER', text: 'Hale. A cidade já decidiu o que aconteceu com Sarah. Você pretende discutir com a cidade inteira?', choices: [{label: '“Pretendo discutir com os fatos.”', next: 1}, {label: '“Só quero ver o relatório.”', next: 2}]},
+      {speaker: 'ruth', name: 'XERIFE RUTH MERCER', text: 'Hale. A cidade já decidiu o que aconteceu com Sarah. Você pretende discutir com a cidade inteira?', choices: [{label: '“Pretendo discutir com os fatos.”', next: 1}, {label: '“Só quero ver o relatório.”', next: 2}]},
       {speaker: 'alex', name: 'ALEX HALE', text: 'Fatos não desaparecem. Pessoas desaparecem. Alguém aqui confundiu as duas coisas.'},
-      {speaker: 'ruth', name: 'SARGENTO RUTH MERCER', text: 'Então comece pela mesa central. E aprenda depressa quem escuta atrás destas paredes.'},
+      {speaker: 'ruth', name: 'XERIFE RUTH MERCER', text: 'Então comece pela mesa central. E aprenda depressa quem escuta atrás destas paredes.'},
     ], () => keys.clear());
     return;
   }
@@ -421,7 +401,7 @@ function performInterior(target) {
   if (result.dialogue === 'report-dialogue') {
     dialogue.play([
       {speaker: 'alex', name: 'ALEX HALE', text: 'Três desaparecimentos classificados como partidas voluntárias. Mesma frase. Mesma máquina de escrever.'},
-      {speaker: 'suspect', name: 'DEPOIMENTO — VICTOR SLOANE', text: 'Eu vi Sarah perto da estrada da represa. Estava sozinha. Parecia perfeitamente calma.'},
+      {speaker: 'ruth', name: 'DEPOIMENTO — RUTH MERCER', text: 'A viatura 04 não consta de nenhuma ocorrência naquela noite. Não há motivo para interrogar Bobby Miller.'},
       {speaker: 'alex', name: 'ALEX HALE', text: 'Calma demais para alguém que, segundo a própria mãe, tinha medo de sair de casa à noite.'},
     ]);
     return;
@@ -439,7 +419,8 @@ function performInterior(target) {
 }
 
 async function interact() {
-  if (!near) return;
+  near=findNearby();
+  if (!near||state.ending) return;
   audio.tone(300);
 
   if (near.type === 'interior') {
@@ -459,6 +440,7 @@ async function interact() {
     }
     try {
       await renderer.interiors.ready;
+      renderer.buildingTransition.start(renderer,b);
       state.outdoor = { ...state.player };
       state.interior = b.id;
       state.interiorRoom = null;
@@ -512,7 +494,7 @@ function nearestDoor() {
 }
 
 function doorControl(action) {
-  if (!state.interior || !renderer.interiors.loaded || renderer.interiors.transition) return;
+  if (state.ending || !state.interior || !renderer.interiors.loaded || renderer.interiors.transition) return;
   const target = nearestDoor();
   if (!target) {
     toast('Aproxime-se de uma porta interna.');
@@ -567,81 +549,51 @@ function updateRoomHUD() {
 
   $('#door-close').disabled = !closeDoor || Boolean(renderer.interiors.transition);
   $('#door-lock').disabled = !closeDoor || Boolean(renderer.interiors.transition);
-  $('#door-lock').textContent = closeDoor?.isLocked ? 'Destrancar [L]' : 'Trancar [L]';
+  $('#door-lock').textContent = closeDoor?.isLocked ? 'Destrancar [K]' : 'Trancar [K]';
 }
 
 $('#door-close').onclick = () => doorControl('close');
 $('#door-lock').onclick = () => doorControl('lock');
 
-// Global Hotkeys
-window.addEventListener('keydown', e => {
-  if (e.target.matches('input,select,textarea')) return;
-  const k = e.key.toLowerCase();
-  if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(k)) e.preventDefault();
-
-  if (dialogue.active) {
-    if (k === ' ' || k === 'enter') dialogue.advance();
-    if (k === 'escape') dialogue.close();
-    return;
-  }
-  if (panel.open) {
-    if (k === 'escape') close();
-    return;
-  }
-
-  keys.add(k);
-  if (e.repeat || !started) return;
-
-  if (cinematic) {
-    if (k === 'escape' || k === ' ') finishIntro();
-    return;
-  }
-
-  if (k === 'e') interact();
-  if (k === 'c') {
-    if (state.interior) doorControl('close');
-    else corkboard.open();
-  }
-  if (k === 'l') doorControl('lock');
-  if (k === 'j') notebook();
-  if (k === 't') showAchievementsPanel();
-  if (k === 'x') openAccusationPanel();
-  if (k === 'm') map();
-
-  if (k === 'i' && near?.type === 'npc') {
-    interrogation.start(near.npc, state.case);
-  }
-
-  if (k === 'p' && near?.type === 'npc') {
-    if (tailing.activeTarget) {
-      tailing.stopTailing();
-      toast('Modo vigilância cancelado.');
-    } else {
-      tailing.startTailing(near.npc);
-      toast(`Vigilância discreta iniciada contra ${near.npc.name}. Mantenha distância nas sombras.`);
-    }
-  }
-
-  if (k === 'f' && !state.interior) {
-    if (state.driving) {
-      const exit = {x: state.car.x, y: state.car.y + 38};
-      state.driving = false;
-      state.player = { ...state.player, ...exit, vx: 0, vy: 0 };
-      state.car.speed = 0;
-    } else if (distance(state.player, state.car) < 85) {
-      state.driving = true;
-      toast('W/S acelerar e ré · A/D esterçar · Espaço frear · F sair');
-    } else {
-      toast('Aproxime-se da viatura.');
-    }
-  }
+// Abstract actions own input. Legacy auxiliary controls remain available through code queries.
+function handleAction(action,event){
+ if(action==='PAUSE_MENU'){
+  if(corkboard.modal?.open){corkboard.close();return;}
+  if(interrogation.modal?.open){interrogation.modal.close();return;}
+  if(dialogue.active){dialogue.close();return;}
+  if(panel.open){close();return;}
+  if(cinematic){finishIntro();return;}
+  show('<h2>Pausa</h2><p>Escape para continuar.</p>');return;
+ }
+ if(dialogue.active){if(action==='DIALOGUE_ADVANCE')dialogue.handleAdvance();if(action.startsWith('CHOICE_')){const index=Number(action.slice(-1))-1;if(dialogue.lines[dialogue.index]?.choices?.[index])dialogue.advance(index);}return;}
+ if(panel.open||corkboard.modal?.open||interrogation.modal?.open)return;
+ if(!started)return;
+ if(cinematic){if(action==='DIALOGUE_ADVANCE')finishIntro();return;}
+ if(action==='INSPECT_NOTEBOOK'){notebook();return;}
+ if(action==='CORKBOARD'){corkboard.open();return;}
+ if(action==='CHECK_WATCH'){toast('Dia '+state.day+' · '+time(state.minute));return;}
+ if(state.ending)return;
+ if(action==='LIGHTER'){if(!state.inventory.includes('Isqueiro'))state.inventory.push('Isqueiro');else state.inventory.splice(state.inventory.indexOf('Isqueiro'),1);toast(state.inventory.includes('Isqueiro')?'Isqueiro aceso.':'Isqueiro apagado.');}
+ if(action==='INTERACT'){if(event.type==='pointerdown'&&state.interior&&renderer.interiors.loaded){const rect=pointerCanvas.getBoundingClientRect(),target=renderer.interiorView.pick({x:event.clientX-rect.left,y:event.clientY-rect.top},state);if(target)requestInterior(target);}else interact();}
+}
+input=new InputManager({onAction:handleAction,filterEvent:event=>event.type!=='pointerdown'||event.target===pointerCanvas});
+campaignPanel=new CampaignPanel({getCampaign:()=>campaign,show,close,save:checkpoint,toast,input,onEnding:ending=>{if(state.PLAYER_DECISION_FLAGS.includes('CORRECT_DEDUCTION'))achievements.unlock('truth_of_sarah');campaignPanel.ending(ending);},interrogate:npc=>interrogation.start(npc,state.case)});
+$('#controls-btn').onclick=()=>campaignPanel.controls();
+// Extra host actions use physical codes here and never shadow abstract bindings.
+window.addEventListener('keydown',event=>{
+ if(event.target.closest?.('input,select,textarea')||event.repeat||panel.open||dialogue.active||corkboard.modal?.open||interrogation.modal?.open||!started||cinematic)return;
+ const reserved=Object.values(input.bindings).some(b=>b.primary===event.code||b.secondary===event.code);if(reserved)return;
+ if(event.code==='KeyM')map();if(event.code==='KeyX')openAccusationPanel();
+ if(state.ending)return;
+ if(event.code==='KeyI'&&near?.type==='npc')interrogation.start(near.npc,state.case);
+ if(event.code==='KeyP'&&near?.type==='npc'){if(tailing.activeTarget)tailing.stopTailing();else tailing.startTailing(near.npc);}
+ if(event.code==='KeyF'&&!state.interior){if(state.driving){state.driving=false;state.player={...state.player,x:state.car.x,y:state.car.y+38,vx:0,vy:0};state.car.speed=0;}else if(distance(state.player,state.car)<85)state.driving=true;}
+ if(event.code==='KeyO')doorControl('close');if(event.code==='KeyK')doorControl('lock');
 });
-
-window.addEventListener('keyup', e => keys.delete(e.key.toLowerCase()));
 
 // Simulation & Movement Update
 function update(dt) {
-  if (!started || panel.open || dialogue.active) return;
+  if (!started || panel.open || dialogue.active || corkboard.modal?.open || interrogation.modal?.open || state.ending || renderer.buildingTransition.active) return;
 
   if (cinematic) {
     sceneTime += dt;
@@ -672,8 +624,8 @@ function update(dt) {
   }
 
   if (state.interior && renderer.interiors.loaded) {
-    const input = ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].some(key => keys.has(key));
-    if (input) renderer.interiors.navigation = null;
+    const moving = ['MOVE_UP','MOVE_DOWN','MOVE_LEFT','MOVE_RIGHT'].some(action=>input.isActionDown(action));
+    if (moving) renderer.interiors.navigation = null;
     if (renderer.interiors.transition || renderer.interiors.navigation) {
       advance(dt * 1.2);
       const previousRoom = state.interiorRoom;
@@ -688,13 +640,13 @@ function update(dt) {
 
   advance(dt * 1.2);
 
-  const forward = keys.has('w') || keys.has('arrowup');
-  const back = keys.has('s') || keys.has('arrowdown');
-  const left = keys.has('a') || keys.has('arrowleft');
-  const right = keys.has('d') || keys.has('arrowright');
+  const forward = input.isActionDown('MOVE_UP');
+  const back = input.isActionDown('MOVE_DOWN');
+  const left = input.isActionDown('MOVE_LEFT');
+  const right = input.isActionDown('MOVE_RIGHT');
 
   if (state.driving) {
-    const delta = updateVehicle(state.car, {forward, back, left, right, brake: keys.has(' ')}, dt);
+    const delta = updateVehicle(state.car, {forward, back, left, right, brake: input.held.has('Space')}, dt);
     const old = {x: state.car.x, y: state.car.y};
     move(state.car, delta.dx, delta.dy, 27);
     if (Math.abs(state.car.x - old.x - delta.dx) > 0.1 || Math.abs(state.car.y - old.y - delta.dy) > 0.1) {
@@ -710,7 +662,7 @@ function update(dt) {
       sx /= magnitude;
       sy /= magnitude;
     }
-    const speed = keys.has('shift') ? 160 : 95;
+    const speed = (input.held.has('ShiftLeft')||input.held.has('ShiftRight')) ? 160 : 95;
     const tx = (sx + sy) * 0.7071 * speed;
     const ty = (sy - sx) * 0.7071 * speed;
     const blend = 1 - Math.exp(-10 * dt);
@@ -731,7 +683,7 @@ function update(dt) {
 
 // Render Loop
 function frame(now) {
-  const dt = Math.min((now - last) / 1000, 0.05);
+  const dt = Math.max(0,Math.min((now - last) / 1000, 0.05));
   last = now;
 
   update(dt);
@@ -753,6 +705,7 @@ function frame(now) {
   $('#prompt').style.display = near && !cinematic && !panel.open && !dialogue.active ? 'block' : 'none';
   $('#prompt').textContent = near?.label || '';
 
+  input.resetFrameStates();
   requestAnimationFrame(frame);
 }
 

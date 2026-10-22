@@ -1,6 +1,6 @@
 const {chromium}=require('playwright');
 const assert=require('node:assert/strict');
-const hoverRecorder=async page=>{const point=await page.evaluate(()=>{const w=560,h=440,scale=Math.min(1.85,(innerWidth-210)/((w+h)*.78+180),(innerHeight-210)/((w+h)*.39+170));return{x:innerWidth*.5+((200-156)*.78-(w-h)*.39)*scale,y:innerHeight*.56+((200+156)*.39-51-(w+h)*.195)*scale};});await page.mouse.move(point.x,point.y);await page.waitForTimeout(100);};
+const hoverRecorder=async page=>{const point=await page.evaluate(()=>{const w=560,h=440,scale=Math.min(1.85,(innerWidth-210)/((w+h)*(Math.sqrt(3)/2)+180),(innerHeight-210)/((w+h)*.5+170));return{x:innerWidth*.5+((200-156)*(Math.sqrt(3)/2)-(w-h)*(Math.sqrt(3)/4))*scale,y:innerHeight*.56+((200+156)*.5-51-(w+h)*.25)*scale};});await page.mouse.move(point.x,point.y);await page.waitForTimeout(100);};
 
 require('node:fs').mkdirSync('test-results',{recursive:true});
 (async()=>{const browser=await chromium.launch({...(process.env.NORTHVALE_CHROMIUM_PATH?{executablePath:process.env.NORTHVALE_CHROMIUM_PATH}:{}),headless:true,args:['--no-sandbox','--enable-unsafe-swiftshader']});

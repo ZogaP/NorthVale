@@ -271,3 +271,5 @@ canvas.portrait,canvas.map-preview{width:100%;height:auto;aspect-ratio:1;backgro
 }
 
 
+.canonical-panel{background:#0d0d0d;color:#f0f0f0;border:1px solid #54405f}.canonical-panel small{color:#b89bd2}.canonical-panel .entry{border-color:#37303d}.canonical-panel button{background:#382047;color:#f0f0f0;border-color:#7b2cbf}.canonical-panel button:hover{background:#5a2ca6}.canonical-panel input,.canonical-panel select{background:#19161f;color:#f0f0f0;border:1px solid #705583;padding:8px;margin:4px}.canonical-panel input{width:130px}.canonical-panel label{display:inline-block;margin:5px}#campaign-message{color:#cfb4ea}
+.corkboard-header,.corkboard-footer,.interrogation-header,.interrogation-footer{position:relative;inset:auto;pointer-events:auto;z-index:3;flex-shrink:0}.corkboard-surface{min-height:0}.corkboard-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}

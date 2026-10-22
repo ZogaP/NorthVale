@@ -5,22 +5,22 @@
 const PORTRAITS = {
   alex: '/assets/portraits/alex_portrait.png',
   ruth: '/assets/portraits/ruth_portrait.png',
-  helen: '/assets/portraits/helen_portrait.png',
-  elias: '/assets/portraits/elias_portrait.png',
-  viktor: '/assets/portraits/viktor_portrait.png',
-  bobby: '/assets/portraits/bobby_portrait.png',
-  clara: '/assets/portraits/clara_portrait.png',
-  sam: '/assets/portraits/sam_portrait.png',
+  helen: '/assets/portraits/suspeito_portrait.png',
+  elias: '/assets/portraits/suspeito_portrait.png',
+  viktor: '/assets/portraits/suspeito_portrait.png',
+  bobby: '/assets/portraits/suspeito_portrait.png',
+  clara: '/assets/portraits/suspeito_portrait.png',
+  sam: '/assets/portraits/suspeito_portrait.png',
   suspect: '/assets/portraits/suspeito_portrait.png'
 };
 
 const OCCUPATIONS = {
   alex: 'DETETIVE CONSULTOR · DELEGACIA DE NORTHVALE',
-  ruth: 'SARGENTO DE POLÍCIA · CHEFE DE INVESTIGAÇÃO',
+  ruth: 'XERIFE DO CONDADO · CHEFE DE INVESTIGAÇÃO',
   helen: 'MÃE DE SARAH · COSTUREIRA MUNICIPAL',
   elias: 'FARMACÊUTICO · PROPRIETÁRIO DA FARMÁCIA VALE',
   viktor: 'EMPRESÁRIO INDUSTRIAL · FRIGORÍFICO SLOANE',
-  bobby: 'BALCONISTA E ENTREGADOR DO DINER',
+  bobby: 'ENVOLVIDO NO CASO DA VIATURA 04',
   clara: 'OFICIAL DE REGISTRO · CARTÓRIO DE IMÓVEIS',
   sam: 'MECÂNICO E SERRALHEIRO DO FERRO-VELHO',
   suspect: 'TESTEMUNHA SOB VIGILÂNCIA'
@@ -79,7 +79,7 @@ export class DialogueUI {
         }
       }
     };
-    window.addEventListener('keydown', this.keydownHandler);
+    // Keyboard input is routed by the host InputManager.
   }
 
   play(lines, onClose) {

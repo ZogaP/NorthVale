@@ -29,7 +29,12 @@ export class InteriorWorld{
  }return this.collisionCache.get(key);}
  doors(state){const room=this.room(state);return this.manifest(state).doors.filter(d=>d.a.room===room.id||d.b.room===room.id).map(definition=>{const door=this.door(state,definition),port=doorPort(definition,room),geometry=portalGeometry(port,room);const other=definition.a.room===room.id?definition.b.room:definition.a.room,name=this.manifest(state).rooms.find(r=>r.id===other).name;return{kind:'door',id:definition.id,globalId:door.id,name,definition,door,port,geometry,...geometry,...door.state(this.save(state)),range:98};});}
  blocked(state,x,y,radius=10){return this.collision(state).blocked(x,y,radius)||this.doors(state).some(d=>!d.isOpen&&circleHits({x,y},d.geometry,radius));}
- repairPosition(state,desired){if(!this.blocked(state,desired.x,desired.y))return desired;const room=this.room(state);let best=null,distance=Infinity;for(let y=32;y<room.bounds.h-20;y+=16)for(let x=32;x<room.bounds.w-20;x+=16){const d=Math.hypot(x-desired.x,y-desired.y);if(d<distance&&!this.blocked(state,x,y)){best={x,y};distance=d;}}if(!best)throw Error(`Nenhuma posição livre em ${state.interior}/${room.id}`);return best;}
+ repairPosition(state,desired){const room=this.room(state),spawn=room.spawn,reachable=point=>this.blocked(state,spawn.x,spawn.y)||this.collision(state).findPath(spawn,point).length>0;
+  if(!this.blocked(state,desired.x,desired.y))return reachable(desired)?desired:{...spawn};
+  let best=null,distance=Infinity;for(let y=32;y<room.bounds.h-20;y+=16)for(let x=32;x<room.bounds.w-20;x+=16){const d=Math.hypot(x-desired.x,y-desired.y);if(d<distance&&!this.blocked(state,x,y)){best={x,y};distance=d;}}
+  if(!best)throw Error(`Nenhuma posição livre em ${state.interior}/${room.id}`);return reachable(best)?best:{...spawn};
+ }
+
  enter(state,{fromStreet=false}={}){
   this.transition=null;this.navigation=null;const manifest=this.manifest(state);
   if(fromStreet||!manifest.rooms.some(r=>r.id===state.interiorRoom))state.interiorRoom=manifest.entranceRoom;
