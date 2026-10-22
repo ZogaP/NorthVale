@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NorthVale: Sombras de 1989 — Motor Isométrico 2.5D, Gravador K7 & Web Audio</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #08080a;
+      font-family: 'Courier New', Courier, monospace;
+      color: #e6e4df;
+    }
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+    #director-toolbar {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      z-index: 100;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 5px;
+      background: rgba(7, 7, 9, 0.94);
+      border: 1px solid #7b2cbf;
+      border-radius: 4px;
+      padding: 6px 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.92);
+      backdrop-filter: blur(5px);
+    }
+    .btn {
+      background: #14141a;
+      color: #dcd8cf;
+      border: 1px solid #2d2d38;
+      padding: 5px 9px;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.15s ease;
+      letter-spacing: 0.5px;
+    }
+    .btn:hover {
+      background: rgba(123, 44, 191, 0.45);
+      border-color: #9d4edd;
+      color: #d48b28;
+    }
+    .btn.active {
+      background: #7b2cbf;
+      color: #ffffff;
+      border-color: #d48b28;
+    }
+    .toolbar-sep {
+      width: 1px;
+      height: 22px;
+      background: #3a3a48;
+      margin: 0 4px;
+    }
+    .audio-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(15, 20, 28, 0.9);
+      padding: 3px 8px;
+      border-radius: 3px;
+      border: 1px solid #264653;
+    }
+    .audio-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: #2a9d8f;
+      letter-spacing: 0.5px;
+      margin-right: 2px;
+    }
+    .btn-audio {
+      padding: 3px 6px;
+      font-size: 8.5px;
+      background: #101c24;
+      border: 1px solid #2a9d8f;
+      color: #b7e4c7;
+    }
+    .btn-audio:hover {
+      background: #2a9d8f;
+      color: #0b1319;
+    }
+    .paranoia-group {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(20, 10, 24, 0.85);
+      padding: 3px 8px;
+      border-radius: 3px;
+      border: 1px solid #582173;
+    }
+    .paranoia-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: #e0a96d;
+      letter-spacing: 0.5px;
+    }
+    .paranoia-slider {
+      width: 70px;
+      accent-color: #d48b28;
+      cursor: pointer;
+    }
+    .paranoia-val {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #d48b28;
+      min-width: 28px;
+    }
+    .btn-quick-p {
+      padding: 2px 5px;
+      font-size: 8.5px;
+      background: #1f1428;
+      border: 1px solid #482361;
+      color: #d8c2ea;
+    }
+    .btn-quick-p:hover {
+      background: #7b2cbf;
+      color: #fff;
+    }
+    #notification-banner {
+      position: absolute;
+      top: 65px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f0f14;
+      border: 1.5px solid #d48b28;
+      color: #f0eee9;
+      padding: 8px 18px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 2px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.9);
+      display: none;
+      pointer-events: none;
+      z-index: 101;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="canvas-container">
+    <canvas id="gameCanvas"></canvas>
+  </div>
+
+  <div id="notification-banner"></div>
+
+  <div id="director-toolbar">
+    <button class="btn active" id="btn-mode-iso">Cenário Isométrico 2.5D</button>
+    <button class="btn" id="btn-mode-cutaway">Roof Cutaway: [DESLIGADO]</button>
+    <button class="btn" id="btn-mode-cassette">Gravador K7</button>
+    <button class="btn" id="btn-mode-inspect">Cena de Crime</button>
+
+    <div class="toolbar-sep"></div>
+
+    <!-- Sintetizador Procedural Web Audio API -->
+    <div class="audio-group">
+      <span class="audio-label">WEB AUDIO:</span>
+      <button class="btn btn-audio" id="btn-sfx-switch">Interruptor</button>
+      <button class="btn btn-audio" id="btn-sfx-lockpick">Gazua</button>
+      <button class="btn btn-audio" id="btn-sfx-radio">Rádio Policial</button>
+      <button class="btn btn-audio" id="btn-sfx-synth">Acorde 80s</button>
+      <button class="btn btn-audio" id="btn-atmo-rain">Chuva Zinco</button>
+      <button class="btn btn-audio" id="btn-atmo-drone">Dread</button>
+      <button class="btn btn-audio" id="btn-atmo-stop" style="color:#ff6b6b; border-color:#e63946;">Mudo</button>
+    </div>
+
+    <!-- Controles de Paranoia -->
+    <div class="paranoia-group">
+      <span class="paranoia-label">PARANOIA:</span>
+      <input type="range" class="paranoia-slider" id="paranoia-range" min="0" max="100" value="0">
+      <span class="paranoia-val" id="paranoia-num">0%</span>
+      <button class="btn btn-quick-p" data-p="0">0%</button>
+      <button class="btn btn-quick-p" data-p="50">50%</button>
+      <button class="btn btn-quick-p" data-p="75">75%</button>
+      <button class="btn btn-quick-p" data-p="100">100%</button>
+    </div>
+  </div>
+
+  <script>
+    /* ========================================================================
+     * 1. CLASSE: IsometricWorldRenderer (Motor Isométrico 2.5D)
+     * ======================================================================== */
+    class IsometricWorldRenderer {
+      constructor(canvas = null) {
+        this.canvas = canvas;
+        this.tileWidth = 64;
+        this.tileHeight = 32;
+        this.halfW = 32;
+        this.halfH = 16;
+        this.curbHeight = 6;
+        this.roofAlphas = new Map();
+        this.cutawayFadeRate = 3.5;
+        this.time = 0;
+      }
+
+      init(tileWidth = 64, tileHeight = 32) {
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+        this.halfW = tileWidth / 2;
+        this.halfH = tileHeight / 2;
+        this.curbHeight = Math.max(4, Math.round(tileHeight * 0.18));
+      }
+
+      update(dt) {
+        this.time += dt;
+        for (const [id, state] of this.roofAlphas.entries()) {
+          const target = state.target;
+          let cur = state.current;
+          if (cur < target) cur = Math.min(target, cur + dt * this.cutawayFadeRate);
+          else if (cur > target) cur = Math.max(target, cur - dt * this.cutawayFadeRate);
+          state.current = cur;
+        }
+      }
+
+      gridToScreen(gx, gy, gz = 0, camera = { x: 0, y: 0 }) {
+        const sx = (gx - gy) * this.halfW - camera.x;
+        const sy = (gx + gy) * this.halfH - gz - camera.y;
+        return { x: sx, y: sy };
+      }
+
+      renderGroundLayer(ctx, mapData, camera) {
+        if (!mapData) return;
+        const viewW = ctx.canvas.width;
+        const viewH = ctx.canvas.height;
+        const pad = this.tileWidth * 2;
+        const tiles = mapData.tiles || [];
+
+        ctx.save();
+        for (let i = 0; i < tiles.length; i++) {
+          const tile = tiles[i];
+          const gx = tile.gx !== undefined ? tile.gx : tile.x;
+          const gy = tile.gy !== undefined ? tile.gy : tile.y;
+          const pos = this.gridToScreen(gx, gy, 0, camera);
+
+          if (pos.x < -pad || pos.x > viewW + pad || pos.y < -pad || pos.y > viewH + pad) continue;
+
+          const type = tile.type || 'asphalt';
+          if (type === 'sidewalk') this._drawSidewalkTile(ctx, pos.x, pos.y, tile);
+          else if (type === 'mud' || type === 'gravel') this._drawMudGravelTile(ctx, pos.x, pos.y, tile);
+          else if (type === 'interior_diner') this._drawDinerCheckerTile(ctx, pos.x, pos.y, tile);
+          else this._drawAsphaltTile(ctx, pos.x, pos.y, tile);
+        }
+        ctx.restore();
+      }
+
+      _drawAsphaltTile(ctx, cx, cy, tile) {
+        const hw = this.halfW; const hh = this.halfH;
+        const hash = Math.sin((tile.gx || 0) * 12.9898 + (tile.gy || 0) * 78.233) * 43758.5453;
+        const variation = Math.floor((hash - Math.floor(hash)) * 8);
+        const base = 20 + variation;
+        ctx.fillStyle = `rgb(${base}, ${base}, ${base + 5})`;
+
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - hh); ctx.lineTo(cx + hw, cy); ctx.lineTo(cx, cy + hh); ctx.lineTo(cx - hw, cy);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = '#0e0e13'; ctx.lineWidth = 0.8; ctx.stroke();
+
+        if (tile.hasCrack) {
+          ctx.strokeStyle = 'rgba(10, 10, 14, 0.6)'; ctx.lineWidth = 1.0;
+          ctx.beginPath();
+          ctx.moveTo(cx - hw * 0.4, cy - hh * 0.1); ctx.lineTo(cx, cy + hh * 0.2); ctx.lineTo(cx + hw * 0.3, cy + hh * 0.1);
+          ctx.stroke();
+        }
+
+        if (tile.roadStripe) {
+          ctx.strokeStyle = 'rgba(212, 139, 40, 0.55)'; ctx.lineWidth = 2.5;
+          if (tile.roadStripe === 'dashed') ctx.setLineDash([8, 6]);
+          ctx.beginPath();
+          ctx.moveTo(cx - hw, cy); ctx.lineTo(cx + hw, cy);
+          ctx.stroke(); ctx.setLineDash([]);
+        }
+
+        const puddleSheen = Math.sin(this.time * 2 + (tile.gx || 0)) * 0.04 + 0.06;
+        ctx.fillStyle = `rgba(72, 149, 239, ${puddleSheen})`; ctx.fill();
+      }
+
+      _drawSidewalkTile(ctx, cx, cy, tile) {
+        const hw = this.halfW; const hh = this.halfH; const curb = this.curbHeight;
+        ctx.fillStyle = '#16161c';
+        ctx.beginPath(); ctx.moveTo(cx - hw, cy); ctx.lineTo(cx, cy + hh); ctx.lineTo(cx, cy + hh + curb); ctx.lineTo(cx - hw, cy + curb); ctx.fill();
+        ctx.fillStyle = '#121217';
+        ctx.beginPath(); ctx.moveTo(cx, cy + hh); ctx.lineTo(cx + hw, cy); ctx.lineTo(cx + hw, cy + curb); ctx.lineTo(cx, cy + hh + curb); ctx.fill();
+
+        ctx.fillStyle = '#262632';
+        ctx.beginPath(); ctx.moveTo(cx, cy - hh - curb); ctx.lineTo(cx + hw, cy - curb); ctx.lineTo(cx, cy + hh - curb); ctx.lineTo(cx - hw, cy - curb);
+        ctx.closePath(); ctx.fill();
+        ctx.strokeStyle = '#323242'; ctx.lineWidth = 0.8; ctx.stroke();
+
+        if (tile.hasManhole) {
+          ctx.fillStyle = '#101014';
+          ctx.beginPath(); ctx.ellipse(cx, cy - curb, hw * 0.42, hh * 0.42, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.strokeStyle = '#3d3d4a'; ctx.lineWidth = 1.2; ctx.stroke();
+        }
+      }
+
+      _drawMudGravelTile(ctx, cx, cy, tile) {
+        const hw = this.halfW; const hh = this.halfH;
+        ctx.fillStyle = '#1c1a17';
+        ctx.beginPath(); ctx.moveTo(cx, cy - hh); ctx.lineTo(cx + hw, cy); ctx.lineTo(cx, cy + hh); ctx.lineTo(cx - hw, cy); ctx.fill();
+        ctx.fillStyle = '#12110e';
+        ctx.beginPath(); ctx.ellipse(cx - hw * 0.2, cy, hw * 0.35, hh * 0.35, 0.2, 0, Math.PI * 2); ctx.fill();
+      }
+
+      _drawDinerCheckerTile(ctx, cx, cy, tile) {
+        const hw = this.halfW; const hh = this.halfH;
+        const isWhite = ((tile.gx || 0) + (tile.gy || 0)) % 2 === 0;
+        ctx.fillStyle = isWhite ? '#dcd8cf' : '#141419';
+        ctx.beginPath(); ctx.moveTo(cx, cy - hh); ctx.lineTo(cx + hw, cy); ctx.lineTo(cx, cy + hh); ctx.lineTo(cx - hw, cy); ctx.fill();
+        ctx.strokeStyle = '#2d2d38'; ctx.lineWidth = 0.6; ctx.stroke();
+      }
+
+      renderWorldObject(ctx, obj, camera, isPlayerInside = false) {
+        if (!obj) return;
+        ctx.save();
+
+        if (obj.isCutawayWall && obj.buildingId) {
+          const alphaState = this.roofAlphas.get(obj.buildingId);
+          const alpha = alphaState ? alphaState.current : (isPlayerInside ? 0.15 : 1.0);
+          ctx.globalAlpha = Math.max(0.12, Math.min(1.0, alpha));
+        }
+
+        const type = obj.type || 'wall';
+        if (type === 'wall' || type === 'building_block') this._drawIsometricWall(ctx, obj, camera);
+        else if (type === 'door') this._drawIsometricDoor(ctx, obj, camera);
+        else if (type === 'window') this._drawIsometricWindow(ctx, obj, camera);
+        else if (type === 'prop_lamppost') this._drawLamppost(ctx, obj, camera);
+        else if (type === 'prop_payphone') this._drawPayphone(ctx, obj, camera);
+        else if (type === 'prop_dumpster') this._drawDumpster(ctx, obj, camera);
+        else if (type === 'prop_hydrant') this._drawHydrant(ctx, obj, camera);
+
+        ctx.restore();
+      }
+
+      _drawIsometricWall(ctx, obj, camera) {
+        const p = this.gridToScreen(obj.gx !== undefined ? obj.gx : obj.x, obj.gy !== undefined ? obj.gy : obj.y, 0, camera);
+        const wallH = obj.height || 64;
+        const hw = this.halfW; const hh = this.halfH;
+        const isBrick = obj.style === 'brick' || obj.buildingId === 'meatpacking';
+
+        // Face Esquerda (60% luz)
+        ctx.fillStyle = isBrick ? '#241a18' : '#1c1c26';
+        ctx.beginPath();
+        ctx.moveTo(p.x - hw, p.y); ctx.lineTo(p.x, p.y + hh); ctx.lineTo(p.x, p.y + hh - wallH); ctx.lineTo(p.x - hw, p.y - wallH);
+        ctx.fill(); ctx.strokeStyle = '#0e0e14'; ctx.lineWidth = 1.0; ctx.stroke();
+
+        // Face Direita (90% luz)
+        ctx.fillStyle = isBrick ? '#3c2b27' : '#2e2e3e';
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y + hh); ctx.lineTo(p.x + hw, p.y); ctx.lineTo(p.x + hw, p.y - wallH); ctx.lineTo(p.x, p.y + hh - wallH);
+        ctx.fill(); ctx.strokeStyle = '#12121a'; ctx.stroke();
+
+        // Topo da Parede
+        ctx.fillStyle = isBrick ? '#4a3632' : '#38384a';
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y - hh - wallH); ctx.lineTo(p.x + hw, p.y - wallH); ctx.lineTo(p.x, p.y + hh - wallH); ctx.lineTo(p.x - hw, p.y - wallH);
+        ctx.fill(); ctx.stroke();
+      }
+
+      _drawIsometricDoor(ctx, obj, camera) {
+        const p = this.gridToScreen(obj.gx || obj.x, obj.gy || obj.y, 0, camera);
+        const doorH = 46; const doorW = this.halfW * 0.75;
+        ctx.save();
+        ctx.fillStyle = 'rgba(20, 28, 36, 0.9)'; ctx.fillRect(p.x - doorW / 2, p.y - doorH, doorW, doorH);
+        ctx.strokeStyle = '#3a3a4c'; ctx.lineWidth = 1.6; ctx.strokeRect(p.x - doorW / 2, p.y - doorH, doorW, doorH);
+        if (obj.decal) {
+          ctx.font = '700 8.5px "Courier New", monospace'; ctx.fillStyle = '#e0a96d';
+          ctx.textAlign = 'center'; ctx.fillText(obj.decal.toUpperCase(), p.x, p.y - doorH + 18);
+        }
+        ctx.restore();
+      }
+
+      _drawIsometricWindow(ctx, obj, camera) {
+        const p = this.gridToScreen(obj.gx || obj.x, obj.gy || obj.y, obj.z || 16, camera);
+        const winW = 18; const winH = 24;
+        ctx.save();
+
+        if (obj.isLit !== false) {
+          const glowGrad = ctx.createRadialGradient(p.x, p.y + 16, 2, p.x, p.y + 24, 45);
+          glowGrad.addColorStop(0.0, 'rgba(212, 139, 40, 0.4)'); glowGrad.addColorStop(1.0, 'rgba(212, 139, 40, 0.0)');
+          ctx.fillStyle = glowGrad; ctx.beginPath(); ctx.ellipse(p.x, p.y + 24, 34, 16, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#d48b28';
+        } else ctx.fillStyle = '#101418';
+
+        ctx.fillRect(p.x - winW / 2, p.y - winH, winW, winH);
+        ctx.strokeStyle = '#2d2d38'; ctx.lineWidth = 1.2; ctx.strokeRect(p.x - winW / 2, p.y - winH, winW, winH);
+        ctx.restore();
+      }
+
+      _drawLamppost(ctx, obj, camera) {
+        const p = this.gridToScreen(obj.gx || obj.x, obj.gy || obj.y, 0, camera);
+        const postH = 75;
+        ctx.save();
+
+        const lightGrad = ctx.createRadialGradient(p.x, p.y, 4, p.x, p.y, 65);
+        lightGrad.addColorStop(0.0, 'rgba(224, 169, 109, 0.38)'); lightGrad.addColorStop(0.65, 'rgba(180, 110, 40, 0.12)'); lightGrad.addColorStop(1.0, 'rgba(0, 0, 0, 0.0)');
+        ctx.fillStyle = lightGrad; ctx.beginPath(); ctx.ellipse(p.x, p.y, 55, 26, 0, 0, Math.PI * 2); ctx.fill();
+
+        ctx.fillStyle = '#16181d'; ctx.fillRect(p.x - 2, p.y - postH, 4, postH);
+        ctx.strokeStyle = '#16181d'; ctx.lineWidth = 3.0;
+        ctx.beginPath(); ctx.moveTo(p.x, p.y - postH); ctx.quadraticCurveTo(p.x + 8, p.y - postH - 12, p.x + 14, p.y - postH + 4); ctx.stroke();
+
+        ctx.fillStyle = '#ffbe0b'; ctx.beginPath(); ctx.arc(p.x + 14, p.y - postH + 6, 3.0, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+
+      _drawPayphone(ctx, obj, camera) {
+        const p = this.gridToScreen(obj.gx || obj.x, obj.gy || obj.y, 0, camera);
+        const phoneH = 50;
+        ctx.save();
+        ctx.strokeStyle = '#484c54'; ctx.lineWidth = 3.0;
+        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x, p.y - phoneH * 0.65); ctx.stroke();
+
+        ctx.fillStyle = '#2a2e36'; ctx.fillRect(p.x - 4, p.y - phoneH * 0.85, 8, 14);
+        ctx.fillStyle = '#fca311'; ctx.beginPath(); ctx.arc(p.x, p.y - phoneH, 14, Math.PI * 0.85, Math.PI * 2.15); ctx.fill();
+        ctx.restore();
+      }
+
+      _drawDumpster(ctx, obj, camera) {
+        const p = this.gridToScreen(obj.gx || obj.x, obj.gy || obj.y, 0, camera);
+        const dW = 28; const dH = 18;
+        ctx.save();
+        ctx.fillStyle = '#20322b'; ctx.fillRect(p.x - dW / 2, p.y - dH, dW, dH);
+        ctx.fillStyle = '#101413';
+        ctx.beginPath(); ctx.moveTo(p.x - dW / 2 - 2, p.y - dH); ctx.lineTo(p.x + dW / 2 + 2, p.y - dH - 4); ctx.lineTo(p.x + dW / 2 + 2, p.y - dH); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = '#8b3a1a'; ctx.fillRect(p.x - dW / 2, p.y - 4, 7, 4);
+        ctx.restore();
+      }
+
+      _drawHydrant(ctx, obj, camera) {
+        const p = this.gridToScreen(obj.gx || obj.x, obj.gy || obj.y, 0, camera);
+        const hH = 22;
+        ctx.save();
+        ctx.fillStyle = '#9e1c1c'; ctx.fillRect(p.x - 3.5, p.y - hH, 7, hH);
+        ctx.fillStyle = '#b82424'; ctx.beginPath(); ctx.arc(p.x, p.y - hH, 4, Math.PI, 0); ctx.fill();
+        ctx.fillStyle = '#b8923b'; ctx.fillRect(p.x - 6, p.y - hH * 0.65, 3, 4); ctx.fillRect(p.x + 3, p.y - hH * 0.65, 3, 4);
+        ctx.restore();
+      }
+
+      renderRoofLayer(ctx, buildingId, playerInside, camera, buildingData = null) {
+        if (!buildingId) return;
+        if (!this.roofAlphas.has(buildingId)) {
+          this.roofAlphas.set(buildingId, { current: playerInside ? 0.15 : 1.0, target: playerInside ? 0.15 : 1.0 });
+        }
+        const state = this.roofAlphas.get(buildingId);
+        state.target = playerInside ? 0.15 : 1.0;
+        if (state.current <= 0.02) return;
+
+        ctx.save();
+        ctx.globalAlpha = Math.max(0.0, Math.min(1.0, state.current));
+
+        if (buildingData) {
+          const gx = buildingData.gx !== undefined ? buildingData.gx : buildingData.x;
+          const gy = buildingData.gy !== undefined ? buildingData.gy : buildingData.y;
+          const roofZ = buildingData.height || 64;
+          const p = this.gridToScreen(gx, gy, roofZ, camera);
+          const w = (buildingData.gw || 3) * this.halfW;
+          const h = (buildingData.gh || 3) * this.halfH;
+
+          ctx.fillStyle = buildingData.roofColor || '#2c3639';
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y - h); ctx.lineTo(p.x + w, p.y); ctx.lineTo(p.x, p.y + h); ctx.lineTo(p.x - w, p.y);
+          ctx.closePath(); ctx.fill();
+          ctx.strokeStyle = '#182022'; ctx.lineWidth = 1.6; ctx.stroke();
+        }
+        ctx.restore();
+      }
+    }
+
+    /* ========================================================================
+     * 2. CLASSES DE ÁUDIO & CASSETTE
+     * ======================================================================== */
+    class RetroAudioSynthesizer {
+      constructor() {
+        this.ctx = null;
+        this.masterGain = null;
+        this.analyser = null;
+        this.analyserData = null;
+        this.activeAtmosphereType = null;
+        this.atmosphereNodes = [];
+        this.atmosphereGain = null;
+        this.currentAmplitude = 0.0;
+      }
+      _ensureContext() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioCtx();
+          this.masterGain = this.ctx.createGain();
+          this.masterGain.gain.setValueAtTime(0.75, this.ctx.currentTime);
+          this.analyser = this.ctx.createAnalyser();
+          this.analyser.fftSize = 64;
+          this.analyserData = new Uint8Array(this.analyser.frequencyBinCount);
+          this.masterGain.connect(this.analyser);
+          this.analyser.connect(this.ctx.destination);
+        }
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      getAudioAmplitude() {
+        if (!this.analyser || !this.analyserData) return 0.0;
+        this.analyser.getByteTimeDomainData(this.analyserData);
+        let sum = 0;
+        for (let i = 0; i < this.analyserData.length; i++) {
+          const val = (this.analyserData[i] - 128) / 128; sum += val * val;
+        }
+        const rms = Math.sqrt(sum / this.analyserData.length);
+        this.currentAmplitude += (rms * 2.8 - this.currentAmplitude) * 0.35;
+        return Math.min(1.0, Math.max(0.0, this.currentAmplitude));
+      }
+      playSFX(sfxType) {
+        this._ensureContext();
+        const t = this.ctx.currentTime;
+        if (sfxType === 'switch_click') {
+          const osc = this.ctx.createOscillator(); osc.type = 'triangle'; osc.frequency.setValueAtTime(140, t); osc.frequency.exponentialRampToValueAtTime(45, t + 0.035);
+          const g = this.ctx.createGain(); g.gain.setValueAtTime(0.7, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.035);
+          osc.connect(g); g.connect(this.masterGain); osc.start(t); osc.stop(t + 0.04);
+        } else if (sfxType === 'lockpick_tick') {
+          const osc = this.ctx.createOscillator(); osc.type = 'sine'; osc.frequency.setValueAtTime(4400, t); osc.frequency.exponentialRampToValueAtTime(3600, t + 0.025);
+          const g = this.ctx.createGain(); g.gain.setValueAtTime(0.4, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.025);
+          osc.connect(g); g.connect(this.masterGain); osc.start(t); osc.stop(t + 0.03);
+        } else if (sfxType === 'police_radio') {
+          const beep = this.ctx.createOscillator(); beep.type = 'sine'; beep.frequency.setValueAtTime(1050, t);
+          const g = this.ctx.createGain(); g.gain.setValueAtTime(0.2, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+          beep.connect(g); g.connect(this.masterGain); beep.start(t); beep.stop(t + 0.09);
+        } else if (sfxType === 'synth_chord') {
+          const freqs = [65.41, 77.78, 92.50, 97.99];
+          const g = this.ctx.createGain(); g.gain.setValueAtTime(0.001, t); g.gain.linearRampToValueAtTime(0.35, t + 0.08); g.gain.exponentialRampToValueAtTime(0.001, t + 2.0); g.connect(this.masterGain);
+          for (const f of freqs) {
+            const o = this.ctx.createOscillator(); o.type = 'sawtooth'; o.frequency.setValueAtTime(f, t);
+            o.connect(g); o.start(t); o.stop(t + 2.0);
+          }
+        }
+      }
+      startAtmosphere(type) {
+        this._ensureContext();
+        this.stopAtmosphere();
+        this.activeAtmosphereType = type;
+        const t = this.ctx.currentTime;
+        const atmoGain = this.ctx.createGain(); atmoGain.gain.setValueAtTime(0.001, t); atmoGain.gain.linearRampToValueAtTime(0.3, t + 0.5); atmoGain.connect(this.masterGain);
+        this.atmosphereGain = atmoGain;
+
+        if (type === 'synth_tension') {
+          const freqs = [32.70, 48.99, 65.41];
+          for (const f of freqs) {
+            const o = this.ctx.createOscillator(); o.type = 'sawtooth'; o.frequency.setValueAtTime(f, t);
+            o.connect(atmoGain); o.start(t); this.atmosphereNodes.push(o);
+          }
+        }
+      }
+      stopAtmosphere() {
+        if (!this.atmosphereGain) return;
+        const t = this.ctx ? this.ctx.currentTime : 0;
+        this.atmosphereGain.gain.linearRampToValueAtTime(0.001, t + 0.3);
+        setTimeout(() => { for (const n of this.atmosphereNodes) { try { n.stop(); n.disconnect(); } catch(e){} } }, 350);
+        this.activeAtmosphereType = null; this.atmosphereNodes = []; this.atmosphereGain = null;
+      }
+    }
+
+    class ParanoiaFX {
+      constructor(canvas = null) {
+        this.canvas = canvas;
+        this.time = 0;
+        this.paranoiaLevel = 0;
+        this.targetLevel = 0;
+        this.textJitter = { x: 0, y: 0 };
+      }
+      setParanoiaLevel(level) { this.targetLevel = Math.max(0, Math.min(100, level)); }
+      getTextJitter() { return this.textJitter; }
+      handleMouseMove(x, y) {}
+      update(dt) {
+        this.time += dt;
+        this.paranoiaLevel += (this.targetLevel - this.paranoiaLevel) * Math.min(1, dt * 4.0);
+        if (this.paranoiaLevel > 45) {
+          const mag = (this.paranoiaLevel / 100 - 0.45) * 3.5;
+          this.textJitter.x = (Math.random() - 0.5) * mag;
+          this.textJitter.y = (Math.random() - 0.5) * mag;
+        } else { this.textJitter.x = 0; this.textJitter.y = 0; }
+      }
+      render(ctx, width, height) {
+        if (this.paranoiaLevel <= 2) return;
+        const w = width || ctx.canvas.width; const h = height || ctx.canvas.height;
+        const norm = this.paranoiaLevel / 100.0;
+        const vigGrad = ctx.createRadialGradient(w/2, h/2, h*0.25, w/2, h/2, Math.max(w,h)*0.6);
+        vigGrad.addColorStop(0.0, 'rgba(0,0,0,0)'); vigGrad.addColorStop(1.0, `rgba(10,8,12,${norm * 0.88})`);
+        ctx.fillStyle = vigGrad; ctx.fillRect(0, 0, w, h);
+      }
+    }
+
+    /* ========================================================================
+     * CONTROLE PRINCIPAL DO SHOWCASE
+     * ======================================================================== */
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const banner = document.getElementById('notification-banner');
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    function resize() {
+      width = window.innerWidth; height = window.innerHeight;
+      canvas.width = width; canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function showBanner(text) {
+      banner.textContent = text; banner.style.display = 'block';
+      setTimeout(() => { banner.style.display = 'none'; }, 3200);
+    }
+
+    const isoRenderer = new IsometricWorldRenderer(canvas);
+    isoRenderer.init(64, 32);
+
+    const synth = new RetroAudioSynthesizer();
+    const paranoia = new ParanoiaFX(canvas);
+
+    let activeView = 'iso';
+    let isRoofCutawayActive = false;
+    let camera = { x: -width / 2 + 100, y: -height / 2 + 120 };
+
+    // Construção de uma cena isométrica teste: Esquina do Double R Diner & Delegacia
+    const testMapData = {
+      tiles: []
+    };
+
+    // Gera malha de ladrilhos (asfalto molhado com faixas, calçada e piso interno)
+    for (let gx = -6; gx <= 10; gx++) {
+      for (let gy = -6; gy <= 10; gy++) {
+        let type = 'asphalt';
+        let roadStripe = null;
+        let hasCrack = false;
+        let hasManhole = false;
+
+        // Pista de tráfego
+        if (gy >= 2 && gy <= 5) {
+          type = 'asphalt';
+          if (gy === 3) roadStripe = 'dashed';
+          if (gx === 2) hasCrack = true;
+        } else if (gx >= -4 && gx <= 2 && gy >= -4 && gy <= 0) {
+          // Interior do Double R Diner
+          type = 'interior_diner';
+        } else if (gx >= 4 && gx <= 8 && gy >= -4 && gy <= 0) {
+          // Calçada de concreto da Delegacia
+          type = 'sidewalk';
+          if (gx === 4 && gy === 0) hasManhole = true;
+        } else if (gx <= -4) {
+          type = 'mud';
+        } else {
+          type = 'sidewalk';
+        }
+
+        testMapData.tiles.push({ gx, gy, type, roadStripe, hasCrack, hasManhole });
+      }
+    }
+
+    // Objetos e Fachadas Isométricas Y-sorted
+    const worldObjects = [
+      // Paredes do Double R Diner
+      { type: 'wall', gx: -4, gy: 0, height: 56, buildingId: 'diner', isCutawayWall: true },
+      { type: 'wall', gx: -2, gy: 0, height: 56, buildingId: 'diner', isCutawayWall: true },
+      { type: 'door', gx: -1, gy: 0, decal: 'DOUBLE R DINER', buildingId: 'diner', isCutawayWall: true },
+      { type: 'wall', gx: 0, gy: 0, height: 56, buildingId: 'diner', isCutawayWall: true },
+      { type: 'window', gx: -3, gy: 0, z: 18, isLit: true, buildingId: 'diner', isCutawayWall: true },
+
+      // Paredes de Tijolo da Delegacia
+      { type: 'wall', gx: 4, gy: -1, height: 72, style: 'brick', buildingId: 'police' },
+      { type: 'door', gx: 5, gy: -1, decal: 'DELEGACIA', doorType: 'glass', buildingId: 'police' },
+      { type: 'wall', gx: 6, gy: -1, height: 72, style: 'brick', buildingId: 'police' },
+      { type: 'window', gx: 6, gy: -1, z: 24, isLit: true, buildingId: 'police' },
+
+      // Adereços Urbanos de 1989
+      { type: 'prop_lamppost', gx: 3, gy: 1 },
+      { type: 'prop_payphone', gx: 4, gy: 1 },
+      { type: 'prop_dumpster', gx: -3, gy: 2 },
+      { type: 'prop_hydrant', gx: 2, gy: 2 }
+    ];
+
+    // Ordenação de profundidade (Y-sorting)
+    worldObjects.sort((a, b) => ((a.gx + a.gy) - (b.gx + b.gy)));
+
+    // Alternância de Telas
+    function setView(v) {
+      activeView = v;
+      document.querySelectorAll('#director-toolbar > .btn').forEach(b => {
+        if (b.id !== 'btn-mode-cutaway') b.classList.remove('active');
+      });
+      const btn = document.getElementById('btn-mode-' + v);
+      if (btn) btn.classList.add('active');
+    }
+
+    document.getElementById('btn-mode-iso').addEventListener('click', () => setView('iso'));
+    document.getElementById('btn-mode-cassette').addEventListener('click', () => {
+      showBanner('GRAVADOR CASSETE NO MÓDULO CassettePlayerView.js');
+      setView('iso');
+    });
+    document.getElementById('btn-mode-inspect').addEventListener('click', () => {
+      showBanner('CENA DE CRIME NO MÓDULO SceneInspectView.js');
+      setView('iso');
+    });
+
+    // Botão de alternância do Roof Cutaway
+    const btnCutaway = document.getElementById('btn-mode-cutaway');
+    btnCutaway.addEventListener('click', () => {
+      isRoofCutawayActive = !isRoofCutawayActive;
+      btnCutaway.textContent = `Roof Cutaway: [${isRoofCutawayActive ? 'LIGADO - ALEX NO DINER' : 'DESLIGADO'}]`;
+      if (isRoofCutawayActive) btnCutaway.classList.add('active');
+      else btnCutaway.classList.remove('active');
+
+      showBanner(isRoofCutawayActive ? 'ALEX ENTROU NO DINER: TELHADO CORTADO (ALPHA 0.15)' : 'ALEX SAIU PARA A RUA: TELHADO RESTAURADO');
+    });
+
+    // Botões de Som Web Audio
+    document.getElementById('btn-sfx-switch').addEventListener('click', () => { synth.playSFX('switch_click'); showBanner('SFX: INTERRUPTOR'); });
+    document.getElementById('btn-sfx-lockpick').addEventListener('click', () => { synth.playSFX('lockpick_tick'); showBanner('SFX: GAZUA'); });
+    document.getElementById('btn-sfx-radio').addEventListener('click', () => { synth.playSFX('police_radio'); showBanner('SFX: RÁDIO POLICIAL'); });
+    document.getElementById('btn-sfx-synth').addEventListener('click', () => { synth.playSFX('synth_chord'); showBanner('SFX: ACORDE TENSÃO 80s'); });
+    document.getElementById('btn-atmo-rain').addEventListener('click', () => { synth.startAtmosphere('rain_zinc'); showBanner('ATMOSFERA: CHUVA NO ZINCO'); });
+    document.getElementById('btn-atmo-drone').addEventListener('click', () => { synth.startAtmosphere('synth_tension'); showBanner('ATMOSFERA: DREAD 80s'); });
+    document.getElementById('btn-atmo-stop').addEventListener('click', () => { synth.stopAtmosphere(); showBanner('ÁUDIO SILENCIADO'); });
+
+    // Paranoia
+    const pRange = document.getElementById('paranoia-range');
+    const pNum = document.getElementById('paranoia-num');
+    function updateParanoia(val) {
+      const v = parseInt(val, 10);
+      pRange.value = v; pNum.textContent = v + '%';
+      paranoia.setParanoiaLevel(v);
+    }
+    pRange.addEventListener('input', (e) => updateParanoia(e.target.value));
+    document.querySelectorAll('.btn-quick-p').forEach(b => {
+      b.addEventListener('click', () => updateParanoia(b.getAttribute('data-p')));
+    });
+
+    // Panning da câmera com o mouse
+    let isDragging = false;
+    let dragStart = { x: 0, y: 0 };
+    window.addEventListener('mousedown', (e) => {
+      if (e.clientY > 50) {
+        isDragging = true;
+        dragStart.x = e.clientX + camera.x;
+        dragStart.y = e.clientY + camera.y;
+      }
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        camera.x = dragStart.x - e.clientX;
+        camera.y = dragStart.y - e.clientY;
+      }
+    });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    let lastTime = performance.now();
+    function loop(now) {
+      const dt = Math.min(0.1, (now - lastTime) / 1000);
+      lastTime = now;
+
+      ctx.clearRect(0, 0, width, height);
+
+      isoRenderer.update(dt);
+
+      const jitter = paranoia.getTextJitter();
+      ctx.save();
+      if (jitter.x !== 0 || jitter.y !== 0) ctx.translate(jitter.x, jitter.y);
+
+      // 1. Camada de Solo (Ladrilhos Isométricos)
+      isoRenderer.renderGroundLayer(ctx, testMapData, camera);
+
+      // 2. Camada de Objetos e Estruturas Verticais (Y-sorted)
+      for (let i = 0; i < worldObjects.length; i++) {
+        const obj = worldObjects[i];
+        isoRenderer.renderWorldObject(ctx, obj, camera, isRoofCutawayActive);
+      }
+
+      // 3. Camada de Telhado com Cutaway Interpolado
+      isoRenderer.renderRoofLayer(ctx, 'diner', isRoofCutawayActive, camera, {
+        gx: -4, gy: -2, gw: 5, gh: 3, height: 62, roofColor: '#3d2b27'
+      });
+      isoRenderer.renderRoofLayer(ctx, 'police', false, camera, {
+        gx: 5, gy: -2, gw: 4, gh: 3, height: 78, roofColor: '#2b3638'
+      });
+
+      // Legenda de controles no rodapé
+      ctx.font = '700 11px "Courier New", monospace';
+      ctx.fillStyle = 'rgba(212, 139, 40, 0.85)';
+      ctx.textAlign = 'left';
+      ctx.fillText('[ARRASTE COM O MOUSE PARA NAVEGAR] | [CLIQUE EM ROOF CUTAWAY PARA ENTRAR NO DINER]', 24, height - 20);
+
+      ctx.restore();
+
+      paranoia.update(dt);
+      paranoia.render(ctx, width, height);
+
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>
