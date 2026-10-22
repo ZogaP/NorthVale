@@ -4,13 +4,15 @@ Jogo investigativo isométrico, versão 0.4, com 15 construções, 42 cômodos e
 
 Veja [pipeline gráfico, shaders e assets](docs/GRAPHICS.md). Durante o jogo, use **Gráficos** para comparar os rostos, canais de material, iluminação, AO e densidade.
 
+Na cidade, Alex e os moradores usam sprites pintados em oito direções. Helen, Elias e Owen têm artes próprias; os passos dos moradores usam dois quadros por direção. As 15 fachadas do jogo têm arquitetura por endereço: torre de relógio na delegacia, varanda de dois pisos no motel, cobertura industrial no depósito, garagem, posto e três casas com telhados diferentes. A arte das fachadas continua sendo desenhada proceduralmente em Canvas, com texturas; o editor de cenários é independente das plantas e fachadas do jogo.
+
 O [Editor de Cenários NorthVale](NorthVale_AssetStudio.html) abre separadamente como um único HTML: coloque e arraste objetos de um catálogo com 77 tipos, edite propriedades, desfaça ações e salve projetos. Inclui fachadas com arquiteturas próprias, interiores e sprites, com exportação PNG/JSON. São 31 presets e 484 objetos iniciais. Veja [uso e formato dos assets](docs/ASSET-STUDIO.md).
 
 ## Abrir sem servidor
 
 Baixe o [NorthVale-JOGAR.zip](https://github.com/ZogaP/NorthVale/raw/refs/heads/main/dist/NorthVale-JOGAR.zip), extraia e abra `NorthVale.html` no navegador. A aba **Issues** do GitHub serve para relatar problemas; o jogo está no ZIP.
 
-A versão autocontida está em `dist/NorthVale.html`. Copie ou baixe esse arquivo para seu computador e abra no Chrome, Edge ou Firefox em desktop. Ele inclui código, estilos, os 15 manifestos de interiores e os sete PNGs da delegacia, sem buscar módulos ou imagens externas. A persistência depende de o navegador permitir armazenamento local para arquivos.
+A versão autocontida está em `dist/NorthVale.html`. Copie ou baixe esse arquivo para seu computador e abra no Chrome, Edge ou Firefox em desktop. Ele inclui código, estilos, os 15 manifestos de interiores e os oito PNGs da delegacia e dos personagens, sem buscar módulos ou imagens externas. A persistência depende de o navegador permitir armazenamento local para arquivos.
 
 Para recriar essa distribuição após editar o projeto:
 

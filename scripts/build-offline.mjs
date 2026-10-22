@@ -39,6 +39,7 @@ const embeddedAssets = [
  'assets/scenes/delegacia/fore_mascara_delegacia.png',
  'assets/characters/alex_hale_walk.png',
  'assets/characters/npc_sargento_idle.png',
+ 'assets/characters/townspeople_walk.png',
  'assets/portraits/alex_portrait.png',
  'assets/portraits/suspeito_portrait.png',
  'assets/portraits/ruth_portrait.png',

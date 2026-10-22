@@ -17,7 +17,7 @@ export class SpriteSheet {
     this.image.src = src;
   }
 
-  draw(ctx, direction, frame, x, y, {scale = 1, alpha = 1} = {}) {
+  draw(ctx, direction, frame, x, y, {scale = 1, alpha = 1, anchorY = .91} = {}) {
     if (!this.image.complete || !this.image.naturalWidth) return false;
     const column = ((direction % this.columns) + this.columns) % this.columns;
     const row = ((frame % this.rows) + this.rows) % this.rows;
@@ -32,7 +32,7 @@ export class SpriteSheet {
       this.frameWidth,
       this.frameHeight,
       x - width / 2,
-      y - height * 0.91,
+      y - height * anchorY,
       width,
       height,
     );

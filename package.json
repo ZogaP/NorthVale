@@ -16,7 +16,8 @@
     "test:editor": "node scripts/asset-editor-smoke.cjs",
     "test:interiors": "node scripts/interior-smoke.cjs",
     "interiors:author": "node scripts/build-interior-manifests.mjs",
-    "test:offline": "node scripts/offline-smoke.cjs"
+    "test:offline": "node scripts/offline-smoke.cjs",
+    "test:exteriors": "node scripts/exterior-smoke.cjs"
   },
   "engines": {
     "node": ">=20"
