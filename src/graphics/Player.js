@@ -1,6 +1,7 @@
+import {HUMAN_HEIGHT_WORLD, HUMAN_RADIUS_WORLD, metersToWorld} from '../engine/WorldMetrics.js';
 // NorthVale — Sombras de 1989
 // Player & Character Controller with 4-Phase Bilateral Walk Cycle & Metric Calibration
-// Enforces 50px human height (1.80m on 64x32 grid) and bottom-center grounding.
+// Enforces 56px human height (1.75m on the metric 64x32 grid) and bottom-center grounding.
 
 import {directionFromVelocity} from './spritesheet.js';
 
@@ -8,7 +9,7 @@ export class PlayerRenderer {
   constructor({
     id = 'alex',
     sheet = null,
-    targetHeight = 50, // Human adult ~1.80m = 50px on standard unit grid
+    targetHeight = HUMAN_HEIGHT_WORLD, // 1.75m, shared with collision and furniture units
     fps = 9
   } = {}) {
     this.id = id;
@@ -41,7 +42,7 @@ export class PlayerRenderer {
       const isoVx = (vx - vy) * 0.866;
       const isoVy = (vx + vy) * 0.5;
       this.direction = directionFromVelocity(isoVx, isoVy, this.direction);
-      this.walkTimer += dt * Math.min(1.4, Math.max(0.6, speed / 80));
+      this.walkTimer += dt * Math.min(1.4, Math.max(0.6, speed / metersToWorld(1.4)));
     } else if (angle !== undefined && angle !== 0) {
       const cosA = Math.cos(angle);
       const sinA = Math.sin(angle);
@@ -58,7 +59,7 @@ export class PlayerRenderer {
 
   /**
    * Renders the character at the specified world screen position.
-   * Applies bottom-center anchor, calibrated scale (50px), and procedural
+   * Applies bottom-center anchor, calibrated metric scale, and procedural
    * 4-phase bilateral walk cycle to eliminate unilateral limping.
    */
   draw(ctx, screenX, screenY, options = {}) {
@@ -70,7 +71,7 @@ export class PlayerRenderer {
     ctx.save();
     ctx.fillStyle = 'rgba(6, 18, 25, 0.55)';
     ctx.beginPath();
-    ctx.ellipse(screenX, screenY, 12, 5, 0, 0, Math.PI * 2);
+    ctx.ellipse(screenX, screenY, HUMAN_RADIUS_WORLD, HUMAN_RADIUS_WORLD * 0.4, 0, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
 

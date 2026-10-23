@@ -6,7 +6,7 @@ const fs=require('node:fs/promises');
  const browser=await chromium.launch({executablePath:process.env.NORTHVALE_CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox','--enable-unsafe-swiftshader']});
  try{
   const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));page.setDefaultTimeout(20000);
-  await page.goto(process.env.NORTHVALE_URL||'http://127.0.0.1:5173');await page.click('#begin');await page.keyboard.press('Space');await page.click('#save');
+  await page.goto(process.env.NORTHVALE_URL||'http://127.0.0.1:5173/legacy.html');await page.click('#begin');await page.keyboard.press('Space');await page.click('#save');
   const initial=await page.evaluate(()=>JSON.parse(localStorage.getItem('northvale-save')));
   const load=async(building,room,player)=>{const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('northvale-save')));state.interior=building;state.interiorRoom=room;state.outdoor={...initial.player};state.player={...player,vx:0,vy:0,angle:0};await page.evaluate(s=>localStorage.setItem('northvale-save',JSON.stringify(s)),state);await page.click('#load');await page.waitForFunction(r=>document.querySelector('#room-hud').dataset.room===r,room);return state;};
   const read=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('northvale-save')));

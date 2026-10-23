@@ -1,3 +1,4 @@
+import {HUMAN_HEIGHT_WORLD} from '../engine/WorldMetrics.js';
 import {IsoProjection} from '../engine/IsoProjection.js';
 const roomProjection = new IsoProjection();
 import {drawProp} from '../graphics/interior-renderer.js';
@@ -101,7 +102,7 @@ export class InteriorRoomRenderer{
   this.dressing=new Map();
   this.frame={x:0,y:0,scale:1};
   this.focus=null;this.origin={x:0,y:0};
-  this.playerRenderer=new PlayerRenderer({id:'alex',sheet:police?.alexSheet,targetHeight:50});
+  this.playerRenderer=new PlayerRenderer({id:'alex',sheet:police?.alexSheet,targetHeight:HUMAN_HEIGHT_WORLD});
  }
  screenToWorld(point){const x=(point.x-this.frame.x)/this.frame.scale-this.origin.x,y=(point.y-this.frame.y)/this.frame.scale-this.origin.y;return roomProjection.screenToWorld(x,y);}
  pick(point,state){
@@ -115,8 +116,8 @@ export class InteriorRoomRenderer{
   const room=this.world.room(state),r=renderer,c=r.ctx;this.origin={x:r.originX??0,y:r.originY??0};
   const lightState=this.world.lights(state),mask=lightState.map(l=>l.id).join(','),roomKey=`${state.interior}:${room.id}:${mask}:${r.lighting.enabled}`;
   r.room=roomKey;r.surface=null;r.lighting.ambient=room.ambient;r.lighting.lights=lightState.map(l=>({...l,intensity:l.intensity*(l.kind==='fluorescent'?1+Math.sin(r.time*31+hash(l.id))*.015:1)}));
-  const scale=Math.min(1.85,(r.w-210)/((room.bounds.w+room.bounds.h)*(Math.sqrt(3)/2)+180),(r.h-210)/((room.bounds.w+room.bounds.h)*.5+170));
-  const center=r.project(room.bounds.w/2,room.bounds.h/2);this.frame={x:r.w*.50-center.x*scale,y:r.h*.56-center.y*scale,scale};
+  const scale=r.viewCamera?.scale??Math.min(1.85,(r.w-210)/((room.bounds.w+room.bounds.h)*(Math.sqrt(3)/2)+180),(r.h-210)/((room.bounds.w+room.bounds.h)*.5+170));
+  const center=r.project(room.bounds.w/2,room.bounds.h/2);this.frame=r.viewCamera?{x:r.w/2-(r.viewCamera.x+this.origin.x)*scale,y:r.h/2-(r.viewCamera.y+this.origin.y)*scale,scale}:{x:r.w*.50-center.x*scale,y:r.h*.56-center.y*scale,scale};
   c.save();c.translate(this.frame.x,this.frame.y);c.scale(scale,scale);
   this.floor(r,room);this.walls(r,state,room);
   const detailKey=state.interior+':'+room.id;if(!this.dressing.has(detailKey))this.dressing.set(detailKey,dressRoom(state.interior,room));
@@ -128,9 +129,9 @@ export class InteriorRoomRenderer{
     const p=r.project(state.player.x,state.player.y);
     if(this.police?.alexSheet)this.playerRenderer.setSheet(this.police.alexSheet);
     this.playerRenderer.update(dt,state.player.vx,state.player.vy,state.player.angle);
-    this.playerRenderer.draw(c,p.x,p.y,{scale:50/(this.playerRenderer.sheet?.frameHeight||128)});
+    this.playerRenderer.draw(c,p.x,p.y,{scale:HUMAN_HEIGHT_WORLD/(this.playerRenderer.sheet?.frameHeight||128)});
   }});
-  for(const npc of room.props.filter(o=>o.type==='npc')){const point=npc.approach||npc;list.push({depth:point.x+point.y+12,draw:()=>r.person(point.x,point.y,'#899e8e',0,0,npc.id)});}
+  for(const npc of r.dynamicActors??room.props.filter(o=>o.type==='npc')){const point=npc.approach||npc;list.push({depth:point.x+point.y+12,draw:()=>r.townActors.draw(r,{...npc,x:point.x,y:point.y,time:r.time})});}
   list.sort((a,b)=>a.depth-b.depth).forEach(item=>item.draw());
   this.illumination(r,room);this.windows(r,room);
   if(this.focus){const target=this.focus,polygon=target.kind==='prop'?propPolygon(target.object,(x,y,z)=>r.project(x,y,z)): [r.project(target.x,target.y),r.project(target.x+target.w,target.y),r.project(target.x+target.w,target.y+target.h),r.project(target.x,target.y+target.h)];c.save();c.strokeStyle='#bc96e7';c.shadowColor='#8f5dbe';c.shadowBlur=12;c.lineWidth=2;c.beginPath();polygon.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.closePath();c.stroke();c.restore();}

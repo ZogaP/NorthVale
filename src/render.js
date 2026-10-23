@@ -1,3 +1,4 @@
+import {HUMAN_HEIGHT_WORLD} from './engine/WorldMetrics.js';
 import {IsoProjection} from './engine/IsoProjection.js';
 import {RenderQueue} from './engine/RenderQueue.js';
 import {BuildingTransition} from './graphics/building-transition.js';
@@ -52,7 +53,7 @@ function shadeColor(col, percent) {
 }
 
 export class Renderer {
-  constructor(canvas) {
+  constructor(canvas, {manageResize = true, interiors = null} = {}) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.camera = {x: 700, y: 720};
@@ -78,10 +79,10 @@ export class Renderer {
 
     this.police = new PoliceStationScene();
     this.townActors = new TownActors(this.police);
-    this.interiors = new InteriorWorld();
+    this.interiors = interiors ?? new InteriorWorld();
     this.interiorView = new InteriorRoomRenderer(this.interiors, this.police);
     this.envManager = new EnvironmentManager();
-    this.playerRenderer = new PlayerRenderer({id: 'alex', sheet: this.police.alexSheet, targetHeight: 50});
+    this.playerRenderer = new PlayerRenderer({id: 'alex', sheet: this.police.alexSheet, targetHeight: HUMAN_HEIGHT_WORLD});
     this.lastDt = 0.016;
 
     this.surface = null;
@@ -91,8 +92,11 @@ export class Renderer {
     this.quality = 'high';
     this.density = 1;
 
-    this.resize();
-    window.addEventListener('resize', () => this.resize());
+    if (manageResize) {
+      this.resize();
+      this.resizeListener = () => this.resize();
+      window.addEventListener('resize', this.resizeListener);
+    }
   }
 
   resize() {
@@ -267,7 +271,7 @@ export class Renderer {
       const pt = this.iso(x, y, z);
       if (this.police?.alexSheet) this.playerRenderer.setSheet(this.police.alexSheet);
       this.playerRenderer.update(this.lastDt || 0.016, vx, vy, angle);
-      this.playerRenderer.draw(this.ctx, pt.x, pt.y, { scale: 50 / (this.playerRenderer.sheet?.frameHeight || 128) });
+      this.playerRenderer.draw(this.ctx, pt.x, pt.y, { scale: HUMAN_HEIGHT_WORLD / (this.playerRenderer.sheet?.frameHeight || 128) });
       return true;
     }
     return this.townActors.draw(this, {id, x, y, z, vx, vy, time: this.time, angle});

@@ -1,6 +1,6 @@
 // NorthVale — Sombras de 1989
 // Calibrated Interior Prop Renderer (Proportional Human Metric Calibration)
-// Desks: 18-24px, Chairs: 16-18px seat, Mugs/Ashtrays: 2-6px, Human: 50px
+// Shared world units: 32/metre. Props use authored metric heights; humans are 56 units.
 
 export function drawProp(r, o) {
   const c = r.ctx;
@@ -75,9 +75,9 @@ export function drawProp(r, o) {
     return;
   }
 
-  // Calibrated Tables and Desks (18 to 24px height, waist level of 50px human)
+  // Draw to the metric height used by selection and collision data.
   if (o.kind === 'desk' || o.kind === 'table' || o.kind === 'kitchen') {
-    const tableH = Math.min(24, Math.max(18, h || 22));
+    const tableH = h || 24;
     const legH = tableH - 4;
     for (const dx of [2, Math.max(2, o.w - 7)]) {
       for (const dy of [2, Math.max(2, o.h - 7)]) {
@@ -94,8 +94,8 @@ export function drawProp(r, o) {
 
   // Calibrated Sofas, Armchairs, and Beds
   if (['sofa', 'armchair', 'bed'].includes(o.kind)) {
-    const seatH = 15;
-    const backH = 14;
+    const seatH = h * 0.55;
+    const backH = h - seatH;
     r.box(o.x, o.y, o.w, o.h, seatH, o.color, o.kind === 'bed' ? '#c1b599' : '#8a9576', z);
     r.box(o.x, o.y, o.w, 7, backH, o.color, '#7d886e', z + seatH);
     if (o.kind === 'bed') {
@@ -103,17 +103,17 @@ export function drawProp(r, o) {
       r.ground(o.x + o.w * 0.38, o.y + 8, o.w * 0.58, o.h - 10, '#7d806655', z + seatH + 0.2);
     } else {
       for (const side of [0, Math.max(0, o.w - 7)]) {
-        r.box(o.x + side, o.y, 7, o.h, 8, o.color, '#859277', z + seatH);
+        r.box(o.x + side, o.y, Math.min(7,o.w*.2), o.h, backH, o.color, '#859277', z + seatH);
       }
     }
     return;
   }
 
-  // Calibrated Chairs (16-18px seat height, backrest up to 32px total)
+  // Chair parts sum to the declared metric height.
   if (o.kind === 'chair') {
-    const legH = 14;
-    const seatThickness = 3;
-    const backH = 15;
+    const legH = h * 0.48;
+    const seatThickness = h * 0.1;
+    const backH = h - legH - seatThickness;
     for (const dx of [0, Math.max(0, o.w - 4)]) {
       for (const dy of [0, Math.max(0, o.h - 4)]) {
         r.box(o.x + dx, o.y + dy, 4, 4, legH, '#4a3d2a', '#6f5f42', z);

@@ -1,3 +1,4 @@
+import {HUMAN_RADIUS_WORLD, metersToWorld} from '../engine/WorldMetrics.js';
 import {InteriorManifestLoader} from './manifest-loader.js';
 import {SaveSystem,globalObjectId} from './save-system.js';
 import {portalGeometry,doorPort,boundsPolygon,distanceToBox,circleHits} from './room-geometry.js';
@@ -28,7 +29,7 @@ export class InteriorWorld{
   this.collisionCache.set(key,new IsoCollisionMap({width:room.bounds.w,height:room.bounds.h,tileSize:16,walkable,obstacles}));
  }return this.collisionCache.get(key);}
  doors(state){const room=this.room(state);return this.manifest(state).doors.filter(d=>d.a.room===room.id||d.b.room===room.id).map(definition=>{const door=this.door(state,definition),port=doorPort(definition,room),geometry=portalGeometry(port,room);const other=definition.a.room===room.id?definition.b.room:definition.a.room,name=this.manifest(state).rooms.find(r=>r.id===other).name;return{kind:'door',id:definition.id,globalId:door.id,name,definition,door,port,geometry,...geometry,...door.state(this.save(state)),range:98};});}
- blocked(state,x,y,radius=10){return this.collision(state).blocked(x,y,radius)||this.doors(state).some(d=>!d.isOpen&&circleHits({x,y},d.geometry,radius));}
+ blocked(state,x,y,radius=HUMAN_RADIUS_WORLD){return this.collision(state).blocked(x,y,radius)||this.doors(state).some(d=>!d.isOpen&&circleHits({x,y},d.geometry,radius));}
  repairPosition(state,desired){const room=this.room(state),spawn=room.spawn,reachable=point=>this.blocked(state,spawn.x,spawn.y)||this.collision(state).findPath(spawn,point).length>0;
   if(!this.blocked(state,desired.x,desired.y))return reachable(desired)?desired:{...spawn};
   let best=null,distance=Infinity;for(let y=32;y<room.bounds.h-20;y+=16)for(let x=32;x<room.bounds.w-20;x+=16){const d=Math.hypot(x-desired.x,y-desired.y);if(d<distance&&!this.blocked(state,x,y)){best={x,y};distance=d;}}
@@ -74,7 +75,7 @@ export class InteriorWorld{
  update(dt,state){
   if(this.transition){const t=this.transition;t.elapsed+=dt;if(!t.switched&&t.elapsed>=t.duration/2){t.switched=true;state.interiorRoom=t.to;Object.assign(state.player,this.repairPosition(state,t.spawn),{vx:0,vy:0});this.save(state).patch(globalObjectId(state.interior,t.to,'visit'),{visited:true});}if(t.elapsed>=t.duration)this.transition=null;return null;}
   const nav=this.navigation;if(!nav)return null;if(nav.room!==state.interiorRoom||nav.building!==state.interior){this.navigation=null;return null;}const point=nav.path[nav.index];if(!point){this.navigation=null;state.player.vx=state.player.vy=0;return this.targets(state).find(t=>t.kind===nav.target.kind&&t.id===nav.target.id)||null;}
-  const dx=point.x-state.player.x,dy=point.y-state.player.y,d=Math.hypot(dx,dy),step=Math.min(d,110*dt);if(d<3){if(!this.blocked(state,point.x,point.y))Object.assign(state.player,point);nav.index++;return null;}const before={...state.player};state.player.vx=dx/d*110;state.player.vy=dy/d*110;this.move(state,dx/d*step,dy/d*step);if(Math.hypot(state.player.x-before.x,state.player.y-before.y)<.001){this.navigation=null;state.player.vx=state.player.vy=0;}return null;
+  const dx=point.x-state.player.x,dy=point.y-state.player.y,d=Math.hypot(dx,dy),step=Math.min(d,metersToWorld(1.4)*dt);if(d<3){if(!this.blocked(state,point.x,point.y))Object.assign(state.player,point);nav.index++;return null;}const before={...state.player};state.player.vx=dx/d*metersToWorld(1.4);state.player.vy=dy/d*metersToWorld(1.4);this.move(state,dx/d*step,dy/d*step);if(Math.hypot(state.player.x-before.x,state.player.y-before.y)<.001){this.navigation=null;state.player.vx=state.player.vy=0;}return null;
  }
  fade(){if(!this.transition)return 0;return Math.sin(Math.PI*Math.min(1,this.transition.elapsed/this.transition.duration));}
  lights(state){const room=this.room(state),save=this.save(state);return room.lights.filter(l=>save.read(globalObjectId(state.interior,room.id,'light-'+l.id),{isOn:l.isOn}).isOn);}

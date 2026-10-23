@@ -18,7 +18,10 @@
     "interiors:author": "node scripts/build-interior-manifests.mjs",
     "test:offline": "node scripts/offline-smoke.cjs",
     "test:exteriors": "node scripts/exterior-smoke.cjs",
-    "test:canonical": "node scripts/canonical-smoke.cjs"
+    "test:canonical": "node scripts/canonical-smoke.cjs",
+    "test:engine": "node scripts/engine-smoke.cjs",
+    "test:metric": "node scripts/metric-smoke.cjs",
+    "test:camera": "node scripts/camera-smoke.cjs"
   },
   "engines": {
     "node": ">=20"

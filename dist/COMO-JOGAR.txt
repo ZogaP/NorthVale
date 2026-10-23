@@ -1,21 +1,26 @@
-NORTHVALE — SOMBRAS DE 1989 · 0.6
+NORTHVALE — SOMBRAS DE 1989
 
-Extraia o ZIP e abra NorthVale.html no Chrome, Edge ou Firefox de desktop.
-O HTML inclui código, estilos, imagens e os 15 manifestos; dispensa servidor.
+Extraia o ZIP e abra NorthVale.html em um navegador desktop.
+O HTML contém as imagens e os 15 manifestos. Dispensa servidor.
 
-WASD / setas: mover. Shift: correr. E / mouse esquerdo: interagir.
-J: caderno. C: quadro de cortiça. T: relógio. L: isqueiro.
-O / K: fechar / trancar portas. F: viatura. M: mapa.
-X ou botão Missões e decisões: acompanhar missões, favores e decisões do local.
-Controles: remapear teclado e mouse; Escape permanece reservado.
+WASD/setas: mover. Shift: correr. E: interagir. F: viatura.
+Scroll: aproximar/afastar a câmera (zoom 1,2 a 2,6).
+Tab/J: caderno; setas mudam de página. C: quadro. M: mapa.
+Escape fecha um modal ou pausa. Espaço pula a introdução.
+Na fechadura, A/D ajustam a gazua; Espaço aplica tensão.
+Use a barra superior para três slots, fita recolhida e idioma.
+Um autosave é criado após transições de área. Saves dependem
+permissão de armazenamento local do navegador; sessões sem
+armazenamento usam memória temporária.
 
-Comece pela carta no quarto de Sarah. A chave do quarto está no armário
-na cozinha. Investigue os registros, complete os favores e confronte os
-depoimentos com provas. O relógio influencia o resgate na represa.
+Os 14 finais dependem das provas, resgate e decisões no local.
+A interface nova integra as views do Gemini ao GameEngine.
+Guia: docs/GAME-ENGINE.md. Os módulos ES acompanham src/.
+O projeto completo, ferramentas e assets-fonte estão no Git.
 
-Os 14 finais dependem das provas intactas, do resgate e das decisões.
-Encerrar uma partida é definitivo para aquele slot; recarregar mantém o final.
-O navegador precisa permitir armazenamento local para persistir o progresso.
+Escala normalizada: 1 tile = 1 metro. NPCs caminham por delta
+time real, com rotina e identidade individual. Guia técnico:
+docs/METRIC-PHYSICS.md.
 
-Os módulos do motor estão em src/engine e src/systems neste pacote.
-Regras e integração: docs/ENGINE-SYSTEMS.md.
+Câmera: zoom suave, antecipação e enquadramento próximo.
+Guia de integração: docs/CAMERA.md.

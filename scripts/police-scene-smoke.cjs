@@ -15,7 +15,7 @@ fs.mkdirSync('test-results',{recursive:true});
   page.setDefaultTimeout(15000);
   const errors=[];
   page.on('pageerror',error=>errors.push(error.message));
-  await page.goto(process.env.NORTHVALE_URL||'http://127.0.0.1:5173');
+  await page.goto(process.env.NORTHVALE_URL||'http://127.0.0.1:5173/legacy.html');
   await page.click('#begin');
   await page.keyboard.press('Space');
   await page.click('#save');

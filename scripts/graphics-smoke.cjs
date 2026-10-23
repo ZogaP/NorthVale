@@ -4,7 +4,7 @@ const hoverRecorder=async page=>{const point=await page.evaluate(()=>{const w=56
 
 require('node:fs').mkdirSync('test-results',{recursive:true});
 (async()=>{const browser=await chromium.launch({...(process.env.NORTHVALE_CHROMIUM_PATH?{executablePath:process.env.NORTHVALE_CHROMIUM_PATH}:{}),headless:true,args:['--no-sandbox','--enable-unsafe-swiftshader']});
- try{const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(process.env.NORTHVALE_URL||'http://127.0.0.1:5173');await page.click('#begin');await page.keyboard.press('Space');await page.click('#graphics');
+ try{const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(process.env.NORTHVALE_URL||'http://127.0.0.1:5173/legacy.html');await page.click('#begin');await page.keyboard.press('Space');await page.click('#graphics');
  await page.waitForFunction(()=>{const s=document.querySelector('#graphics-stats');return s?.dataset.webgl==='true'&&Number(s.dataset.drawCalls)>7;});
  await page.waitForFunction(()=>{const canvas=document.querySelector('[data-face="owen"]');return canvas&&canvas.getContext('2d').getImageData(128,128,1,1).data[3]>0;});
  assert.equal(await page.title(),'NorthVale — Sombras de 1989');assert.equal(await page.locator('#graphics-stats').getAttribute('data-errors'),'[]');await page.screenshot({path:'test-results/material-lab.png'});

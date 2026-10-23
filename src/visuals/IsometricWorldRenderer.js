@@ -146,8 +146,8 @@ export class IsometricWorldRenderer {
   renderGroundLayer(ctx, mapData, camera) {
     if (!mapData) return;
 
-    const viewW = ctx.canvas.width;
-    const viewH = ctx.canvas.height;
+    const viewW = camera.viewportWidth ?? ctx.canvas.width;
+    const viewH = camera.viewportHeight ?? ctx.canvas.height;
     const pad = this.tileWidth * 2;
     const tiles = mapData.tiles || [];
 
