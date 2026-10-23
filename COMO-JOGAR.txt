@@ -1,0 +1,22 @@
+NORTHVALE — SOMBRAS DE 1989
+
+Extraia o ZIP e abra NorthVale.html em um navegador desktop.
+O HTML contém as imagens e os 15 manifestos. Dispensa servidor.
+
+WASD/setas: mover. Shift: correr. E: interagir. F: viatura.
+Tab/J: caderno; setas mudam de página. C: quadro. M: mapa.
+Escape fecha um modal ou pausa. Espaço pula a introdução.
+Na fechadura, A/D ajustam a gazua; Espaço aplica tensão.
+Use a barra superior para três slots, fita recolhida e idioma.
+Um autosave é criado após transições de área. Saves dependem
+permissão de armazenamento local do navegador; sessões sem
+armazenamento usam memória temporária.
+
+Os 14 finais dependem das provas, resgate e decisões no local.
+A interface nova integra as views do Gemini ao GameEngine.
+Guia: docs/GAME-ENGINE.md. Os módulos ES acompanham src/.
+O projeto completo, ferramentas e assets-fonte estão no Git.
+
+Escala normalizada: 1 tile = 1 metro. NPCs caminham por delta
+time real, com rotina e identidade individual. Guia técnico:
+docs/METRIC-PHYSICS.md.
