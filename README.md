@@ -1,12 +1,22 @@
 # NorthVale — Sombras de 1989
 
-Jogo investigativo isométrico, versão 0.6, com campanha canônica: Bobby Miller é o culpado e Ruth Mercer participa do acobertamento. Há cinco missões, controles remapeáveis e 14 finais determinísticos, além das 15 construções e 42 cômodos persistentes. Veja [núcleo, migração, regras e precedência dos finais](docs/ENGINE-SYSTEMS.md) e [manifestos dos interiores](docs/INTERIORS.md).
+Jogo investigativo isométrico com orquestrador central e interface Gemini, com campanha canônica: Bobby Miller é o culpado e Ruth Mercer participa do acobertamento. Há cinco missões, controles remapeáveis e 14 finais determinísticos, além das 15 construções e 42 cômodos persistentes. Veja [núcleo, migração, regras e precedência dos finais](docs/ENGINE-SYSTEMS.md) e [manifestos dos interiores](docs/INTERIORS.md).
+
+Os novos [módulos de regras e dados](docs/RULE-SYSTEMS.md) fornecem deduções, rotinas de 32 NPCs, diálogo ramificado, inventário de evidências e três slots manuais mais autosave. O guia descreve os contratos e os eventos que a interface deve encaminhar para essas APIs.
+
+Os [subsistemas de IA e física](docs/AI-PHYSICS.md) acrescentam propagação acústica, A* com bloqueios dinâmicos, suavização, cones de visão e volumes de gatilho com modificadores ambientais. São APIs lógicas para integração pela camada de apresentação.
+
+A [escala métrica e a locomoção](docs/METRIC-PHYSICS.md) usam um tile por metro, móveis normalizados e caminhada de NPCs entre 1,2 e 1,6 m/s por delta time real. As rotinas mantêm corpos persistentes e a rua renderiza apenas personagens ativos no setor visível, com identidade visual individual.
+
+A [câmera de investigação](docs/CAMERA.md) acompanha Alex com amortecimento e antecipação de movimento. O scroll ajusta o zoom entre 1,2 e 2,6, com padrão 1,9 e enquadramento calibrado para o personagem ocupar cerca de 16,6% da altura da viewport. O zoom funciona em ruas e interiores, e a seleção de objetos internos acompanha a câmera; HUD e diálogos mantêm seu tamanho.
 
 Veja [pipeline gráfico, shaders e assets](docs/GRAPHICS.md). Durante o jogo, use **Gráficos** para comparar os rostos, canais de material, iluminação, AO e densidade.
 
 Na cidade, Alex e os moradores usam sprites pintados em oito direções. Helen, Elias e Owen têm artes próprias; os passos dos moradores usam dois quadros por direção. As 15 fachadas do jogo têm arquitetura por endereço: torre de relógio na delegacia, varanda de dois pisos no motel, cobertura industrial no depósito, garagem, posto e três casas com telhados diferentes. A arte das fachadas continua sendo desenhada proceduralmente em Canvas, com texturas; o editor de cenários é independente das plantas e fachadas do jogo.
 
 O [Editor de Cenários NorthVale](NorthVale_AssetStudio.html) abre separadamente como um único HTML: coloque e arraste objetos de um catálogo com 77 tipos, edite propriedades, desfaça ações e salve projetos. Inclui fachadas com arquiteturas próprias, interiores e sprites, com exportação PNG/JSON. São 31 presets e 484 objetos iniciais. Veja [uso e formato dos assets](docs/ASSET-STUDIO.md).
+
+A entrada principal usa o novo [GameEngine e bootstrap](docs/GAME-ENGINE.md), com os dez estados, caderno paginado, três slots e autosave. A interface anterior está disponível em `/legacy.html`. Os módulos visuais recebidos do Git foram integrados por um adaptador, mantendo a lógica separada do Canvas.
 
 ## Abrir sem servidor
 
@@ -49,13 +59,14 @@ Comece a investigação e assista ao prólogo breve ou pule com Espaço. Entre n
 | M | Mapa físico |
 | Esc | Fechar painel / pular prólogo |
 
-Botões inferiores salvam/carregam um slot no armazenamento do navegador e ativam áudio sintetizado. O relógio pausa durante painéis. Moradores se deslocam quando seus horários mudam; é possível encontrá-los durante o trajeto e observar sua chegada. As agendas no caderno estão expostas para facilitar validação desta fundação.
+Na interface principal, selecione um dos três slots na barra superior para salvar/carregar. Tab abre o caderno, M o mapa, C a cortiça e Escape fecha o modal antes de pausar. O botão Fita K7 exige a fita recolhida. Os controles e botões de gráficos descritos acima continuam disponíveis na interface anterior. O relógio pausa durante painéis. Moradores se deslocam quando seus horários mudam; é possível encontrá-los durante o trajeto e observar sua chegada. As agendas no caderno estão expostas para facilitar validação desta fundação.
 
 ## Testes
 
 ```sh
 npm test
 npm run check
+npm run test:engine
 npm run test:canonical
 ```
 

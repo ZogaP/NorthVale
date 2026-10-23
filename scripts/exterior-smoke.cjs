@@ -6,7 +6,7 @@ const fs=require('node:fs/promises');
  try{
   const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(process.env.NORTHVALE_URL||'http://127.0.0.1:5173');
+  await page.goto(process.env.NORTHVALE_URL||'http://127.0.0.1:5173/legacy.html');
   await page.click('#begin');await page.keyboard.press('Space');await page.waitForTimeout(300);
   await fs.mkdir('test-results',{recursive:true});
   await page.screenshot({path:'test-results/exterior-street.png'});

@@ -1,3 +1,4 @@
+import {HUMAN_HEIGHT_WORLD} from '../engine/WorldMetrics.js';
 // NorthVale — Sombras de 1989
 // True 2.5D Isometric RenderEngine (HTML5 Canvas 2D)
 // Features: Explicit Z-axis elevation, 64x32 Metric Unit Grid Ratio, Bottom-Center Pivot Anchoring,
@@ -53,7 +54,7 @@ export class RenderEngine {
 
     this.roofCutaway = new RoofCutawaySystem();
     this.environment = new EnvironmentManager();
-    this.playerRenderer = new PlayerRenderer({id: 'alex', targetHeight: 50});
+    this.playerRenderer = new PlayerRenderer({id: 'alex', targetHeight: HUMAN_HEIGHT_WORLD});
 
     this.renderQueue = [];
     this.time = 0;

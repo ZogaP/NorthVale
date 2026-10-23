@@ -1,5 +1,6 @@
 import { QuestManager } from "./QuestManager.js";
 import { EndingManager, validateEndingState } from "./EndingManager.js";
+import { DeductionEngine } from "./DeductionEngine.js";
 
 /** Canonical, authored evidence. Every physical anchor exists in the room JSON. */
 export const CANONICAL_CLUES = Object.freeze({
@@ -204,6 +205,7 @@ export class CanonicalCampaign {
   sync() {
     const s = this.state;
     if (s.ending) return;
+    const deductions = s.deductionGraph ? new DeductionEngine(s) : null;
     s.PROOF_WEIGHT = Math.min(
       10,
       s.evidence.filter(
@@ -211,7 +213,7 @@ export class CanonicalCampaign {
           s.evidenceIntegrity[id] !== false &&
           (["letter", "report"].includes(id) ||
             CANONICAL_CLUES[id]?.weight === 1),
-      ).length,
+      ).length + (deductions?.getProofWeight() ?? 0),
     );
     if (s.introDone) this.quests.advanceStage("MAIN_SARAH_DISAPPEARANCE", 1);
     for (const stage of [2, 3])
@@ -234,7 +236,12 @@ export class CanonicalCampaign {
       ["SIDE_CLARA_ARCHIVES", "deed1978"],
     ])
       if (s.evidence.includes(evidence)) this.quests.advanceStage(id, 1);
-    if (s.corkboardDeductions.includes("canonical-culprit"))
+    if (
+      s.corkboardDeductions.includes("canonical-culprit") ||
+      deductions
+        ?.getProvenTheses()
+        .some((thesis) => thesis.id === "canonical-culprit")
+    )
       this.flag("CORRECT_DEDUCTION");
     s.obsession = s.PARANOIA;
   }

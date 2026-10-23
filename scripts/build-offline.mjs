@@ -32,7 +32,9 @@ const interiorFiles=['sarah','police','ruth','pharmacy','library','motel','regis
 const interiors=Object.fromEntries(await Promise.all(interiorFiles.map(async id=>[
  id,JSON.parse(await readFile(path.join(root,'assets/interiors',id+'.json'),'utf8'))
 ])));
-html=html.replace('<link rel="stylesheet" href="/style.css">',()=>`<style>${css}</style>`);
+const stylesheet=/<link\s+rel="stylesheet"\s+href="\/style.css"\s*\/?>/;
+if(!stylesheet.test(html))throw Error('Missing stylesheet entry in index.html');
+html=html.replace(stylesheet,()=>`<style>${css}</style>`);
 html=html.replace('<script type="module" src="/src/main.js"></script>',()=>`<script>\n'use strict';\nglobalThis.NORTHVALE_OFFLINE=true;\nglobalThis.NORTHVALE_INTERIORS=${JSON.stringify(interiors).replace(/</g,'\\u003c')};\n${ordered.join('\n').replace(/<\/script/gi,'<\\/script')}\n</script>`);
 const embeddedAssets = [
  'assets/scenes/delegacia/background_delegacia.png',

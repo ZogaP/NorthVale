@@ -1,71 +1,83 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NorthVale — Sombras de 1989</title>
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-  <canvas id="world" aria-label="Cidade isométrica de NorthVale"></canvas>
-  <header>
-    <div class="eyebrow">UM CASO QUE A CIDADE PREFERE ESQUECER</div>
-    <h1>NORTHVALE<span>SOMBRAS DE 1989</span></h1>
-    <div id="status"></div>
-  </header>
-  <aside id="case">
-    <small>ARQUIVO 001 / DESAPARECIMENTOS</small>
-    <h2>O silêncio de Sarah</h2>
-    <p id="objective">Helen espera perto da delegacia.</p>
-    <hr>
-    <div id="location"></div>
-    <p class="muted">Chuva persistente · Visibilidade reduzida</p>
-  </aside>
-  <div id="toast" role="status"></div>
-  <div id="prompt"></div>
-  <section id="room-hud" hidden aria-label="Navegação entre cômodos">
-    <div class="eyebrow">INTERIOR / NORTHVALE</div>
-    <h3 id="room-name"></h3>
-    <div id="room-doors"></div>
-    <div class="room-controls">
-      <button id="door-close">Fechar porta [O]</button>
-      <button id="door-lock">Trancar [K]</button>
-    </div>
-    <small>Clique em uma porta ou objeto para Alex se aproximar.</small>
-  </section>
-  <footer>
-    <span><b>W A S D</b> mover</span>
-    <span><b>SHIFT</b> correr</span>
-    <span><b>E</b> interagir</span>
-    <span><b>C</b> cortiça</span>
-    <span><b>I</b> interrogar</span>
-    <button id="corkboard-btn">Quadro de Cortiça [C]</button>
-    <button id="save">Salvar</button><button id="load">Carregar</button><button id="graphics">Gráficos</button><button id="achievements-btn">Conquistas</button><button id="accuse-btn">Missões e decisões</button><button id="controls-btn">Controles</button><button id="sound">Som: desligado</button>
-  </footer>
-  <dialog id="panel">
-    <button id="close">Fechar ×</button>
-    <div id="content"></div>
-  </dialog>
-  <section id="dialogue" class="dialogue" hidden aria-live="polite">
-    <div class="dialogue-portrait-wrapper">
-      <img class="dialogue-portrait" width="96" height="96" alt="">
-    </div>
-    <div class="dialogue-copy">
-      <div class="dialogue-speaker"></div>
-      <div class="dialogue-occupation"></div>
-      <p class="dialogue-text"></p>
-      <div class="dialogue-choices"></div>
-      <button class="dialogue-skip">[Espaço para continuar]</button>
-    </div>
-  </section>
-  <section id="intro">
-    <small>17 DE OUTUBRO DE 1989 · OREGON</small>
-    <h2>Bem-vindo a<br><em>NorthVale.</em></h2>
-    <p>Três desaparecimentos. Uma cidade que aprendeu a desviar o olhar.</p>
-    <button id="begin">Iniciar investigação</button>
-    <p class="muted">Versão 0.6 · campanha canônica, controles remapeáveis e 14 finais</p>
-  </section>
-
-  <script type="module" src="/src/main.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NorthVale — Sombras de 1989</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body class="engine-app">
+    <main id="game-stage">
+      <canvas
+        id="gameCanvas"
+        tabindex="0"
+        aria-label="NorthVale: WASD para mover, E para interagir, Tab para caderno, C para cortiça, M para mapa e Escape para pausa"
+      ></canvas>
+    </main>
+    <nav id="engine-toolbar" aria-label="Controles do jogo">
+      <strong>NORTHVALE</strong
+      ><span id="engine-state" role="status">CARREGANDO</span>
+      <button id="begin">Iniciar investigação</button>
+      <button id="journal-button">Caderno [Tab]</button
+      ><button id="board-button">Cortiça [C]</button
+      ><button id="map-button">Mapa [M]</button>
+      <button id="cassette-button">Fita K7</button
+      ><button id="pause-button">Pausa [Esc]</button>
+      <label
+        >Slot
+        <select id="save-slot">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+        </select></label
+      >
+      <button id="save">Salvar</button><button id="load">Carregar</button>
+      <label
+        >Idioma
+        <select id="language">
+          <option value="PT-BR">Português</option>
+          <option value="EN">English</option>
+          <option value="ES">Español</option>
+          <option value="DE">Deutsch</option>
+        </select></label
+      >
+    </nav>
+    <section id="engine-decisions" aria-label="Decisões de investigação">
+      <label
+        >Decisão
+        <select id="campaign-action">
+          <option value="rescue">Resgatar Sarah (represa)</option>
+          <option value="train">Enviar provas pelo trem</option>
+          <option value="publish">Acusação pública</option>
+          <option value="deal">Acordo com Ruth</option>
+          <option value="abandon">Deixar NorthVale</option>
+          <option value="execute">Executar Bobby (represa)</option>
+          <option value="ambush">Confrontar a vigilância (represa)</option>
+          <option value="unsafe">Invadir sem equipamento (represa)</option>
+          <option value="unprotected_crossing">
+            Expor documentos à chuva (represa)
+          </option>
+          <option value="press">Avisar a imprensa (delegacia)</option>
+          <option value="bribe">Aceitar suborno (delegacia)</option>
+          <option value="barricade">Barricar a delegacia</option>
+          <option value="arm_helen">Armar Helen (diner)</option>
+          <option value="custody">Custódia de Bobby (farmácia)</option>
+          <option value="destabilize">Pressionar Bobby (farmácia)</option>
+          <option value="blame_clara">Responsabilizar Clara (cartório)</option>
+          <option value="panic">Não conter Bobby (cartório)</option>
+          <option value="flee_money">Fugir com dinheiro (posto)</option>
+          <option value="psychiatric">Submeter dossiê à chefia (motel)</option>
+        </select></label
+      ><button id="decision-button">Executar no local</button>
+      <a href="/legacy.html" data-online-only>Interface anterior</a>
+    </section>
+    <section id="pause-menu" hidden aria-label="Jogo pausado">
+      <h2>Investigação pausada</h2>
+      <p>O relógio e a movimentação estão suspensos.</p>
+      <button id="resume-button">Continuar</button
+      ><button id="menu-button">Menu principal</button>
+    </section>
+    <p id="engine-error" role="alert" hidden></p>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>

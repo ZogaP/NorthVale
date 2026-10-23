@@ -14,7 +14,7 @@ const fs = require("node:fs/promises");
       errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
     page.setDefaultTimeout(12000);
-    await page.goto(process.env.NORTHVALE_URL || "http://127.0.0.1:5173");
+    await page.goto(process.env.NORTHVALE_URL || "http://127.0.0.1:5173/legacy.html");
     await page.click("#begin");
     await page.keyboard.press("Space");
     await page.click("#save");
@@ -47,17 +47,15 @@ const fs = require("node:fs/promises");
     async function place(building, room, objectId, minute = 600) {
       const data = await page.evaluate(
         async ({ building, room, objectId, minute }) => {
-          const s = JSON.parse(localStorage.getItem("northvale-save")),
-            manifest = await (
-              await fetch("/assets/interiors/" + building + ".json")
-            ).json(),
-            r = manifest.rooms.find((r) => r.id === room),
-            object = objectId ? r.props.find((o) => o.id === objectId) : null;
+          const s = JSON.parse(localStorage.getItem("northvale-save"));
           const { InteriorWorld } = await import(
               "/src/interiors/interior-world.js"
             ),
             world = new InteriorWorld();
           await world.ready;
+          // The runtime loader owns metric scaling and surface-child placement.
+          const r = world.loader.get(building).rooms.find(r => r.id === room),
+            object = objectId ? r.props.find(o => o.id === objectId) : null;
           s.interior = building;
           s.interiorRoom = room;
           s.minute = minute;

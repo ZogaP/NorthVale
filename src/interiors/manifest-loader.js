@@ -1,3 +1,4 @@
+import {normalizeInteriorFurniture} from '../data/FurnitureData.js';
 export const INTERIOR_IDS=['sarah','police','ruth','pharmacy','library','motel','registry','meatpacking','home','diner','scrapyard','gasstation','depot','dam','ruins'];
 const identifier=value=>typeof value==='string'&&/^[a-z][a-z0-9-]{0,70}$/.test(value);
 const finite=(value,min,max)=>Number.isFinite(value)&&value>=min&&value<=max;
@@ -24,6 +25,6 @@ export function validateManifest(data){
 }
 export class InteriorManifestLoader{
  constructor({fetcher=globalThis.fetch,embedded=globalThis.NORTHVALE_INTERIORS}={}){this.fetcher=fetcher?.bind(globalThis);this.embedded=embedded;this.manifests=new Map();this.pending=null;}
- load(){if(this.pending)return this.pending;this.pending=Promise.all(INTERIOR_IDS.map(async id=>{let data=this.embedded?.[id];if(!data){const response=await this.fetcher(`/assets/interiors/${id}.json`);if(!response.ok)throw Error(`Não foi possível carregar o interior ${id} (${response.status}).`);data=await response.json();}validateManifest(data);if(data.id!==id)throw Error(`ID de manifesto divergente: ${id}`);return[id,data];})).then(entries=>{this.manifests=new Map(entries);return this.manifests;}).catch(error=>{this.pending=null;throw error;});return this.pending;}
+ load(){if(this.pending)return this.pending;this.pending=Promise.all(INTERIOR_IDS.map(async id=>{let data=this.embedded?.[id];if(!data){const response=await this.fetcher(`/assets/interiors/${id}.json`);if(!response.ok)throw Error(`Não foi possível carregar o interior ${id} (${response.status}).`);data=await response.json();}validateManifest(data);if(data.id!==id)throw Error(`ID de manifesto divergente: ${id}`);const normalized=normalizeInteriorFurniture(data);validateManifest(normalized);return[id,normalized];})).then(entries=>{this.manifests=new Map(entries);return this.manifests;}).catch(error=>{this.pending=null;throw error;});return this.pending;}
  get(id){const data=this.manifests.get(id);if(!data)throw Error(`Interior não carregado: ${id}`);return data;}
 }
